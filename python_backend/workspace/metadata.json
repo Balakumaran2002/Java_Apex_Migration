@@ -1,0 +1,58 @@
+[
+  {
+    "source": "java17_migration.md",
+    "content": "# Java 17 Migration Guide\n\nUpgrading to Java 17 (LTS) brings significant performance improvements, language enhancements, and runtime modernization."
+  },
+  {
+    "source": "java17_migration.md",
+    "content": "## Key Java 17 Language Features\n- **Switch Expressions**: Restructured switch block that returns a value and removes fall-through errors.\n- **Records**: Concise syntax for immutable data-carrier classes (`public record User(String name, int age) {}`).\n- **Pattern Matching for instanceof**: Avoids explicit casting: `if (obj instanceof String s) { System.out.println(s.length()); }`.\n- **Sealed Classes**: Restricts which other classes/interfaces may extend or implement them.\n- **Text Blocks**: Multi-line string literals using `\"\"\"`."
+  },
+  {
+    "source": "java17_migration.md",
+    "content": "## Removed & Deprecated Features in Java 17\n- **Applet API**: Deprecated for removal.\n- **RMI Activation**: Removed.\n- **Security Manager**: Deprecated for removal in a future release.\n- **Garbage Collectors**: CMS (Concurrent Mark Sweep) garbage collector was completely removed in Java 14; use G1 (default) or ZGC instead."
+  },
+  {
+    "source": "java17_migration.md",
+    "content": "## Migrating from Java 8 / 11 to 17\n1. **JDK Internal Access Restriction**: Since Java 9, access to JDK internals is restricted. If your project uses libraries accessing `sun.misc.Unsafe` or other internal APIs, update the libraries or pass `--add-opens` flags.\n2. **Removed APIs**: Check for removed APIs like Java EE modules (`javax.xml.bind` / JAXB, etc.). Add standard third-party maven dependencies for JAXB if needed.\n3. **Build Plugin Upgrades**: Update `maven-compiler-plugin` to version 3.8.1 or higher and set `<release>17</release>` or `<source>17</source>`/`<target>17</target>`."
+  },
+  {
+    "source": "java21_migration.md",
+    "content": "# Java 21 Migration Guide\n\nJava 21 is a Long Term Support (LTS) release packed with major enhancements, particularly around concurrency and data patterns."
+  },
+  {
+    "source": "java21_migration.md",
+    "content": "## Key Java 21 Language Features\n- **Virtual Threads (Project Loom)**: Lightweight threads that reduce the effort of writing, maintaining, and observing high-throughput concurrent applications. They allow scaling thread count to millions.\n- **Sequenced Collections**: Introduces new interfaces representing collections with a defined encounter order (e.g. `SequencedCollection`, `SequencedSet`, `SequencedMap`) with standard methods like `addFirst`, `addLast`, `getFirst`, `getLast`, `reversed`.\n- **Pattern Matching for Switch**: Enables switch expressions to check patterns: `switch (obj) { case Integer i -> ... case String s -> ... }`.\n- **Record Patterns**: Deconstructs record values: `if (obj instanceof Point(int x, int y)) { ... }`.\n- **String Templates (Preview in 21)**: Simplified string interpolation using standard template processors."
+  },
+  {
+    "source": "java21_migration.md",
+    "content": "## Migrating to Java 21\n1. **Garbage Collection (ZGC)**: Generational ZGC is introduced in Java 21, providing extremely low latency (sub-millisecond pause times) for large heaps. Enable via `-XX:+UseZGC -XX:+ZGenerational`.\n2. **Build Configuration**:\n   - Update Maven `pom.xml` configuration for compiler release:\n     ```xml\n     <properties>\n         <maven.compiler.release>21</maven.compiler.release>\n     </properties>\n     ```\n   - For Gradle:\n     ```groovy\n     java {\n         toolchain {\n             languageVersion = JavaLanguageVersion.of(21)\n         }\n     }\n     ```\n3. **Third-Party Dependency Upgrades**: Libraries like Spring, Hibernate, ByteBuddy, Mockito, and Lombok must be upgraded to versions compatible with Java 21 runtime class file structures."
+  },
+  {
+    "source": "openrewrite_recipes.md",
+    "content": "# OpenRewrite Recipes for Java Migration\n\nOpenRewrite provides automated refactoring recipes to safely perform large-scale upgrades."
+  },
+  {
+    "source": "openrewrite_recipes.md",
+    "content": "## Standard Java Migration Recipes\n- **`org.openrewrite.java.migrate.UpgradeToJava17`**: Upgrades a Java project to Java 17. It adjusts source compatibility settings, upgrades Maven/Gradle compilers and core plugins, replaces deprecated APIs, and adopts newer language patterns.\n- **`org.openrewrite.java.migrate.UpgradeToJava21`**: Upgrades a Java project to Java 21. Upgrades Java build version, dependencies compatibility, and compiler release levels.\n- **`org.openrewrite.java.migrate.jakarta.JavaxMigrationToJakarta`**: Migrates import namespaces from `javax.*` to `jakarta.*` for JEE applications transitioning to Jakarta 9/10+.\n- **`org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_0`**: Upgrades Spring Boot applications to Spring Boot 3.0, including Spring Security lambda configurations, properties renaming, and logging upgrades."
+  },
+  {
+    "source": "openrewrite_recipes.md",
+    "content": "## Running OpenRewrite with Maven Plugin\nAdd the plugin configuration to the `pom.xml` build block, or execute it dynamically from the terminal:\n```bash\nmvn -U org.openrewrite.maven:rewrite-maven-plugin:run \\\n  -Drewrite.recipeArtifactCoordinates=org.openrewrite.recipe:rewrite-migrate-java:RELEASE,org.openrewrite.recipe:rewrite-spring:RELEASE \\\n  -Drewrite.activeRecipes=org.openrewrite.java.migrate.UpgradeToJava21\n```"
+  },
+  {
+    "source": "openrewrite_recipes.md",
+    "content": "## Running OpenRewrite with Gradle Plugin\nConfigure the OpenRewrite plugin in your `build.gradle` file:\n```groovy\nplugins {\n    id 'org.openrewrite.rewrite' version '6.8.2'\n}\n\nrewrite {\n    activeRecipe 'org.openrewrite.java.migrate.UpgradeToJava21'\n}\n\ndependencies {\n    rewrite 'org.openrewrite.recipe:rewrite-migrate-java:2.6.0'\n}\n```\nRun the migration with:\n```bash\n./gradlew rewriteRun\n```"
+  },
+  {
+    "source": "springboot3_migration.md",
+    "content": "# Spring Boot 3 Migration Guide\n\nUpgrading to Spring Boot 3.x is a critical milestone that requires Java 17 as the baseline version, with support for Java 21."
+  },
+  {
+    "source": "springboot3_migration.md",
+    "content": "## Major Changes in Spring Boot 3.x\n1. **Jakarta EE 10 Transition**: The package namespace changed from `javax.*` to `jakarta.*` for all Java EE specifications (e.g. Servlet API, JPA, Bean Validation, JAXB).\n   - *Example*: `javax.persistence.Entity` becomes `jakarta.persistence.Entity`.\n   - *Example*: `javax.servlet.http.HttpServletRequest` becomes `jakarta.servlet.http.HttpServletRequest`.\n2. **Spring Security 6.0**: Web security configuration class structure has changed. `WebSecurityConfigurerAdapter` is removed.\n   - Use `SecurityFilterChain` bean definitions and standard lambda configurations for configuring security rules:\n     ```java\n     @Bean\n     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {\n         http\n             .authorizeHttpRequests(auth -> auth\n                 .requestMatchers(\"/api/public/**\").permitAll()\n                 .anyRequest().authenticated()\n             );\n         return http.build();\n     }\n     ```\n3. **Observation Registry**: Spring Boot 3 replaces old metrics instrumentation with Micrometer Observation API, consolidating logging, tracing, and metrics collection."
+  },
+  {
+    "source": "springboot3_migration.md",
+    "content": "## Upgrading Strategy\n- **Step 1**: Ensure your project is running on Spring Boot 2.7.x and Java 11 or 17.\n- **Step 2**: Replace `javax` import namespaces with `jakarta`.\n- **Step 3**: Change Spring Boot parent version in `pom.xml` to `3.x.y` (e.g., `3.2.5`).\n- **Step 4**: Upgrade Spring Security declarations to use component-based config.\n- **Step 5**: Update database driver configurations, as Spring Boot 3 uses Hibernate 6 which requires updated dialects and properties.\n- **Step 6**: Execute Maven verification (`mvn clean verify`) to catch compilation or testing breaks."
+  }
+]
