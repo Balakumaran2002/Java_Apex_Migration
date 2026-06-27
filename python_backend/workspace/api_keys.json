@@ -1,0 +1,16 @@
+{
+    "active_provider": "groq",
+    "providers": {
+        "groq": [
+            {
+                "id": "702cde83-833a-4ceb-8809-351be594e5ac",
+                "name": "FirstKey",
+                "key": "Bho0LxM+QxEKMB4RClQ2Fy4maSkLTiZ1Z3VSGAtsNis1RiEwM0AbEDUiFiYZLARcSC1qXFcBDh0=",
+                "is_active": true,
+                "is_default": true
+            }
+        ],
+        "openai": [],
+        "gemini": []
+    }
+}

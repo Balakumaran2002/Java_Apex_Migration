@@ -1,11 +1,9 @@
 import os
 from google import genai
 from google.genai import types
+from app.ai.base_provider import IAIProvider
 
-class TokenExhaustedError(Exception):
-    pass
-
-class GeminiClient:
+class GeminiClient(IAIProvider):
     def __init__(self):
         self.model_name = os.getenv("GEMINI_MODEL_NAME", "gemini-2.5-flash")
     
@@ -25,25 +23,9 @@ class GeminiClient:
             
         config = types.GenerateContentConfig(**config_kwargs)
         
-        from google.genai.errors import APIError
-        import time
-        
-        max_retries = 4
-        delay = 40
-        for attempt in range(1, max_retries + 1):
-            try:
-                response = client.models.generate_content(
-                    model=active_model,
-                    contents=prompt,
-                    config=config
-                )
-                return response.text
-            except APIError as e:
-                if e.code in (429, 503):
-                    if attempt == max_retries:
-                        raise TokenExhaustedError(f"Gemini tokens exhausted or service unavailable after {max_retries} attempts: {str(e)}")
-                    time.sleep(delay)
-                    delay *= 2  # Exponential backoff
-                else:
-                    raise e
-        raise RuntimeError("Unexpected exit from retry loop")
+        response = client.models.generate_content(
+            model=active_model,
+            contents=prompt,
+            config=config
+        )
+        return response.text

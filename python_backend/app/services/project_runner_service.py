@@ -7,8 +7,35 @@ import shutil
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 from app.config import app_config
+from app.services.java_runtime_service import java_runtime_service
 
 class ProjectRunnerService:
+    WEB_DEPENDENCY_MARKERS = (
+        "spring-boot-starter-web",
+        "spring-boot-starter-webflux",
+        "spring-webmvc",
+        "spring-webflux",
+        "tomcat-embed-jasper",
+        "jstl",
+        "jakarta.servlet",
+        "javax.servlet",
+    )
+    WEB_SOURCE_MARKERS = (
+        "@restcontroller",
+        "@controller",
+        "@requestmapping",
+        "@getmapping",
+        "@postmapping",
+        "@putmapping",
+        "@deletemapping",
+        "extends httpservlet",
+        "implements servlet",
+    )
+    CLI_SOURCE_MARKERS = (
+        "commandlinerunner",
+        "applicationrunner",
+    )
+
     def __init__(self):
         # Maps repo_name -> dict with details: process, port, status, logs, type, preview_url, endpoints, error_reason, etc.
         self.runs: Dict[str, Dict[str, Any]] = {}
@@ -85,6 +112,77 @@ class ProjectRunnerService:
 
         return "Unknown"
 
+    def detect_java_preview_mode(self, run_dir: Path, project_type: str) -> str:
+        """Classify Java/Spring Boot apps as web, cli, or unknown."""
+        if not project_type.startswith("Spring Boot"):
+            return "unknown"
+
+        if project_type in {"Spring Boot / Thymeleaf", "Spring Boot / JSP"}:
+            return "web"
+
+        build_content = self._read_build_content(run_dir)
+        build_lower = build_content.lower()
+
+        if any(marker in build_lower for marker in self.WEB_DEPENDENCY_MARKERS):
+            return "web"
+        if "<packaging>war</packaging>" in build_lower:
+            return "web"
+        if re.search(r'(^|\s)id\s*[("\']war[)"\']', build_lower) or "apply plugin: 'war'" in build_lower or 'apply plugin: "war"' in build_lower:
+            return "web"
+
+        source_markers = self.scan_java_source_markers(run_dir)
+        if source_markers["web"]:
+            return "web"
+
+        if source_markers["cli_runner"] and not source_markers["web"]:
+            return "cli"
+
+        if source_markers["main"] and not source_markers["web"] and not any(marker in build_lower for marker in self.WEB_DEPENDENCY_MARKERS):
+            return "cli"
+
+        return "unknown"
+
+    def _read_build_content(self, run_dir: Path) -> str:
+        for build_file in (run_dir / "pom.xml", run_dir / "build.gradle", run_dir / "build.gradle.kts"):
+            if build_file.exists():
+                try:
+                    return build_file.read_text(encoding="utf-8", errors="ignore")
+                except Exception:
+                    return ""
+        return ""
+
+    def scan_java_source_markers(self, run_dir: Path) -> Dict[str, bool]:
+        markers = {
+            "web": False,
+            "cli_runner": False,
+            "main": False,
+        }
+        scanned = 0
+        for path in run_dir.rglob("*"):
+            if path.suffix.lower() not in {".java", ".kt", ".groovy"}:
+                continue
+            if any(part in {"target", "build", ".git", "node_modules"} for part in path.parts):
+                continue
+            try:
+                content = path.read_text(encoding="utf-8", errors="ignore").lower()
+            except Exception:
+                continue
+
+            scanned += 1
+            if any(marker in content for marker in self.WEB_SOURCE_MARKERS):
+                markers["web"] = True
+            if any(marker in content for marker in self.CLI_SOURCE_MARKERS):
+                markers["cli_runner"] = True
+            if "static void main(" in content or "fun main(" in content:
+                markers["main"] = True
+
+            if markers["web"]:
+                return markers
+            if scanned >= 200:
+                break
+
+        return markers
+
     def find_available_port(self, start_port: int = 8081) -> int:
         """Finds an open port starting from start_port."""
         port = start_port
@@ -133,6 +231,378 @@ class ProjectRunnerService:
             except Exception:
                 pass
         return endpoints
+
+    def detect_preferred_preview_path(self, run_dir: Path, project_type: str) -> Optional[str]:
+        """Pick a better initial preview path for MVC apps when root is not mapped."""
+        if project_type not in {"Spring Boot / Thymeleaf", "Spring Boot / JSP", "Spring Boot / Maven", "Spring Boot / Gradle"}:
+            return None
+
+        candidates = []
+        for path in run_dir.rglob("*.java"):
+            if any(part in {"target", "build", ".git", "node_modules"} for part in path.parts):
+                continue
+            try:
+                content = path.read_text(encoding="utf-8", errors="ignore")
+            except Exception:
+                continue
+
+            lower_content = content.lower()
+            if "@controller" not in lower_content or "@restcontroller" in lower_content:
+                continue
+
+            class_mapping = ""
+            class_match = re.search(
+                r'@RequestMapping\s*\(\s*(?:value|path)\s*=\s*["\']([^"\']+)["\']\s*\)',
+                content,
+                flags=re.IGNORECASE,
+            )
+            if not class_match:
+                class_match = re.search(
+                    r'@RequestMapping\s*\(\s*["\']([^"\']+)["\']\s*\)',
+                    content,
+                    flags=re.IGNORECASE,
+                )
+            if class_match:
+                class_mapping = class_match.group(1)
+
+            pattern = re.compile(
+                r'@(GetMapping|PostMapping|PutMapping|DeleteMapping|RequestMapping)\s*\((.*?)\)\s*'
+                r'(?:public|private|protected)?\s*[\w<>\[\], ?]+\s+\w+\s*\(',
+                re.IGNORECASE | re.DOTALL,
+            )
+
+            for match in pattern.finditer(content):
+                annotation_type = match.group(1).lower()
+                annotation_body = match.group(2)
+                path_match = re.search(
+                    r'(?:value|path)\s*=\s*["\']([^"\']+)["\']|["\']([^"\']+)["\']',
+                    annotation_body,
+                    flags=re.IGNORECASE,
+                )
+                if not path_match:
+                    if annotation_type == "requestmapping":
+                        candidates.append("/")
+                    continue
+
+                path_value = path_match.group(1) or path_match.group(2) or ""
+                full_path = "/" + (class_mapping.strip("/") + "/" + path_value.strip("/")).strip("/")
+                full_path = full_path if full_path != "" else "/"
+
+                if annotation_type == "requestmapping":
+                    method_match = re.search(r'RequestMethod\.(GET|POST|PUT|DELETE)', annotation_body, flags=re.IGNORECASE)
+                    if method_match and method_match.group(1).upper() != "GET":
+                        continue
+
+                if annotation_type in {"getmapping", "requestmapping"}:
+                    candidates.append(full_path or "/")
+
+        if not candidates:
+            return None
+
+        normalized = []
+        seen = set()
+        for candidate in candidates:
+            cleaned = candidate if candidate.startswith("/") else f"/{candidate}"
+            cleaned = re.sub(r"/{2,}", "/", cleaned)
+            if cleaned not in seen:
+                seen.add(cleaned)
+                normalized.append(cleaned)
+
+        if "/" in seen:
+            return "/"
+
+        for candidate in normalized:
+            if (
+                candidate != "/"
+                and not candidate.startswith("/api")
+                and "{" not in candidate
+                and "*" not in candidate
+            ):
+                return candidate
+
+        return normalized[0]
+
+    def sanitize_yaml_credentials(self, resources_dir: Path, repo_name: str):
+        """Quote masked credential placeholders so SnakeYAML can parse them."""
+        for filename in ("application.yaml", "application.yml"):
+            yaml_path = resources_dir / filename
+            if not yaml_path.exists():
+                continue
+            try:
+                content = yaml_path.read_text(encoding="utf-8", errors="ignore")
+                updated = re.sub(
+                    r'(^\s*password:\s*)(\*{3,}.*)$',
+                    lambda match: f'{match.group(1)}"{match.group(2).strip()}"',
+                    content,
+                    flags=re.MULTILINE,
+                )
+                if updated != content:
+                    yaml_path.write_text(updated, encoding="utf-8")
+                    self.add_log(repo_name, f"[DB Config] Sanitized masked password in {filename}.")
+            except Exception as e:
+                self.add_log(repo_name, f"[DB Config Warning] Could not sanitize {filename}: {e}")
+
+    def _runtime_overlay_dir(self, repo_name: str) -> Path:
+        return app_config.workspace_directory / ".runtime_overrides" / repo_name
+
+    def _ensure_backup(self, repo_name: str, original_path: Path, run_dir: Path) -> Optional[Path]:
+        run = self.runs.get(repo_name)
+        if not run or not original_path.exists():
+            return None
+
+        try:
+            relative_path = original_path.relative_to(run_dir)
+        except Exception:
+            relative_path = Path(original_path.name)
+
+        backup_root = self._runtime_overlay_dir(repo_name) / "backups"
+        backup_path = backup_root / relative_path
+        if backup_path.exists():
+            return backup_path
+
+        backup_path.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(original_path, backup_path)
+        run.setdefault("runtime_backups", []).append({
+            "original": str(original_path),
+            "backup": str(backup_path)
+        })
+        return backup_path
+
+    def _restore_runtime_overrides(self, repo_name: str):
+        run = self.runs.get(repo_name)
+        if not run:
+            return
+
+        for entry in reversed(run.get("runtime_backups", [])):
+            original = Path(entry["original"])
+            backup = Path(entry["backup"])
+            try:
+                if backup.exists():
+                    original.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(backup, original)
+            except Exception as e:
+                self.add_log(repo_name, f"[DB Config Warning] Could not restore {original.name}: {e}")
+
+        for injected in run.get("injected_files", []):
+            try:
+                p = Path(injected)
+                if p.exists():
+                    p.unlink()
+            except Exception:
+                pass
+
+        overlay_dir = run.get("runtime_overlay_dir")
+        if overlay_dir:
+            try:
+                shutil.rmtree(Path(overlay_dir), ignore_errors=True)
+            except Exception:
+                pass
+
+        run["runtime_backups"] = []
+        run["injected_files"] = []
+        run["runtime_overlay_dir"] = None
+
+    def _detect_external_db_config(self, run_dir: Path) -> bool:
+        db_markers = ("mysql", "postgres", "postgresql", "jdbc:mysql", "jdbc:postgresql")
+        candidate_files = [
+            run_dir / "pom.xml",
+            run_dir / "build.gradle",
+            run_dir / "build.gradle.kts",
+        ]
+
+        resources_dir = run_dir / "src" / "main" / "resources"
+        if resources_dir.exists():
+            for filename in ("application.properties", "application.yml", "application.yaml"):
+                candidate_files.append(resources_dir / filename)
+
+        for candidate in candidate_files:
+            if not candidate.exists():
+                continue
+            try:
+                content = candidate.read_text(encoding="utf-8", errors="ignore").lower()
+                if any(marker in content for marker in db_markers):
+                    return True
+            except Exception:
+                continue
+        return False
+
+    def _find_spring_boot_main_class(self, run_dir: Path) -> Optional[Path]:
+        for path in run_dir.rglob("*.java"):
+            if any(part in {"target", "build", ".git", "node_modules"} for part in path.parts):
+                continue
+            try:
+                content = path.read_text(encoding="utf-8", errors="ignore")
+                if "@SpringBootApplication" in content:
+                    return path
+            except Exception:
+                continue
+        return None
+
+    def _find_main_class_name(self, run_dir: Path) -> Optional[str]:
+        """Find the fully-qualified name of the main entry class for exec:java."""
+        # First try @SpringBootApplication
+        for path in run_dir.rglob("*.java"):
+            if any(part in {"target", "build", ".git", "node_modules"} for part in path.parts):
+                continue
+            try:
+                content = path.read_text(encoding="utf-8", errors="ignore")
+                has_main = "@SpringBootApplication" in content or (
+                    "public static void main" in content and ("SpringApplication" in content or "@SpringBootApplication" in content)
+                )
+                if not has_main:
+                    continue
+                pkg_match = re.search(r'package\s+([\w\.]+);', content)
+                cls_match = re.search(r'public\s+class\s+(\w+)', content)
+                if cls_match:
+                    package = pkg_match.group(1) + "." if pkg_match else ""
+                    return package + cls_match.group(1)
+            except Exception:
+                continue
+
+        # Fallback: any class with public static void main(String[] args)
+        for path in run_dir.rglob("*.java"):
+            if any(part in {"target", "build", ".git", "node_modules"} for part in path.parts):
+                continue
+            try:
+                content = path.read_text(encoding="utf-8", errors="ignore")
+                if "public static void main" not in content:
+                    continue
+                pkg_match = re.search(r'package\s+([\w\.]+);', content)
+                cls_match = re.search(r'public\s+class\s+(\w+)', content)
+                if cls_match:
+                    package = pkg_match.group(1) + "." if pkg_match else ""
+                    return package + cls_match.group(1)
+            except Exception:
+                continue
+        return None
+
+
+
+    def _inject_spring_boot_plugin(self, build_file: Path, repo_name: str, run_dir: Path) -> bool:
+        if build_file.name != "pom.xml":
+            return False
+            
+        try:
+            content = build_file.read_text(encoding="utf-8", errors="ignore")
+        except Exception as e:
+            return False
+
+        if "spring-boot-maven-plugin" in content.lower():
+            return False
+
+        self._ensure_backup(repo_name, build_file, run_dir)
+        self.add_log(repo_name, f"[Build Config] Temporarily adding spring-boot-maven-plugin to {build_file.name} for preview run...")
+
+        # Quick fix for missing maven-war-plugin version which breaks Java 21 builds
+        if "<artifactId>maven-war-plugin</artifactId>" in content and "<version>" not in content.split("<artifactId>maven-war-plugin</artifactId>")[1].split("</plugin>")[0]:
+            content = content.replace(
+                "<artifactId>maven-war-plugin</artifactId>", 
+                "<artifactId>maven-war-plugin</artifactId>\n                <version>3.4.0</version>"
+            )
+
+        plugin_block = (
+            "            <plugin>\n"
+            "                <groupId>org.springframework.boot</groupId>\n"
+            "                <artifactId>spring-boot-maven-plugin</artifactId>\n"
+            "                <version>3.2.5</version>\n"
+            "            </plugin>\n"
+        )
+        
+        if "<plugins>" in content:
+            content = content.replace("<plugins>", f"<plugins>\n{plugin_block}", 1)
+        elif "<build>" in content:
+            content = content.replace("<build>", f"<build>\n        <plugins>\n{plugin_block}        </plugins>\n", 1)
+        elif "</project>" in content:
+            content = content.replace(
+                "</project>",
+                f"    <build>\n        <plugins>\n{plugin_block}        </plugins>\n    </build>\n</project>",
+                1
+            )
+        else:
+            return False
+
+        build_file.write_text(content, encoding="utf-8")
+        return True
+
+    def _inject_h2_dependency(self, build_file: Path, repo_name: str, run_dir: Path) -> bool:
+        try:
+            content = build_file.read_text(encoding="utf-8", errors="ignore")
+        except Exception as e:
+            self.add_log(repo_name, f"[DB Config Warning] Could not read {build_file.name}: {e}")
+            return False
+
+        if "com.h2database" in content.lower():
+            return False
+
+        self._ensure_backup(repo_name, build_file, run_dir)
+        self.add_log(repo_name, f"[DB Config] Temporarily adding H2 dependency to {build_file.name} for preview run...")
+
+        if build_file.name == "pom.xml":
+            dependency_block = (
+                "    <dependency>\n"
+                "        <groupId>com.h2database</groupId>\n"
+                "        <artifactId>h2</artifactId>\n"
+                "        <scope>runtime</scope>\n"
+                "    </dependency>\n"
+            )
+            if "</dependencies>" in content:
+                content = content.replace("</dependencies>", f"{dependency_block}</dependencies>", 1)
+            elif "</project>" in content:
+                content = content.replace(
+                    "</project>",
+                    f"  <dependencies>\n{dependency_block}  </dependencies>\n</project>",
+                    1
+                )
+            else:
+                content += f"\n<dependencies>\n{dependency_block}</dependencies>\n"
+        elif build_file.name == "build.gradle.kts":
+            dependency_snippet = "\n    runtimeOnly(\"com.h2database:h2\")\n"
+            if "dependencies {" in content:
+                content = content.replace("dependencies {", f"dependencies {{{dependency_snippet}", 1)
+            else:
+                content += f"\ndependencies {{{dependency_snippet}}}\n"
+        else:
+            dependency_snippet = "\n    runtimeOnly 'com.h2database:h2'\n"
+            if "dependencies {" in content:
+                content = content.replace("dependencies {", f"dependencies {{{dependency_snippet}", 1)
+            else:
+                content += f"\ndependencies {{{dependency_snippet}}}\n"
+
+        build_file.write_text(content, encoding="utf-8")
+        return True
+
+    def _prepare_h2_runtime_overlay(self, repo_name: str, run_dir: Path, port: int, db_detected: bool, env: dict):
+        overlay_dir = self._runtime_overlay_dir(repo_name)
+        overlay_dir.mkdir(parents=True, exist_ok=True)
+        self.runs[repo_name]["runtime_overlay_dir"] = str(overlay_dir)
+
+        props_path = overlay_dir / "application-migration.properties"
+        props_content = [
+            f"server.port={port}",
+        ]
+        if db_detected:
+            props_content.extend([
+                "spring.datasource.url=jdbc:h2:mem:testdb",
+                "spring.datasource.driverClassName=org.h2.Driver",
+                "spring.datasource.username=sa",
+                "spring.datasource.password=",
+                "spring.jpa.hibernate.ddl-auto=update",
+                "spring.h2.console.enabled=true",
+            ])
+
+        props_path.write_text("\n".join(props_content) + "\n", encoding="utf-8")
+
+        overlay_uri = overlay_dir.resolve().as_uri()
+        existing = env.get("SPRING_CONFIG_ADDITIONAL_LOCATION")
+        env["SPRING_CONFIG_ADDITIONAL_LOCATION"] = f"{existing},{overlay_uri}/" if existing else f"{overlay_uri}/"
+        env["SPRING_PROFILES_ACTIVE"] = "migration"
+        if db_detected:
+            env["SPRING_DATASOURCE_URL"] = "jdbc:h2:mem:testdb"
+            env["SPRING_DATASOURCE_DRIVERCLASSNAME"] = "org.h2.Driver"
+            env["SPRING_DATASOURCE_USERNAME"] = "sa"
+            env["SPRING_DATASOURCE_PASSWORD"] = ""
+            env["SPRING_JPA_HIBERNATE_DDL_AUTO"] = "update"
+            env["SPRING_H2_CONSOLE_ENABLED"] = "true"
 
     def add_log(self, repo_name: str, message: str):
         """Append a log line to history and dispatch to active websocket queues."""
@@ -188,10 +658,14 @@ class ProjectRunnerService:
             "logs": [],
             "port": port,
             "type": project_type,
+            "preview_mode": "unknown",
+            "preferred_preview_path": None,
             "preview_url": None,
             "endpoints": [],
             "error_reason": None,
-            "process": None
+            "process": None,
+            "runtime_backups": [],
+            "runtime_overlay_dir": None
         }
 
         # Run startup task in background
@@ -204,14 +678,18 @@ class ProjectRunnerService:
         self.add_log(repo_name, f"WorkingDirectory: {run_dir}\n")
 
         is_windows = os.name == 'nt'
-        env = os.environ.copy()
-        
-        # Configure Java environment for Spring Boot if JDK 21 is available
-        if is_windows:
-            java21 = Path("C:/Program Files/Java/jdk-21")
-            if java21.exists():
-                env["JAVA_HOME"] = str(java21)
-                env["PATH"] = f"{java21}\\bin;{env.get('PATH', '')}"
+        env, java_home = java_runtime_service.prepare_env()
+        preview_mode = self.detect_java_preview_mode(run_dir, project_type)
+        preferred_preview_path = self.detect_preferred_preview_path(run_dir, project_type)
+        self.runs[repo_name]["preview_mode"] = preview_mode
+        self.runs[repo_name]["preferred_preview_path"] = preferred_preview_path
+
+        if project_type.startswith("Spring Boot"):
+            self.add_log(repo_name, f"Detected Preview Mode: {preview_mode}")
+            if preferred_preview_path:
+                self.add_log(repo_name, f"Detected Initial Preview Path: {preferred_preview_path}")
+            if java_home:
+                self.add_log(repo_name, f"[Java Runtime] Using preferred JDK 21 at: {java_home}")
 
         # 1. Install dependencies if needed
         is_node_project = "React" in project_type or "Angular" in project_type or "Node" in project_type
@@ -249,6 +727,32 @@ class ProjectRunnerService:
         # 2. Build and start running command
         self.add_log(repo_name, ">>> [Phase 2/2] Launching application server...")
         
+
+        # Database Handling: Add safe H2 fallback profile if DB detected
+        db_detected = False
+        try:
+            if project_type.startswith("Spring Boot"):
+                db_detected = self._detect_external_db_config(run_dir)
+                if db_detected:
+                    self.add_log(repo_name, "[DB Config] External DB detected. Using preview-only H2 runtime overlay.")
+
+                for build_file in [run_dir / "pom.xml", run_dir / "build.gradle", run_dir / "build.gradle.kts"]:
+                    if build_file.exists():
+                        try:
+                            content = build_file.read_text(encoding='utf-8', errors='ignore').lower()
+                            if "com.h2database" not in content and db_detected:
+                                self._inject_h2_dependency(build_file, repo_name, run_dir)
+                            
+                            if build_file.name == "pom.xml":
+                                self._inject_spring_boot_plugin(build_file, repo_name, run_dir)
+                        except Exception:
+                            pass
+                        break
+
+                self._prepare_h2_runtime_overlay(repo_name, run_dir, port, db_detected, env)
+        except Exception as e:
+            self.add_log(repo_name, f"[DB Config Warning] Could not inject H2 profile: {e}")
+
         # Configure run command based on project type
         run_cmd = ""
         if project_type == "Spring Boot / Maven" or project_type == "Spring Boot / Thymeleaf" or project_type == "Spring Boot / JSP":
@@ -262,8 +766,38 @@ class ProjectRunnerService:
             if wrapper.exists() and wrapper_jar.exists():
                 mvn_cmd = str(wrapper)
             
-            # Run with server port argument
-            run_cmd = f'"{mvn_cmd}" spring-boot:run -Dspring-boot.run.arguments=--server.port={port}'
+            # Determine if this is a true Spring Boot project (has spring-boot-starter-parent)
+            # If not, spring-boot:run will fail even with plugin injection -> use exec:java instead
+            pom_content = ""
+            pom_file = run_dir / "pom.xml"
+            if pom_file.exists():
+                try:
+                    pom_content = pom_file.read_text(encoding="utf-8", errors="ignore")
+                except Exception:
+                    pass
+            
+            has_boot_parent = "spring-boot-starter-parent" in pom_content
+            has_boot_plugin = "spring-boot-maven-plugin" in pom_content.lower()
+            
+            if has_boot_parent or has_boot_plugin:
+                # Genuine Spring Boot project - use spring-boot:run
+                run_cmd = f'"{mvn_cmd}" spring-boot:run -Dspring-boot.run.profiles=migration'
+            else:
+                # Not a Spring Boot parent project - find main class and use exec:java
+                self.add_log(repo_name, "[Run Strategy] No spring-boot-starter-parent found. Using exec:java strategy.")
+                main_class = self._find_main_class_name(run_dir)
+                if main_class:
+                    self.add_log(repo_name, f"[Run Strategy] Detected main class: {main_class}")
+                    run_cmd = (
+                        f'"{mvn_cmd}" compile exec:java '
+                        f'-Dexec.mainClass="{main_class}" '
+                        f'-Dexec.args="--server.port={port} --spring.profiles.active=migration" '
+                        f'-DskipTests=true'
+                    )
+                else:
+                    # Last resort: try spring-boot:run anyway (plugin was injected)
+                    self.add_log(repo_name, "[Run Strategy] Could not detect main class. Attempting spring-boot:run anyway.")
+                    run_cmd = f'"{mvn_cmd}" spring-boot:run -Dspring-boot.run.profiles=migration'
 
         elif project_type == "Spring Boot / Gradle":
             gradle_cmd = "gradlew.bat" if is_windows else "./gradlew"
@@ -273,7 +807,8 @@ class ProjectRunnerService:
             else:
                 gradle_cmd = str(wrapper)
             
-            run_cmd = f"{gradle_cmd} bootRun --args='--server.port={port}'"
+            # Use args for Gradle profile activation
+            run_cmd = f'{gradle_cmd} bootRun --args="--spring.profiles.active=migration"'
 
         elif project_type == "React / Vite":
             # Vite handles port through double dash or port argument
@@ -306,9 +841,6 @@ class ProjectRunnerService:
             )
             self.runs[repo_name]["process"] = process
 
-            # Monitor the port in the background
-            port_task = asyncio.create_task(self.monitor_port(repo_name, port))
-
             # Stream logs line by line
             async def stream_logs():
                 async for line in process.stdout:
@@ -316,46 +848,69 @@ class ProjectRunnerService:
             
             log_task = asyncio.create_task(stream_logs())
 
-            # Wait for either port to activate or process to end
-            while not port_task.done() and not log_task.done():
-                await asyncio.sleep(0.5)
+            if preview_mode == "cli":
+                await process.wait()
+                await log_task
 
-            if port_task.done() and port_task.result():
-                # Server is up and running!
-                self.runs[repo_name]["status"] = "RUNNING"
-                
-                # Expose the preview through the backend proxy route so the iframe
-                # always loads through the Migration Accelerator host.
-                preview_url = f"/api/run/preview/{repo_name}"
-                self.runs[repo_name]["preview_url"] = preview_url
-                self.add_log(repo_name, f"\n>>> SERVER IS LIVE AND RUNNING AT: {preview_url} (Proxied) <<<")
-
-                # If Spring Boot, parse available RestController endpoints
-                if "Spring Boot" in project_type:
-                    endpoints = self.extract_java_endpoints(run_dir)
-                    self.runs[repo_name]["endpoints"] = endpoints
-                    self.add_log(repo_name, f"Parsed {len(endpoints)} Java REST Endpoint mappings.")
-            else:
-                # Process exited or port connection timed out
-                if not port_task.done():
-                    port_task.cancel()
-                
-                if process.returncode is not None:
-                    self.runs[repo_name]["status"] = "FAILED"
-                    self.runs[repo_name]["error_reason"] = f"Application server exited unexpectedly with return code {process.returncode}."
-                    self.add_log(repo_name, f"\nError: Process terminated with exit code {process.returncode}")
+                if process.returncode == 0:
+                    self.runs[repo_name]["status"] = "STOPPED"
+                    self.runs[repo_name]["error_reason"] = None
+                    self.runs[repo_name]["preview_url"] = None
+                    self.add_log(repo_name, "\n>>> Non-web CLI application completed successfully. <<<")
                 else:
                     self.runs[repo_name]["status"] = "FAILED"
-                    self.runs[repo_name]["error_reason"] = "Server port activation timeout (60 seconds). Server failed to start."
-                    self.add_log(repo_name, "\nError: Server port activation timeout reached.")
+                    self.runs[repo_name]["error_reason"] = f"CLI application exited with return code {process.returncode}."
+                    self.add_log(repo_name, f"\nError: Process terminated with exit code {process.returncode}")
+            else:
+                # Preserve the existing port-waiting behavior when detection is web or uncertain.
+                port_task = asyncio.create_task(self.monitor_port(repo_name, port))
 
-            # Keep reading logs until EOF in background if it's running
-            await log_task
+                # Wait for either port to activate or process to end
+                while not port_task.done() and not log_task.done():
+                    await asyncio.sleep(0.5)
+
+                if port_task.done() and port_task.result():
+                    # Server is up and running!
+                    self.runs[repo_name]["status"] = "RUNNING"
+                    
+                    # Expose the preview through the backend proxy route so the iframe
+                    # always loads through the Migration Accelerator host.
+                    if preferred_preview_path and preferred_preview_path != "/":
+                        preview_url = f"/api/run/preview/{repo_name}/{preferred_preview_path.lstrip('/')}"
+                    else:
+                        preview_url = f"/api/run/preview/{repo_name}"
+                    self.runs[repo_name]["preview_url"] = preview_url
+                    self.add_log(repo_name, f"\n>>> SERVER IS LIVE AND RUNNING AT: {preview_url} (Proxied) <<<")
+
+                    # If Spring Boot, parse available RestController endpoints
+                    if "Spring Boot" in project_type:
+                        endpoints = self.extract_java_endpoints(run_dir)
+                        self.runs[repo_name]["endpoints"] = endpoints
+                        self.add_log(repo_name, f"Parsed {len(endpoints)} Java REST Endpoint mappings.")
+                else:
+                    # Process exited or port connection timed out
+                    if not port_task.done():
+                        port_task.cancel()
+                    
+                    if process.returncode is not None:
+                        self.runs[repo_name]["status"] = "FAILED"
+                        self.runs[repo_name]["error_reason"] = f"Application server exited unexpectedly with return code {process.returncode}."
+                        self.add_log(repo_name, f"\nError: Process terminated with exit code {process.returncode}")
+                    else:
+                        self.runs[repo_name]["status"] = "FAILED"
+                        self.runs[repo_name]["error_reason"] = "Server port activation timeout (60 seconds). Server failed to start."
+                        self.add_log(repo_name, "\nError: Server port activation timeout reached.")
+
+                # Keep reading logs until EOF in background if it's running
+                await log_task
 
         except Exception as e:
             self.runs[repo_name]["status"] = "FAILED"
             self.runs[repo_name]["error_reason"] = f"Execution error: {str(e)}"
             self.add_log(repo_name, f"\nExecution exception occurred: {str(e)}")
+        finally:
+            if self.runs.get(repo_name, {}).get("status") == "FAILED":
+                self._restore_runtime_overrides(repo_name)
             
     async def stop_project(self, repo_name: str):
         """Kills the active project run and frees the ports."""
@@ -398,6 +953,7 @@ class ProjectRunnerService:
             except Exception as e:
                 self.add_log(repo_name, f"Error terminating proxy process tree: {str(e)}")
 
+        self._restore_runtime_overrides(repo_name)
         run["status"] = "STOPPED"
         run["process"] = None
         run["proxy_process"] = None

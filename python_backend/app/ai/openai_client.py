@@ -1,12 +1,8 @@
 import os
-import time
 from openai import OpenAI
-from openai import RateLimitError
+from app.ai.base_provider import IAIProvider
 
-class TokenExhaustedError(Exception):
-    pass
-
-class OpenAIClient:
+class OpenAIClient(IAIProvider):
     def __init__(self):
         self.model_name = os.getenv("OPENAI_MODEL_NAME", "gpt-4-turbo")
     
@@ -25,23 +21,9 @@ class OpenAIClient:
             messages.append({"role": "system", "content": system_instruction})
         messages.append({"role": "user", "content": prompt})
         
-        max_retries = 3
-        delay = 20
-        
-        for attempt in range(1, max_retries + 1):
-            try:
-                response = client.chat.completions.create(
-                    model=active_model,
-                    messages=messages,
-                    temperature=0.2
-                )
-                return response.choices[0].message.content
-            except RateLimitError as e:
-                if attempt == max_retries:
-                    raise TokenExhaustedError(f"OpenAI limits exhausted after {max_retries} attempts: {str(e)}")
-                time.sleep(delay)
-                delay *= 2
-            except Exception as e:
-                raise e
-        
-        raise RuntimeError("Unexpected exit from retry loop")
+        response = client.chat.completions.create(
+            model=active_model,
+            messages=messages,
+            temperature=0.2
+        )
+        return response.choices[0].message.content

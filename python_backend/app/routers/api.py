@@ -47,7 +47,7 @@ def attach_preview_url(status: dict, request: Request, repo_name: str) -> dict:
             payload["previewUrl"] = f"{get_backend_origin(request)}{preview_url}"
         return payload
 
-    if payload.get("status") in {"STARTING", "RUNNING"}:
+    if payload.get("status") in {"STARTING", "RUNNING", "SUCCESS", "RUNNING_JAVA"}:
         # Generate preview URL using the API proxy instead of direct localhost
         payload["previewUrl"] = get_absolute_preview_url(request, repo_name)
     return payload

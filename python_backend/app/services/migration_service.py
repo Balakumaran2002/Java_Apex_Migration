@@ -5,6 +5,7 @@ from pathlib import Path
 from git import Repo
 from app.config import app_config
 from app.models import MigrationResponse
+from app.services.java_runtime_service import java_runtime_service
 
 class MigrationService:
     def migrate_repository(self, repo_url: str, target_version: str, api_key: str, model_name: str) -> MigrationResponse:
@@ -94,8 +95,16 @@ class MigrationService:
             content = pom.read_text(encoding='utf-8', errors='ignore')
             if "http://repo.spring.io" in content:
                 content = content.replace("http://repo.spring.io", "https://repo.spring.io")
+            
+            # Remove plugins that cause build failures post-migration
             if "wro4j-maven-plugin" in content:
                 content = re.sub(r'(?s)<plugin>\s*<groupId>ro\.isdc\.wro4j</groupId>.*?</plugin>', '', content)
+            if "spring-javaformat-maven-plugin" in content:
+                content = re.sub(r'(?s)<plugin>\s*<groupId>io\.spring\.javaformat</groupId>.*?</plugin>', '', content)
+            if "maven-checkstyle-plugin" in content:
+                content = re.sub(r'(?s)<plugin>\s*<groupId>org\.apache\.maven\.plugins</groupId>\s*<artifactId>maven-checkstyle-plugin</artifactId>.*?</plugin>', '', content)
+            if "spotless-maven-plugin" in content:
+                content = re.sub(r'(?s)<plugin>\s*<groupId>com\.diffplug\.spotless</groupId>.*?</plugin>', '', content)
             
             # Bump Lombok to 1.18.46 (minimum for JDK 21/25 compatibility)
             # Catches both <lombok.version>x.x.x</lombok.version> and inline <version>x.x.x</version> with lombok comment
@@ -107,6 +116,33 @@ class MigrationService:
                 r'\g<1>1.18.46\g<3>',
                 content
             )
+            
+            # If lombok is a dependency but lombok.version property is missing, inject it
+            if "org.projectlombok" in content and "<lombok.version>" not in content:
+                content = content.replace("<properties>", "<properties>\n\t\t<lombok.version>1.18.46</lombok.version>")
+                
+            # If lombok is a dependency but maven-compiler-plugin doesn't have annotationProcessorPaths, inject it
+            if "org.projectlombok" in content and "annotationProcessorPaths" not in content:
+                plugin_config = """
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <release>${java.version}</release>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+"""
+                if "<plugins>" in content:
+                    content = content.replace("<plugins>", f"<plugins>{plugin_config}", 1)
+                elif "<build>" in content:
+                    content = content.replace("<build>", f"<build>\n\t\t<plugins>{plugin_config}\t\t</plugins>", 1)
 
             # Force upgrade Java compiler properties to the target version
             content = re.sub(r'<java\.version>.*?</java\.version>', f'<java.version>{target_version}</java.version>', content)
@@ -121,7 +157,7 @@ class MigrationService:
             pom.write_text(content, encoding='utf-8')
 
             has_spring_boot = "spring-boot" in content
-            has_javax = "javax" in content
+            has_javax = True # Always run Jakarta migration for Java 17+ as javax imports might only exist in source files
             has_hibernate = "hibernate" in content
             has_junit = "junit" in content
             
@@ -180,7 +216,7 @@ class MigrationService:
         if build_gradle.exists():
             content = build_gradle.read_text(encoding='utf-8', errors='ignore')
             has_spring_boot = "spring-boot" in content
-            has_javax = "javax" in content
+            has_javax = True # Always run Jakarta migration for Java 17+
             has_hibernate = "hibernate" in content
             has_junit = "junit" in content
 
@@ -217,12 +253,9 @@ class MigrationService:
         return overall_success
 
     def execute_process(self, command: list, project_dir: Path, output_log: list) -> bool:
-        env = os.environ.copy()
-        if not env.get("JAVA_HOME") and os.name == 'nt':
-            java21 = Path("C:/Program Files/Java/jdk-21")
-            if java21.exists():
-                env["JAVA_HOME"] = str(java21)
-                env["PATH"] = f"{java21}\\bin;{env.get('PATH', '')}"
+        env, java_home = java_runtime_service.prepare_env()
+        if java_home:
+            output_log.append(f"[Java Runtime] Using preferred JDK 21 at: {java_home}")
 
         try:
             process = subprocess.Popen(

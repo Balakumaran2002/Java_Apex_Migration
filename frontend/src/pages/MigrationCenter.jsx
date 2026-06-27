@@ -78,7 +78,7 @@ export default function MigrationCenter({
     try {
       const parsed = new URL(previewUrl, window.location.origin);
       if (parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1') {
-        return repoName ? `/api/run/preview/${repoName}` : parsed.pathname;
+        return parsed.pathname + parsed.search + parsed.hash;
       }
     } catch (e) {
       if (previewUrl.startsWith('/')) {

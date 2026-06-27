@@ -110,4 +110,48 @@ export const getProjectLogs = async (repoName) => {
   return response.data;
 };
 
+// --- API Key Management Endpoints ---
+
+export const getActiveProvider = async () => {
+  const response = await apiClient.get('/keys/active-provider');
+  return response.data;
+};
+
+export const setActiveProvider = async (provider) => {
+  const response = await apiClient.put('/keys/active-provider', { provider });
+  return response.data;
+};
+
+export const getApiKeys = async (provider) => {
+  const response = await apiClient.get(`/keys/${provider}`);
+  return response.data;
+};
+
+export const addApiKey = async (provider, name, key, is_default = false) => {
+  const response = await apiClient.post(`/keys/${provider}`, { name, key, is_default });
+  return response.data;
+};
+
+export const editApiKey = async (provider, keyId, name, key = null) => {
+  const payload = { name };
+  if (key) payload.key = key;
+  const response = await apiClient.put(`/keys/${provider}/${keyId}`, payload);
+  return response.data;
+};
+
+export const deleteApiKey = async (provider, keyId) => {
+  const response = await apiClient.delete(`/keys/${provider}/${keyId}`);
+  return response.data;
+};
+
+export const toggleApiKeyStatus = async (provider, keyId, is_active) => {
+  const response = await apiClient.patch(`/keys/${provider}/${keyId}/status`, { is_active });
+  return response.data;
+};
+
+export const setDefaultApiKey = async (provider, keyId) => {
+  const response = await apiClient.patch(`/keys/${provider}/${keyId}/default`);
+  return response.data;
+};
+
 export default apiClient;

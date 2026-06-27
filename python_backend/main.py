@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import api
+from app.routers import api_keys
 
 app = FastAPI(title="Assistant API")
 
@@ -13,6 +14,7 @@ app.add_middleware(
 )
 
 app.include_router(api.router, prefix="/api")
+app.include_router(api_keys.router)
 
 if __name__ == "__main__":
     import uvicorn

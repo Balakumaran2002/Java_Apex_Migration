@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   LayoutDashboard, GitBranch, RefreshCw, Terminal, FileText, 
-  Settings, Sun, Moon, Sparkles, ChevronRight, Cpu, LogOut, Menu, X, Folder
+  Settings, Sun, Moon, Sparkles, ChevronRight, Cpu, LogOut, Menu, X, Folder, Key
 } from 'lucide-react';
 
 // Import Pages
@@ -12,6 +12,7 @@ import CodeConversionCenter from './pages/CodeConversionCenter';
 import RepositoryExplorer from './pages/RepositoryExplorer';
 import MigrationReport from './pages/MigrationReport';
 import ConversionReport from './pages/ConversionReport';
+import ApiKeyManagement from './pages/ApiKeyManagement';
 import ChatbotWidget from './components/ChatbotWidget';
 
 export default function App() {
@@ -199,12 +200,15 @@ export default function App() {
     { id: 'conversion', label: 'Code Conversion', icon: <Terminal size={18} /> },
     { id: 'migrationReport', label: 'Migration Report', icon: <FileText size={18} /> },
     { id: 'conversionReport', label: 'Conversion Report', icon: <FileText size={18} /> },
+    { id: 'apikeys', label: 'API Keys', icon: <Key size={18} /> },
   ];
 
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
         return <Dashboard setActiveTab={setActiveTab} />;
+      case 'apikeys':
+        return <ApiKeyManagement />;
       case 'analysis':
         return (
           <RepositoryAnalysis
