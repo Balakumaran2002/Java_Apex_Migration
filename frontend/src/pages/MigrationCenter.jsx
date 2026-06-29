@@ -65,6 +65,8 @@ export default function MigrationCenter({
   const [runnerPreviewUrl, setRunnerPreviewUrl] = useState(null);
   const [runnerEndpoints, setRunnerEndpoints] = useState([]);
   const [runnerErrorReason, setRunnerErrorReason] = useState(null);
+  const [runnerNoUiMessage, setRunnerNoUiMessage] = useState(null);
+  const [runnerSwaggerUrl, setRunnerSwaggerUrl] = useState(null);
   const [iframeKey, setIframeKey] = useState(0);
   const [runnerLogs, setRunnerLogs] = useState('');
   const [runnerLoading, setRunnerLoading] = useState(false);
@@ -124,8 +126,13 @@ export default function MigrationCenter({
         setRunnerPreviewUrl(data.previewUrl);
         setRunnerEndpoints(data.endpoints || []);
         setRunnerErrorReason(data.errorReason);
+        setRunnerNoUiMessage(data.noUiMessage || null);
+        setRunnerSwaggerUrl(data.swaggerUrl || null);
         
         if (data.status === 'RUNNING') {
+          setActivePreviewTab('preview');
+        }
+        if (data.status === 'RUNNING_API') {
           setActivePreviewTab('preview');
         }
         
@@ -153,11 +160,13 @@ export default function MigrationCenter({
           setRunnerPreviewUrl(data.previewUrl);
           setRunnerEndpoints(data.endpoints || []);
           setRunnerErrorReason(data.errorReason);
+          setRunnerNoUiMessage(data.noUiMessage || null);
+          setRunnerSwaggerUrl(data.swaggerUrl || null);
           
           if (data.status === 'STARTING') {
             setupLogsWebSocket();
             cleanupPoll = startRunnerPolling();
-          } else if (data.status === 'RUNNING') {
+          } else if (data.status === 'RUNNING' || data.status === 'RUNNING_API') {
             setupLogsWebSocket();
             setActivePreviewTab('preview');
           }
@@ -329,10 +338,10 @@ export default function MigrationCenter({
       <div className="p-6 glass-card">
         <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-2">
           <RefreshCw className="text-brand-500 animate-spin-slow" size={22} />
-          Automated Java Migration Center
+          Universal Polyglot Migration Center
         </h2>
         <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
-          Upgrades class files, deprecations, compilation release levels, and library definitions using OpenRewrite.
+          Upgrades code logic, fixes build/runtime errors, resolves deprecations, and automatically heals dependencies across Java, Node, Python, .NET, and Rust.
         </p>
 
         {repoUrl ? (
@@ -519,11 +528,11 @@ export default function MigrationCenter({
                 )}
               </h3>
               <div className={`p-4 rounded-xl flex items-center gap-3 border ${
-                result.buildStatus === 'Build Success'
+                result.buildStatus?.includes('Success')
                   ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-400'
                   : 'bg-rose-500/10 border-rose-500/20 text-rose-700 dark:text-rose-400'
               }`}>
-                {result.buildStatus === 'Build Success' ? <CheckCircle size={20} /> : <ShieldAlert size={20} />}
+                {result.buildStatus?.includes('Success') ? <CheckCircle size={20} /> : <ShieldAlert size={20} />}
                 <div className="text-sm font-bold">{result.buildStatus}</div>
               </div>
 
@@ -599,7 +608,7 @@ export default function MigrationCenter({
         </div>
         
         {/* Project Execution Console */}
-        {result.buildStatus === 'Build Success' && (
+        {result.buildStatus?.includes('Success') && (
           <div className="mt-8 p-6 glass-card animate-fadeIn border border-indigo-500/10 shadow-lg">
             {/* Header section with controls */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200/50 dark:border-dark-800/50 pb-6 mb-6">
@@ -634,6 +643,11 @@ export default function MigrationCenter({
                   {runnerStatus === 'RUNNING' && (
                     <span className="px-2.5 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold rounded-lg border border-emerald-500/20 flex items-center gap-1.5 shadow-[0_0_12px_rgba(16,185,129,0.15)]">
                       <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" /> RUNNING
+                    </span>
+                  )}
+                  {runnerStatus === 'RUNNING_JAVA' && (
+                    <span className="px-2.5 py-1 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-bold rounded-lg border border-indigo-500/20 flex items-center gap-1.5 shadow-[0_0_12px_rgba(99,102,241,0.15)]">
+                      <span className="w-2 h-2 rounded-full bg-indigo-500 animate-ping" /> REST API LIVE
                     </span>
                   )}
                   {runnerStatus === 'FAILED' && (
@@ -753,6 +767,98 @@ export default function MigrationCenter({
                           </ul>
                         </div>
                       </div>
+                    </div>
+                  ) : runnerStatus === 'RUNNING_JAVA' ? (
+                    /* No-Browser-UI Panel for REST-only / CLI apps */
+                    <div className="p-6 h-full overflow-auto">
+                      <div className="p-5 rounded-xl bg-indigo-500/10 border border-indigo-500/20 mb-4">
+                        <div className="flex items-center gap-3 mb-3">
+                          <Server size={22} className="text-indigo-500" />
+                          <div>
+                            <h4 className="font-bold text-slate-800 dark:text-slate-100 text-sm">REST API Running — No Browser UI</h4>
+                            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                              This project does not have a web interface. It is a backend REST API application.
+                            </p>
+                          </div>
+                        </div>
+                        {runnerNoUiMessage && (
+                          <p className="text-xs text-indigo-700 dark:text-indigo-300 bg-indigo-500/5 rounded-lg px-3 py-2 leading-relaxed">
+                            {runnerNoUiMessage}
+                          </p>
+                        )}
+                      </div>
+
+                      {runnerSwaggerUrl && (
+                        <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 mb-4 flex items-center justify-between">
+                          <div>
+                            <p className="text-xs font-bold text-emerald-700 dark:text-emerald-400 mb-1">Swagger / OpenAPI UI Detected</p>
+                            <p className="font-mono text-xs text-emerald-600 dark:text-emerald-300">{runnerSwaggerUrl}</p>
+                          </div>
+                          <a
+                            href={runnerSwaggerUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="flex items-center gap-1.5 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl text-xs transition-all shadow-sm"
+                          >
+                            <ExternalLink size={12} /> Open
+                          </a>
+                        </div>
+                      )}
+
+                      {runnerEndpoints && runnerEndpoints.length > 0 && (
+                        <div>
+                          <div className="flex items-center justify-between mb-3">
+                            <p className="text-xs font-bold text-slate-700 dark:text-slate-300">Detected API Endpoints ({runnerEndpoints.length})</p>
+                            <div className="relative">
+                              <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                              <input
+                                type="text"
+                                placeholder="Filter routes..."
+                                value={endpointSearch}
+                                onChange={(e) => setEndpointSearch(e.target.value)}
+                                className="text-xs pl-7 pr-3 py-1.5 bg-slate-50 dark:bg-dark-900 border border-slate-200 dark:border-dark-800 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                              />
+                            </div>
+                          </div>
+                          <div className="overflow-auto max-h-64 border border-slate-100 dark:border-dark-900 rounded-xl bg-slate-50/50 dark:bg-dark-950/20">
+                            <table className="w-full text-xs text-left">
+                              <thead>
+                                <tr className="border-b border-slate-200/50 dark:border-dark-900/50 bg-slate-100/40 dark:bg-dark-900/40 font-bold text-slate-500 sticky top-0">
+                                  <th className="p-3 w-20">Method</th>
+                                  <th className="p-3">Route</th>
+                                  <th className="p-3 w-24 text-center">Copy</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {runnerEndpoints
+                                  .filter(ep => ep.path.toLowerCase().includes(endpointSearch.toLowerCase()))
+                                  .map((ep, idx) => (
+                                    <tr key={idx} className="border-b border-slate-100 dark:border-dark-900/30 hover:bg-slate-100/20 dark:hover:bg-dark-900/20">
+                                      <td className="p-3">
+                                        <span className={`px-2 py-0.5 rounded text-[10px] font-extrabold ${
+                                          ep.method === 'GET' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' :
+                                          ep.method === 'POST' ? 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400' :
+                                          ep.method === 'PUT' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400' :
+                                          ep.method === 'DELETE' ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400' :
+                                          'bg-slate-500/10 text-slate-600 dark:text-slate-400'
+                                        }`}>{ep.method}</span>
+                                      </td>
+                                      <td className="p-3 font-mono font-bold text-slate-700 dark:text-slate-300">{ep.path}</td>
+                                      <td className="p-3 text-center">
+                                        <button
+                                          onClick={() => copyToClipboard(`http://localhost:${runnerPort}${ep.path}`)}
+                                          className="text-slate-400 hover:text-indigo-500 p-1 bg-slate-100 dark:bg-dark-900 rounded border border-slate-200/50 dark:border-dark-800 transition-colors"
+                                        >
+                                          {copiedPath === `http://localhost:${runnerPort}${ep.path}` ? <Check size={12} className="text-emerald-500" /> : <Copy size={12} />}
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ) : runnerStatus === 'STARTING' ? (
                     <div className="flex items-center justify-center h-full flex-col text-slate-400 gap-4">

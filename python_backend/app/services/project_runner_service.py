@@ -110,10 +110,19 @@ class ProjectRunnerService:
             except Exception:
                 return "Spring Boot / Gradle"
 
+        if (run_dir / "requirements.txt").exists() or (run_dir / "pyproject.toml").exists():
+            return "Python"
+        
+        if list(run_dir.glob("*.csproj")):
+            return ".NET"
+            
+        if (run_dir / "Cargo.toml").exists():
+            return "Rust"
+
         return "Unknown"
 
     def detect_java_preview_mode(self, run_dir: Path, project_type: str) -> str:
-        """Classify Java/Spring Boot apps as web, cli, or unknown."""
+        """Classify Java/Spring Boot apps as web, cli, rest-api, or unknown."""
         if not project_type.startswith("Spring Boot"):
             return "unknown"
 
@@ -124,7 +133,26 @@ class ProjectRunnerService:
         build_lower = build_content.lower()
 
         if any(marker in build_lower for marker in self.WEB_DEPENDENCY_MARKERS):
-            return "web"
+            # Check for Thymeleaf/JSP even in Maven build file
+            if "thymeleaf" in build_lower:
+                return "web"
+            if "tomcat-embed-jasper" in build_lower or "jstl" in build_lower:
+                return "web"
+            # Has web dependency — check if it also has MVC controllers (HTML UI)
+            # vs pure REST (no HTML templates)
+            has_templates = (
+                (run_dir / "src" / "main" / "resources" / "templates").exists()
+                or (run_dir / "src" / "main" / "webapp").exists()
+                or (run_dir / "src" / "main" / "resources" / "static" / "index.html").exists()
+            )
+            if has_templates:
+                return "web"
+            # Check Java sources for @Controller (MVC) vs @RestController
+            source_markers = self.scan_java_source_markers(run_dir)
+            if source_markers.get("mvc_controller"):
+                return "web"
+            return "rest-api"
+
         if "<packaging>war</packaging>" in build_lower:
             return "web"
         if re.search(r'(^|\s)id\s*[("\']war[)"\']', build_lower) or "apply plugin: 'war'" in build_lower or 'apply plugin: "war"' in build_lower:
@@ -154,6 +182,7 @@ class ProjectRunnerService:
     def scan_java_source_markers(self, run_dir: Path) -> Dict[str, bool]:
         markers = {
             "web": False,
+            "mvc_controller": False,  # @Controller (HTML MVC) specifically
             "cli_runner": False,
             "main": False,
         }
@@ -171,6 +200,9 @@ class ProjectRunnerService:
             scanned += 1
             if any(marker in content for marker in self.WEB_SOURCE_MARKERS):
                 markers["web"] = True
+            # Detect @Controller without @RestController for MVC UI detection
+            if "@controller" in content and "@restcontroller" not in content:
+                markers["mvc_controller"] = True
             if any(marker in content for marker in self.CLI_SOURCE_MARKERS):
                 markers["cli_runner"] = True
             if "static void main(" in content or "fun main(" in content:
@@ -194,6 +226,15 @@ class ProjectRunnerService:
                 except socket.error:
                     port += 1
         return 8080
+
+    def detect_swagger_url(self, run_dir: Path, port: int) -> Optional[str]:
+        """Check if the project has Swagger/OpenAPI and return the likely URL."""
+        build_content = self._read_build_content(run_dir).lower()
+        if "springdoc-openapi" in build_content:
+            return f"http://127.0.0.1:{port}/swagger-ui.html"
+        if "springfox" in build_content or "swagger" in build_content:
+            return f"http://127.0.0.1:{port}/swagger-ui/index.html"
+        return None
 
     def extract_java_endpoints(self, run_dir: Path) -> List[Dict[str, str]]:
         """Parses Java controller files to discover REST endpoints (HTTP Method, Route Path, Controller Name)."""
@@ -678,7 +719,16 @@ class ProjectRunnerService:
         self.add_log(repo_name, f"WorkingDirectory: {run_dir}\n")
 
         is_windows = os.name == 'nt'
-        env, java_home = java_runtime_service.prepare_env()
+        env, java_home = java_runtime_service.prepare_env(project_dir=run_dir)
+        
+        # Polyglot Auto-Environment Injection
+        env_file = run_dir / ".env"
+        env_example = run_dir / ".env.example"
+        if env_example.exists() and not env_file.exists():
+            import shutil
+            shutil.copy2(env_example, env_file)
+            self.add_log(repo_name, f"[Env Config] Auto-copied .env.example to .env to prevent missing variable crashes.")
+        
         preview_mode = self.detect_java_preview_mode(run_dir, project_type)
         preferred_preview_path = self.detect_preferred_preview_path(run_dir, project_type)
         self.runs[repo_name]["preview_mode"] = preview_mode
@@ -689,7 +739,7 @@ class ProjectRunnerService:
             if preferred_preview_path:
                 self.add_log(repo_name, f"Detected Initial Preview Path: {preferred_preview_path}")
             if java_home:
-                self.add_log(repo_name, f"[Java Runtime] Using preferred JDK 21 at: {java_home}")
+                self.add_log(repo_name, f"[Java Runtime] Using selected JDK at: {java_home}")
 
         # 1. Install dependencies if needed
         is_node_project = "React" in project_type or "Angular" in project_type or "Node" in project_type
@@ -820,6 +870,23 @@ class ProjectRunnerService:
         elif project_type == "Node.js frontend":
             env["PORT"] = str(port)
             run_cmd = "npm start"
+            
+        elif project_type == "Python":
+            env["PORT"] = str(port)
+            if (run_dir / "main.py").exists():
+                run_cmd = f"python main.py"
+            elif (run_dir / "app.py").exists():
+                run_cmd = f"python app.py"
+            else:
+                run_cmd = "uvicorn main:app --port " + str(port)
+                
+        elif project_type == ".NET":
+            env["ASPNETCORE_URLS"] = f"http://localhost:{port}"
+            run_cmd = "dotnet run"
+            
+        elif project_type == "Rust":
+            env["PORT"] = str(port)
+            run_cmd = "cargo run"
 
         else:
             # Catch all fallback
@@ -827,6 +894,7 @@ class ProjectRunnerService:
             self.runs[repo_name]["error_reason"] = f"Unsupported or unknown project type '{project_type}'."
             self.add_log(repo_name, f"Error: Cannot determine run scripts for type '{project_type}'.")
             return
+
 
         self.add_log(repo_name, f"Executing: {run_cmd}\n")
 
@@ -861,6 +929,36 @@ class ProjectRunnerService:
                     self.runs[repo_name]["status"] = "FAILED"
                     self.runs[repo_name]["error_reason"] = f"CLI application exited with return code {process.returncode}."
                     self.add_log(repo_name, f"\nError: Process terminated with exit code {process.returncode}")
+
+            elif preview_mode == "rest-api":
+                # REST-only app: wait for port, then mark RUNNING_JAVA (no iframe preview)
+                port_task = asyncio.create_task(self.monitor_port(repo_name, port))
+                while not port_task.done() and not log_task.done():
+                    await asyncio.sleep(0.5)
+
+                if port_task.done() and port_task.result():
+                    self.runs[repo_name]["status"] = "RUNNING_API"
+                    swagger_url = self.detect_swagger_url(run_dir, port)
+                    self.runs[repo_name]["swagger_url"] = swagger_url
+                    endpoints = self.extract_java_endpoints(run_dir)
+                    self.runs[repo_name]["endpoints"] = endpoints
+                    self.runs[repo_name]["no_ui_message"] = (
+                        "This project does not contain a web user interface. "
+                        f"It is a REST API application running on port {port}. "
+                        f"Found {len(endpoints)} API endpoint(s)."
+                        + (f" Swagger UI available at: {swagger_url}" if swagger_url else "")
+                    )
+                    self.add_log(repo_name, f"\n>>> REST API is LIVE on port {port} (No HTML UI) <<<")
+                    if swagger_url:
+                        self.add_log(repo_name, f">>> Swagger UI: {swagger_url} <<<")
+                else:
+                    if not port_task.done():
+                        port_task.cancel()
+                    self.runs[repo_name]["status"] = "FAILED"
+                    self.runs[repo_name]["error_reason"] = "REST API server failed to start within 60 seconds."
+                    self.add_log(repo_name, "\nError: Server port activation timeout reached.")
+                await log_task
+
             else:
                 # Preserve the existing port-waiting behavior when detection is web or uncertain.
                 port_task = asyncio.create_task(self.monitor_port(repo_name, port))
@@ -976,7 +1074,9 @@ class ProjectRunnerService:
                 "projectType": None,
                 "previewUrl": None,
                 "endpoints": [],
-                "errorReason": None
+                "errorReason": None,
+                "noUiMessage": None,
+                "swaggerUrl": None,
             }
         return {
             "repoName": repo_name,
@@ -985,7 +1085,9 @@ class ProjectRunnerService:
             "projectType": run["type"],
             "previewUrl": run["preview_url"],
             "endpoints": run["endpoints"],
-            "errorReason": run["error_reason"]
+            "errorReason": run["error_reason"],
+            "noUiMessage": run.get("no_ui_message"),
+            "swaggerUrl": run.get("swagger_url"),
         }
 
     def get_logs(self, repo_name: str) -> str:

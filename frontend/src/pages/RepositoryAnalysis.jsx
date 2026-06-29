@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GitBranch, Play, CheckCircle, AlertTriangle, ShieldAlert, BookOpen, ArrowRight } from 'lucide-react';
+import { GitBranch, Play, CheckCircle, AlertTriangle, ShieldAlert, BookOpen, ArrowRight, Database, Package, Layers, Globe, Shield, Code, Server } from 'lucide-react';
 import { analyzeRepository } from '../api';
 
 export default function RepositoryAnalysis({ 
@@ -145,12 +145,12 @@ export default function RepositoryAnalysis({
       {result && (
         <div className="space-y-8 animate-fadeIn">
           {/* Validation Alert */}
-          {!result.isJava ? (
+          {result.projectType === 'Unknown' ? (
             <div className="p-5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-700 dark:text-amber-400 glass-card flex gap-3 items-start">
               <AlertTriangle size={24} className="flex-shrink-0" />
               <div>
                 <h4 className="font-bold text-sm">Migration Not Applicable</h4>
-                <p className="mt-1 text-xs leading-relaxed">{result.migrationRecommendation}</p>
+                <p className="mt-1 text-xs leading-relaxed">{result.migrationRecommendation || 'Unrecognized project type.'}</p>
               </div>
             </div>
           ) : (
@@ -163,19 +163,73 @@ export default function RepositoryAnalysis({
                     <tbody>
                       <tr className="border-b border-slate-100 dark:border-dark-800">
                         <td className="py-3 font-semibold text-slate-400">Language</td>
-                        <td className="py-3 font-bold text-slate-800 dark:text-slate-200">Java</td>
+                        <td className="py-3 font-bold text-slate-800 dark:text-slate-200">{result.projectType || 'Java'}</td>
                       </tr>
+                      {result.detectedJavaVersion && (
                       <tr className="border-b border-slate-100 dark:border-dark-800">
-                        <td className="py-3 font-semibold text-slate-400">Version</td>
+                        <td className="py-3 font-semibold text-slate-400">Java Version</td>
                         <td className="py-3 font-bold text-brand-600 dark:text-brand-400">Java {result.detectedJavaVersion}</td>
                       </tr>
+                      )}
                       <tr className="border-b border-slate-100 dark:border-dark-800">
-                        <td className="py-3 font-semibold text-slate-400">Spring Boot</td>
-                        <td className="py-3 font-bold text-slate-800 dark:text-slate-200">{result.frameworkVersions["Spring Boot"] || 'Not Detected'}</td>
+                        <td className="py-3 font-semibold text-slate-400">Build Tool / PM</td>
+                        <td className="py-3 font-bold text-slate-800 dark:text-slate-200">{result.buildTool || 'Not Detected'}</td>
+                      </tr>
+                      <tr className="border-b border-slate-100 dark:border-dark-800">
+                        <td className="py-3 font-semibold text-slate-400">Framework</td>
+                        <td className="py-3 font-bold text-slate-800 dark:text-slate-200">{result.frameworkType || (result.frameworkVersions && result.frameworkVersions["Spring Boot"] ? `Spring Boot ${result.frameworkVersions["Spring Boot"]}` : 'Not Detected')}</td>
+                      </tr>
+                      <tr className="border-b border-slate-100 dark:border-dark-800">
+                        <td className="py-3 font-semibold text-slate-400">Database</td>
+                        <td className="py-3 font-bold text-slate-800 dark:text-slate-200">{result.database || 'None'}</td>
+                      </tr>
+                      <tr className="border-b border-slate-100 dark:border-dark-800">
+                        <td className="py-3 font-semibold text-slate-400">Packaging</td>
+                        <td className="py-3 font-bold text-slate-800 dark:text-slate-200 uppercase">{result.packagingType || 'jar'}</td>
+                      </tr>
+                      <tr className="border-b border-slate-100 dark:border-dark-800">
+                        <td className="py-3 font-semibold text-slate-400">Multi-module</td>
+                        <td className={`py-3 font-bold ${result.isMultiModule ? 'text-amber-600 dark:text-amber-400' : 'text-slate-800 dark:text-slate-200'}`}>
+                          {result.isMultiModule ? 'Yes' : 'No'}
+                        </td>
+                      </tr>
+                      <tr className="border-b border-slate-100 dark:border-dark-800">
+                        <td className="py-3 font-semibold text-slate-400">Frontend</td>
+                        <td className="py-3 font-bold text-slate-800 dark:text-slate-200">{result.frontendFramework || (result.hasFrontend ? 'Detected' : 'None')}</td>
+                      </tr>
+                      <tr className="border-b border-slate-100 dark:border-dark-800">
+                        <td className="py-3 font-semibold text-slate-400">API Endpoints</td>
+                        <td className="py-3 font-bold text-indigo-600 dark:text-indigo-400">{result.endpointCount ?? 0} detected</td>
+                      </tr>
+                      <tr>
+                        <td className="py-3 font-semibold text-slate-400">Risk Level</td>
+                        <td className="py-3">
+                          <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold ${
+                            result.riskLevel === 'High' ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
+                            : result.riskLevel === 'Medium' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
+                            : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+                          }`}>{result.riskLevel || 'Low'}</span>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
+
+                {/* Deprecated APIs */}
+                {result.deprecatedApis && result.deprecatedApis.length > 0 && (
+                  <div className="p-6 glass-card border-l-4 border-amber-500">
+                    <h3 className="text-md font-bold text-amber-700 dark:text-amber-400 mb-3 flex items-center gap-2">
+                      <ShieldAlert size={16} /> Deprecated APIs Found
+                    </h3>
+                    <ul className="space-y-1.5">
+                      {result.deprecatedApis.map((api, idx) => (
+                        <li key={idx} className="text-[10px] text-amber-700 dark:text-amber-300 bg-amber-500/5 rounded-lg px-3 py-2 font-mono leading-relaxed">
+                          ⚠ {api}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
                 <div className="p-6 glass-card">
                   <h3 className="text-md font-bold text-slate-900 dark:text-white mb-4">Core Dependencies</h3>

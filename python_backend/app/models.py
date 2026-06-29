@@ -40,6 +40,16 @@ class AnalysisResponse(BaseModel):
     projectType: Optional[str] = None
     isJava: bool = True
     detectedJavaVersion: Optional[str] = None
+    buildTool: Optional[str] = None          # "Maven", "Gradle", "Gradle Kotlin DSL"
+    frameworkType: Optional[str] = None       # "Spring Boot", "Spring MVC", "JSP/Servlet", "Plain Java", etc.
+    database: Optional[str] = None            # "MySQL", "PostgreSQL", "H2", "MongoDB", "None"
+    packagingType: Optional[str] = None       # "jar", "war"
+    isMultiModule: bool = False
+    hasFrontend: bool = False
+    frontendFramework: Optional[str] = None   # "React", "Angular", "Vue", "Thymeleaf", "JSP"
+    endpointCount: int = 0
+    riskLevel: Optional[str] = None           # "Low", "Medium", "High"
+    deprecatedApis: List[str] = []
     dependencies: List[str] = []
     frameworkVersions: Dict[str, str] = {}
     migrationRecommendation: Optional[str] = None
@@ -93,9 +103,11 @@ class RunStartRequest(BaseModel):
 
 class RunStatusResponse(BaseModel):
     repoName: str
-    status: str  # "STARTING" | "RUNNING" | "FAILED" | "STOPPED" | "IDLE"
+    status: str  # "STARTING" | "RUNNING" | "RUNNING_JAVA" | "FAILED" | "STOPPED" | "IDLE"
     port: Optional[int] = None
     projectType: Optional[str] = None
     previewUrl: Optional[str] = None
     endpoints: List[Dict[str, str]] = []
     errorReason: Optional[str] = None
+    noUiMessage: Optional[str] = None        # Shown when project has no browser UI
+    swaggerUrl: Optional[str] = None          # Detected Swagger/OpenAPI URL
