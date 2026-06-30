@@ -132,16 +132,7 @@ class JavaCompatibilityService:
                     )
                     versions.append(boot_version)
 
-            rewrite_version = self._extract_openrewrite_java_target(pom_content)
-            if rewrite_version:
-                sources.append(
-                    {
-                        "source": "openrewrite",
-                        "value": str(rewrite_version),
-                        "version": rewrite_version,
-                        "reason": "OpenRewrite migration recipe target",
-                    }
-                )
+
 
         gradle_file_to_use = gradle_file if gradle_file.exists() else gradle_kts_file
         if gradle_file_to_use and gradle_file_to_use.exists():
@@ -164,16 +155,7 @@ class JavaCompatibilityService:
                     )
                     versions.append(boot_version)
 
-            rewrite_version = self._extract_openrewrite_java_target(gradle_content)
-            if rewrite_version:
-                sources.append(
-                    {
-                        "source": "openrewrite",
-                        "value": str(rewrite_version),
-                        "version": rewrite_version,
-                        "reason": "OpenRewrite migration recipe target",
-                    }
-                )
+
 
         for toolchains_file in self._candidate_toolchains_files(project_dir):
             if not toolchains_file.exists():
@@ -203,10 +185,7 @@ class JavaCompatibilityService:
         if preferred_version < minimum_version:
             preferred_version = minimum_version
 
-        # OpenRewrite target is a preference, not a hard minimum.
-        rewrite_targets = [item["version"] for item in sources if item["source"] == "openrewrite" and item.get("version")]
-        if rewrite_targets:
-            preferred_version = max(preferred_version, max(rewrite_targets))
+
 
         return {
             "minimum_version": minimum_version,
@@ -528,13 +507,7 @@ class JavaCompatibilityService:
             results.append({"source": source, "value": value, "version": version})
         return results
 
-    def _extract_openrewrite_java_target(self, content: str) -> Optional[int]:
-        match = re.search(r"UpgradeToJava(\d+)", content)
-        if match:
-            return int(match.group(1))
-        if "Java8toJava11" in content:
-            return 11
-        return None
+
 
     def _extract_spring_boot_version(self, pom_content: str) -> Optional[str]:
         patterns = [

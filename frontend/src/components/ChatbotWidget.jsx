@@ -8,11 +8,11 @@ export default function ChatbotWidget() {
     try {
       const saved = localStorage.getItem('chat_messages');
       return saved ? JSON.parse(saved) : [
-        { id: 1, sender: 'bot', text: 'Hello! I am your AI Migration Assistant. I can help with Java 17/21 upgrades, Spring Boot 3 configurations, OpenRewrite recipes, or code conversion questions. How can I assist you today?' }
+        { id: 1, sender: 'bot', text: 'Hello! I am your AI Migration Assistant. I can help with Java 17/21 upgrades, Spring Boot 3 configurations, LLM migrations, or code conversion questions. How can I assist you today?' }
       ];
     } catch (e) {
       return [
-        { id: 1, sender: 'bot', text: 'Hello! I am your AI Migration Assistant. I can help with Java 17/21 upgrades, Spring Boot 3 configurations, OpenRewrite recipes, or code conversion questions. How can I assist you today?' }
+        { id: 1, sender: 'bot', text: 'Hello! I am your AI Migration Assistant. I can help with Java 17/21 upgrades, Spring Boot 3 configurations, migration repairs, or code conversion questions. How can I assist you today?' }
       ];
     }
   });
@@ -71,7 +71,7 @@ export default function ChatbotWidget() {
 
   const clearChat = () => {
     const defaultMsg = [
-      { id: 1, sender: 'bot', text: 'Hello! I am your AI Migration Assistant. I can help with Java 17/21 upgrades, Spring Boot 3 configurations, OpenRewrite recipes, or code conversion questions. How can I assist you today?' }
+      { id: 1, sender: 'bot', text: 'Hello! I am your AI Migration Assistant. I can help with Java 17/21 upgrades, Spring Boot 3 configurations, LLM migrations, or code conversion questions. How can I assist you today?' }
     ];
     setMessages(defaultMsg);
     localStorage.setItem('chat_messages', JSON.stringify(defaultMsg));
@@ -130,7 +130,7 @@ export default function ChatbotWidget() {
   };
 
   const suggestions = [
-    "What OpenRewrite recipes are supported?",
+    "How does the LLM migration work?",
     "How do I migrate to Java 21?",
     "How to fix Spring Boot 3 namespace errors?",
     "Show Java-to-Python conversion details"

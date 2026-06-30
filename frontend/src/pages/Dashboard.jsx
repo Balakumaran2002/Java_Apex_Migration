@@ -103,7 +103,7 @@ export default function Dashboard({ setActiveTab }) {
               <RefreshCw size={24} />
             </div>
           </div>
-          <p className="mt-4 text-xs text-slate-400">OpenRewrite Java recipes executed successfully</p>
+          <p className="mt-4 text-xs text-slate-400">LLM migration logic executed successfully</p>
         </div>
 
         <div className="p-6 glass-card hover:scale-[1.02]">
@@ -133,7 +133,7 @@ export default function Dashboard({ setActiveTab }) {
               Modern Java Upgrades
             </h4>
             <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-              Automate migration paths from Java 8 or 11 up to Java 17 and Java 21. OpenRewrite recipes rewrite compiler settings, package names, deprecations, and Jakarta EE namespaces.
+              Automate migration paths from Java 8 or 11 up to Java 17 and Java 21. The LLM Engine rewrites compiler settings, package names, deprecations, and Jakarta EE namespaces.
             </p>
           </div>
 

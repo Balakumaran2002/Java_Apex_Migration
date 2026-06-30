@@ -1,0 +1,3617 @@
+{
+  "project": "shopizer",
+  "processed": {
+    "sm-core/pom.xml": {
+      "fingerprint": "10961cf3a388668d6e542c3f3f847551f767dece598ef86bdcda3759bcae0491",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.079364
+    },
+    "sm-core-model/pom.xml": {
+      "fingerprint": "5e131d2cb0776af158fb602d2eda66f60631bde7bd877d2b490fcf90eb93c6e1",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.1089706
+    },
+    "sm-core-modules/pom.xml": {
+      "fingerprint": "660162c440c05dec5972b70217408908357347bd5a4e9735334ef669e67a52c2",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.1335561
+    },
+    "sm-shop/pom.xml": {
+      "fingerprint": "84b77d02bc5dde2fdd0d81d9189cf06897d1222bac6993c68ac57454e538b7a6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.1816986
+    },
+    "sm-shop-model/pom.xml": {
+      "fingerprint": "5b00e4a93f5c361117173a3082428b43b612baa86008ddffc62c50fd162c056f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.160347
+    },
+    "sm-shop/src/main/resources/application.properties": {
+      "fingerprint": "91358153356d51a911e9f9b5252b834ee0c28e2e35b401018cd4b8e7531ffb91",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.257476
+    },
+    "sm-core/src/test/resources/application.properties": {
+      "fingerprint": "7bb228f62b42e6a226ee300821d3730bb89fada4b3e43d9ed07a17f70479c532",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.210621
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/configuration/CoreApplicationConfiguration.java": {
+      "fingerprint": "4ed18c6c6ee91ba5479752f7d290f218f7fc928711fd458c6b9554a8f60b2086",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.2894306
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/configuration/ApplicationSearchConfiguration.java": {
+      "fingerprint": "6f8d4f73757ffb64f7421da3472971fb631d778fa7064ce8f14776f3ffc29e8f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.241056
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/configuration/db/DbConfig.java": {
+      "fingerprint": "223d9ab1222a72f91054077b8621287c306a6a10b882ec43ae3cdad2fdf6d77a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.3016334
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/configuration/DroolsBeanFactory.java": {
+      "fingerprint": "76aecbd0948aaa16a8dd4a8e59f68e33f8193f1e734e49345e77a1f7f55d108c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.3505101
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/configuration/events/AsynchronousEventsConfiguration.java": {
+      "fingerprint": "b680672d168284ab97670efeb6707cb28b7b96cf8d8a28f1c6fcaa141a4e2cbc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.401689
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/configuration/events/products/listeners/IndexProductEventListener.java": {
+      "fingerprint": "b13805a839ef84df7352f7c163cd408b9424c738df19a584ed66f2f4bc3db7f9",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.3792465
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/configuration/events/products/PublishProductAspect.java": {
+      "fingerprint": "9ba984631cd87d3523a380ddb4bbf6e6585e665973de5f9e8cd966f39cdb5437",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.4440358
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/configuration/ModulesConfiguration.java": {
+      "fingerprint": "e86b8e13577e5692153439a1d61595caa205061059cce127e7f490a4921ba254",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.4675188
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/configuration/ProcessorsConfiguration.java": {
+      "fingerprint": "668142431bc27a25febeb6ef1b0bc35770329430b9795910707c2228a8ff312d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.4912953
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/cms/content/aws/S3StaticContentAssetsManagerImpl.java": {
+      "fingerprint": "c7971899c3337f3f271151e774db26504a733d5708edaf84b3b9b48c9cd63581",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.537875
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/cms/content/FileGet.java": {
+      "fingerprint": "10144dfe31b3943c5b464acf4e878b6a749de32cb6ae5ec9c1017b80519ba603",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.5050032
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/cms/content/FilePut.java": {
+      "fingerprint": "8acb47975c235170a399eb67745e4ca4f112ae9b66682bb4d6be5abde7359a09",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.5597148
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/cms/content/FileRemove.java": {
+      "fingerprint": "2e65ad372789421556fdb00bb0e57c8a7660f98e190fde200804527ca0a39baa",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.5842378
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/cms/content/FolderList.java": {
+      "fingerprint": "776beea86f5ac45f5971bf471be938238c5be2166e16c89d0307464da7db0dda",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.6077383
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/cms/content/FolderPut.java": {
+      "fingerprint": "03ff08c86bb7609f44f5a2aae6ed6446fbc47fb0b6748257d75fd02e6f2d8b49",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.6408343
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/cms/content/FolderRemove.java": {
+      "fingerprint": "382bcbbf0c53ebe320080a9d512e248bcf4e5765a5b82555b817f0904a5d6aff",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.6783867
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/cms/content/gcp/GCPDownloadsManagerImpl.java": {
+      "fingerprint": "e51ae855c3968ab6d2162a2ce29868a1ef993ab9dd2d28b68067126f9fa77103",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.7099981
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/cms/content/gcp/GCPStaticContentAssetsManagerImpl.java": {
+      "fingerprint": "509c7a047570c102f369ae30db474ff10566f216d36ab9b1aa71c4ee7ba927d6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.725775
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/cms/content/infinispan/CmsStaticContentFileManagerImpl.java": {
+      "fingerprint": "cda594036d3d25bfe68c4b3ac261dabc8ed2cff6ac3fabcdcb9006ee847547dc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.7545564
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/cms/content/local/CmsStaticContentFileManagerImpl.java": {
+      "fingerprint": "73fe3ab6b4ce5cd6729959a9b483243d9a3d1ebcd96e1c3980b0c5ad3f75ad5f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.7751193
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/cms/content/StaticContentFileManagerImpl.java": {
+      "fingerprint": "ca3c027dade10aa603775c4bc04d942e6e7a8e9ed27511f4336820853dc4b984",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.8304052
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/cms/impl/GCPCacheManagerImpl.java": {
+      "fingerprint": "f66586dd578d63db5f2f063a725696a149a5f8545704d96269d8225ac4cf1309",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.8056612
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/cms/product/gcp/GCPProductContentFileManager.java": {
+      "fingerprint": "f68a14b07d68de3f4c8e60e0e2f9dacd60b7ccaa9e5f65d07a12de3886543fbe",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.8500903
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/cms/product/infinispan/CmsImageFileManagerImpl.java": {
+      "fingerprint": "079d95e442a616b548e0093b182b6d0f9a93a7fa1d2b826dcb3d859597a48bb4",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.8694398
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/cms/product/local/CmsImageFileManagerImpl.java": {
+      "fingerprint": "8f82a7218f73e246e0c56083d6e651d13fc2cd45c028b68b87a0841b259ba558",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.8953252
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/cms/product/ProductFileManagerImpl.java": {
+      "fingerprint": "4fa0bc39f85df13adbad0d1a8f798f1179964473d93df3042cb17fd13da2bab8",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.9112437
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/email/DefaultEmailSenderImpl.java": {
+      "fingerprint": "a01f87f8807aa4370fdf259cac4db7b86835034563d5de6cdf044cb38693d138",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.9426863
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/email/EmailComponent.java": {
+      "fingerprint": "18d9b3f5925a20197a588b630080a157edb49f682812a8df5783458af5b23dbc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.9745543
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/email/EmailConfig.java": {
+      "fingerprint": "dbcbb0605c8849998a958f89f7b2d0f8bb8dda63c87ee40ad9e2b1376f27bfd2",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.0021122
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/email/SESEmailSenderImpl.java": {
+      "fingerprint": "9545b0d5a459c85d6b47a1e04f1e7372dbae30ff6aad0ead2ea9b739ea3eb476",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.0215526
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/BeanStreamPayment.java": {
+      "fingerprint": "7a24873ed92b73a4022806977ebf764a0f7cefd00104ccd3488b170aa9d2e9f7",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.0548584
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/PayPalExpressCheckoutPayment.java": {
+      "fingerprint": "c4ada504dc5d8a8e0e917a072b3dc1bf709140980bd0b0ba7dd4fbb75821b3a1",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.1084354
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/Stripe3Payment.java": {
+      "fingerprint": "71475fa7a811c0858c7607d3d2c88fcb8e8cafbcdc42995a51788235f757df0f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.0802946
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/payment/impl/StripePayment.java": {
+      "fingerprint": "45538be592b1963f4ba4bc89bf02cf3a2faefa54a333a46a78e7ff1fe03d0dca",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.1784272
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/CustomShippingQuoteRules.java": {
+      "fingerprint": "0a505c29379884ead3aa43ec955107d2e6d3f1bae2637f4f871e62cb3e9653e5",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.1360402
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/CustomWeightBasedShippingQuote.java": {
+      "fingerprint": "2bcff7981a37e806b199c64f91e3e3e647e80a830691e25505609309bc4353a3",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.2221105
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/DefaultPackagingImpl.java": {
+      "fingerprint": "1ca9cfaf45859e855a58356eafaa53de09d5a74f931ab0819275c29a8747856e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.2420022
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/ShippingDecisionPreProcessorImpl.java": {
+      "fingerprint": "dfd110188a42f4e178b7d08a422d9a6dcd75fa6486473d000810dd1df01e220a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.2839801
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/ShippingDistancePreProcessorImpl.java": {
+      "fingerprint": "ee59fdfd4c0f90319ba5d8a44cb31263eae20bec730320156116b56f31754bdd",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.3050966
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/StorePickupShippingQuote.java": {
+      "fingerprint": "d42541f6261ba7361f69df8dbe137f9015ff5a0e557ade0b7f852f13ba5c3893",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.3346906
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/integration/shipping/impl/USPSShippingQuote.java": {
+      "fingerprint": "1727e0af0c223beacf6f276b185e529ac1dbe19a436e6769e1042e9f3efba601",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.36027
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/order/ODSInvoiceModule.java": {
+      "fingerprint": "3ee2706c4fb384945ab227fd6b38f839bac55a289e9eb91d551eeb1708f898fe",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.416789
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/order/total/ManufacturerShippingCodeOrderTotalModuleImpl.java": {
+      "fingerprint": "0eb1d1660453fa5a66daad055dbe54e121ae2085a4ba120b2b0b02b2c576312a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.3896155
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/order/total/PromoCodeCalculatorModule.java": {
+      "fingerprint": "371bd6df05898a21c75060013511c355be4907e5166b680eb733cb1ad1820bac",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.4428225
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/modules/utils/EncryptionImpl.java": {
+      "fingerprint": "68297a4e7cf5fe7261087abbf641382937b778593655dc77f1570bd6ff7ec529",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.4710538
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/catalog/CatalogEntryRepository.java": {
+      "fingerprint": "0ea06547ae1acee686f1b29e5ec0a98755f1ad800d427806f8b6776b3e1b0bdb",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.4986808
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/catalog/CatalogRepository.java": {
+      "fingerprint": "02ca0a836a07d4e2fd3f82e2c3e210569ee69d83d2cd074da8565b0e1b309d46",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.5257492
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/catalog/PageableCatalogEntryRepository.java": {
+      "fingerprint": "d7780f537942dd90260fb034c871a1f2f6e8c44a0cdd14a769ad64f8421f0058",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.5501301
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/catalog/PageableCatalogRepository.java": {
+      "fingerprint": "1d281b4226e666c44b2d75ceeddab39f6364c34e47fe7ef5dff06b8e1fd453b1",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.5785465
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/category/CategoryDescriptionRepository.java": {
+      "fingerprint": "68224ab56e0030fe12bbf4259d12e211d6115338f24429741bf5c39a972a1f1e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.6013224
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/category/CategoryRepository.java": {
+      "fingerprint": "f576c60cabfdb2a424163da212f444c313339d1fffd5baf2dff18e64f3aa3c54",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.625535
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/category/CategoryRepositoryCustom.java": {
+      "fingerprint": "562340bda951a2c52e92cca9ded58b97b950204db80085b085c93bd6d5b23dfb",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.648345
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/category/CategoryRepositoryImpl.java": {
+      "fingerprint": "db541d15f254e4b9b5a3e9dd66c06d8f25eaf7232d8b67defd4d211b7b60b124",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.683542
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/category/PageableCategoryRepository.java": {
+      "fingerprint": "60853ca53bfb24329f388d462cf4267145f9a1d08bc43a38133a581704332a07",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.669833
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/category/PageableCategoryRepositoryCustom.java": {
+      "fingerprint": "1574ec7ce4ca6d6699ca0810ab870575d488f66ad15a8a2a0c961cebb8d9f54a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.7085986
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/category/PageableCategoryRepositoryImpl.java": {
+      "fingerprint": "2c775a1e98f4bebb1225c41ef54251af1f650d791f1becc5af19d6b75d1cb883",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.7305198
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/attribute/PageableProductAttributeRepository.java": {
+      "fingerprint": "0278e2d553253e596e6a5190bae46d6b89893bebec8ed8b43b5213930caf1d5b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.7462952
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/attribute/PageableProductOptionRepository.java": {
+      "fingerprint": "fb35fdd0f2cd24a6a547101eaf9da3366137a9749890eeb2a1949eacab2ebb35",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.76215
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/attribute/PageableProductOptionValueRepository.java": {
+      "fingerprint": "03621cd533caa5270a76f98b32ced44026ca0680a410e36422937f905fa051c0",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.7816768
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/attribute/ProductAttributeRepository.java": {
+      "fingerprint": "f6aea7d348baddb98b3f7e03eb2a5f45abfe7394e01a06733963ea6aecca0280",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.8095355
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/attribute/ProductOptionRepository.java": {
+      "fingerprint": "16aa01df6e1f648bb15694f7a89bb9ff171c46935d461e254af9ec42118b4f37",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.8252919
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/attribute/ProductOptionSetRepository.java": {
+      "fingerprint": "0889f5ba79799c31058933a34024bf57f1e4649e4cab5c734e4246b9ab2d1b09",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.8710892
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/attribute/ProductOptionValueRepository.java": {
+      "fingerprint": "dac81c20301f08952336cbfe175b4fcad8b0ef3f841ac1f286fc6e13adf496d5",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.8510134
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/availability/ProductAvailabilityRepository.java": {
+      "fingerprint": "2aad62ccefb487cd08a4b5489f16a45381cb51341cae1c45cd184c0549ca7449",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.8898075
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/file/DigitalProductRepository.java": {
+      "fingerprint": "fd9b3e4b0a42bf606e355c4f705523538b96824d9c328374566208c65f758ab0",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.9024093
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/image/ProductImageRepository.java": {
+      "fingerprint": "28f9c746da9d3688e3a660f1fc72a24b9ba336e5e89d473c9fe0ab036959f825",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.91856
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/manufacturer/ManufacturerRepository.java": {
+      "fingerprint": "5133863acddeb59719202d5839c8e9c9f9d02596539eda14bc88d81e44574809",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.964047
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/manufacturer/PageableManufacturerRepository.java": {
+      "fingerprint": "e52c356b4f07d32e9701b25f48ffb5d341b9f59bf3abb4eb31c4343bad82e837",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.9318137
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/price/ProductPriceRepository.java": {
+      "fingerprint": "c14be7a1d45a25899969eb130ac11c7d4252093b8b4001b6e42e2e02842a4b13",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.9801419
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/ProductRepository.java": {
+      "fingerprint": "f6b2c52b5fe877dc61d1abde09cd4d8a7f5534559b89879ac32f401c1354f76f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810705.9959798
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/ProductRepositoryCustom.java": {
+      "fingerprint": "ecad76e9a7ab287f977a83020f9c2053168d5818e21d10de2fc89cc084dec1e8",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.012043
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/ProductRepositoryImpl.java": {
+      "fingerprint": "e79a0f20d8925d6c0b35a41003a3805664ff84420b110e15d38ace31bb302daa",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.027925
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/relationship/ProductRelationshipRepository.java": {
+      "fingerprint": "d3004d7bec3bf2076cfd87ee909c2936ef9965a4a5f1415746388a423d533b8a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.0557501
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/relationship/ProductRelationshipRepositoryCustom.java": {
+      "fingerprint": "417b9d1fb44f87f1ecf684510dd539239d631b4021ccc137727434bdb87d6ead",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.0696044
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/relationship/ProductRelationshipRepositoryImpl.java": {
+      "fingerprint": "892a0d4311c56024fa1474ec542be9d78338a49571fbeef912da573e39a54161",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.0852103
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/review/ProductReviewRepository.java": {
+      "fingerprint": "cc32c9abea52dbe0e4f53995efb85e1f15ccd54a1c9073b44841776ce41998bf",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.102922
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/type/PageableProductTypeRepository.java": {
+      "fingerprint": "7340e70f5d0d3d90c64f0f956b0b6c097000a923c98e8ca6002538fd099b794b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.1295798
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/type/ProductTypeRepository.java": {
+      "fingerprint": "2a1b91b04f24adcd76b6026f4e82bf51e32c257dc75c133e4f44cac54c2b07c7",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.147013
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/variant/PageableProductVariantGroupRepository.java": {
+      "fingerprint": "6e83dd153464640743d29f3acc42ca0f1337f8727650a788c455ede1f539c534",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.168667
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/variant/ProductVariantGroupRepository.java": {
+      "fingerprint": "9be24f11c05dfb710aaf1f1f85fe64977e25579433bd6413898b427c1c9e51cb",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.1905892
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/variant/ProductVariantImageRepository.java": {
+      "fingerprint": "38b7ffe24642d7314166e0cd08c035091877de258a7284dd1893551740158ba5",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.2155726
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/variant/ProductVariantRepository.java": {
+      "fingerprint": "bece6fdb714451c8e5beac65baa412d00700a18f0f293a81d9f34bdc08c8e769",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.2273734
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/variation/PageableProductVariationRepository.java": {
+      "fingerprint": "383079e19493b2d1a3aa37ab0a6d21e9744455232ee971dda1baa4893ed24f23",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.2429085
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/catalog/product/variation/ProductVariationRepository.java": {
+      "fingerprint": "c9dedfce0ac50f2f5674626b177c54a5586abba276da3932454e5850fb42f410",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.2576659
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/content/ContentRepository.java": {
+      "fingerprint": "d66846f2efe2bc902996e4a2a4dde743805985442b9c576d134f477b5d6b2fdb",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.2762072
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/content/ContentRepositoryCustom.java": {
+      "fingerprint": "d63b96504472deb222d265fb6982f50d0a68536d4379094e094fe585af54aaf8",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.2938585
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/content/ContentRepositoryImpl.java": {
+      "fingerprint": "bfc7ff882c08d9a1be9e1b1e5e94c9cd8384f468b569bfd4d9113c2effb78a8b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.322613
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/content/PageContentRepository.java": {
+      "fingerprint": "df359c0217bd674d0d32b34691ee4263dcbeeaaac7741ce94bba0a97396a78ff",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.3387446
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/customer/attribute/CustomerAttributeRepository.java": {
+      "fingerprint": "237ab4ae1af6b4655c648b24b6afdbb52cd6e7937bafffa8195f6078f5cd779f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.3561368
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/customer/attribute/CustomerOptionRepository.java": {
+      "fingerprint": "418d5161721f4ffeab46731687a82c359bdec4835933546a716b6447e4fa3bd5",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.3733153
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/customer/attribute/CustomerOptionSetRepository.java": {
+      "fingerprint": "dc832785d681a63052b9be502da55efb0eb0d8f89fd575f8c13f359f02c1098d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.3867638
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/customer/attribute/CustomerOptionValueRepository.java": {
+      "fingerprint": "84e1de48129f3c9956b77f6231e7709acecfda3840cb4bf397cf11521a9405ca",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.4066067
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/customer/CustomerRepository.java": {
+      "fingerprint": "71a94fc036871cf973cd2e0e776e88a35ab549eb4e97087a9dcef0b0375dce51",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.4174945
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/customer/CustomerRepositoryCustom.java": {
+      "fingerprint": "744c1c139c229db22e0e5109552da8eafd8459a70b5f59f972c3c00a8885aca3",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.4331803
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/customer/CustomerRepositoryImpl.java": {
+      "fingerprint": "e1f57664d1af3d8ae9403477fb36102d894df201c6b55ed57a1a12c3c2233d3a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.4649243
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/customer/optin/CustomerOptinRepository.java": {
+      "fingerprint": "f1cc1454baf14c82dab9b3064e987bd4b1d599446f618d8ca115206c3ce52c03",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.4488533
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/customer/review/CustomerReviewRepository.java": {
+      "fingerprint": "067c870f40a1a380e42d44e0f7b9ec09c480609e1de981210fdd0f18fd072a2d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.4809558
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/merchant/MerchantRepository.java": {
+      "fingerprint": "f997bb8d5e66835b507fed3be6e80d93bc22cc01674c9b0ccabf4a0def1a065c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.502867
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/merchant/MerchantRepositoryCustom.java": {
+      "fingerprint": "4c73bb4c19a8435c56c1e8b7a88965a61585210ffd01af2512fe0d15e5592570",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.5185194
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/merchant/MerchantRepositoryImpl.java": {
+      "fingerprint": "27e12827bf941c1476a443de7d226c453bb8f7d9470f3e7afcda46893ab84d60",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.5322053
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/merchant/PageableMerchantRepository.java": {
+      "fingerprint": "b572e0323194d51240b47486b4231a22ca190b0dee44bd9045eb6f5e329dba6c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.562055
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/order/orderaccount/OrderAccountRepository.java": {
+      "fingerprint": "7ac0cc86fb14c1e27771b7ac46d5da66428a6aeb5fd51ce9155d4b11aa1c20ad",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.544852
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/order/orderproduct/OrderProductDownloadRepository.java": {
+      "fingerprint": "e30c61ef0c1ef267e35dc0a88c5ddaaf13af6986682620a11ad7ea597308ca32",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.5851936
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/order/orderproduct/OrderProductRepository.java": {
+      "fingerprint": "ebf1d40333f421b823e80c5cbbf31aa139575b87d6a08393486b2c4e39fb2671",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.6029012
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/order/OrderRepository.java": {
+      "fingerprint": "93cf00fa14688e4231f9d10abb34d41f485aa1627f09d850bfc06fbb7e975053",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.6086364
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/order/OrderRepositoryCustom.java": {
+      "fingerprint": "f9b1023a4cafabb63c859955bb370a936205303c6d21f512be52df44ea87f2f7",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.6309366
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/order/OrderRepositoryImpl.java": {
+      "fingerprint": "02da64bbd678871f1cc99fc87bb6d1f9ec3d8f1ff124e4592954fb8a60ecc1f6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.6404521
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/order/OrderStatusHistoryRepository.java": {
+      "fingerprint": "0e7c9dc79295a452904ac5bffc199554d130335e48ffbed58ca6d852dc073798",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.672023
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/order/OrderTotalRepository.java": {
+      "fingerprint": "cddf5b28c4bb127de423024833a0e7067ab193c3abdbaedb2e46b5e3bcb72d07",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.6877022
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/payments/TransactionRepository.java": {
+      "fingerprint": "b3dc0f922fad3781b8cb31535c2009ed4ad573e4862e5af218121c97b32b6281",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.7030187
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/reference/country/CountryRepository.java": {
+      "fingerprint": "32b9eef204c25f2f9d3d3b84651223b9376b3974d06116dffcc2567a4225e804",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.7203999
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/reference/currency/CurrencyRepository.java": {
+      "fingerprint": "4e8fc7f4968e55832447340e234bce68239069685e317edd8ec3c590bab9b51e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.7509835
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/reference/language/LanguageRepository.java": {
+      "fingerprint": "e239e13430cefbc0fc5c4cb7ad6d275c32b2bd8ff04f2271f60b4e86526bdfe6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.7361052
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/reference/zone/ZoneRepository.java": {
+      "fingerprint": "6ef4a7a808cd4f0b2d05b7921791de6bd62a5faddbf99f65b8e85133fc9514f8",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.7666876
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/shipping/ShippingOriginRepository.java": {
+      "fingerprint": "919e504a2553558d2fc1c511126915398b90bf073194e6b3011b558a969a1b2b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.7841432
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/shipping/ShippingQuoteRepository.java": {
+      "fingerprint": "be9b6f28787276da23d24e2eb85b7e4d90157f3a26f63a31123b46b0b419670e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.801104
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/shoppingcart/ShoppingCartAttributeRepository.java": {
+      "fingerprint": "971f6686ffe602aaafa92d5a4ea2b3ee2c5110c5860b90594929b4b5c7cc12d1",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.8171997
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/shoppingcart/ShoppingCartItemRepository.java": {
+      "fingerprint": "d75b5a6f2754d04fea800e8b31f7a42fc7e69db09fc0f2699bbf7e2bc6b3a6bc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.8299232
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/shoppingcart/ShoppingCartRepository.java": {
+      "fingerprint": "4f07b316c0c80a7f69a8d49167663902db82ee0f694460143c9b5d28abaf720b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.8457205
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/system/MerchantConfigurationRepository.java": {
+      "fingerprint": "55c0689084a62599ac967e4aa202859aab3f25a823188938ad1365da928b5361",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.8616881
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/system/MerchantLogRepository.java": {
+      "fingerprint": "a06a6d0c3e4fc4b508e6cd89865793ec105f2a18433743bffde9a1d45c038836",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.8820798
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/system/ModuleConfigurationRepository.java": {
+      "fingerprint": "cf7697822952199136f2b1ec10c447477e0068dd1750c8348b5328e3fad5c0dc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.8937902
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/system/OptinRepository.java": {
+      "fingerprint": "b1eec9132c650990aecb9a987a19e7590dea04d9b9a222ae71b8cdb87e6c346b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.9098265
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/system/SystemConfigurationRepository.java": {
+      "fingerprint": "8f8247821339ea4cb6ff978727bd363d605a636e5eab8b79e348d317a9603efc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.9276686
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/system/SystemNotificationRepository.java": {
+      "fingerprint": "fc3c2f789225b231b9ebf1a373866d6213157639855db2fa7c10d27071f4051e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.9445662
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/tax/TaxClassRepository.java": {
+      "fingerprint": "d19e1564f9a45fcc1bced6072308f24e921bf9b2ad66ed5f36a07cc322e79c79",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.959733
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/tax/TaxRateRepository.java": {
+      "fingerprint": "e08e0563655b487d6c77bc7f4906ecee4e66ee472859f4686b744e3baac646be",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.9691494
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/user/GroupRepository.java": {
+      "fingerprint": "b092e1bef63205d9406aae307127a03eedba167ec0486ee212c370f28348bd5c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810706.9821465
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/user/PageableUserRepository.java": {
+      "fingerprint": "ae757b7bc8aa2a7b5a9a4a095d96dd27705f0bb81073b5d9301d34f75cec4ffa",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.003465
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/user/PermissionRepository.java": {
+      "fingerprint": "0b3ef8f9d0111b6c9960abe3c3d7d8960247c83cebd3ee618e60eec4be91e13f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.0184977
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/user/PermissionRepositoryCustom.java": {
+      "fingerprint": "d820907260f2ea20b9b3e38d0752cb1c5c6dd4bc94e079638d6a08410e6b7f29",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.030967
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/user/PermissionRepositoryImpl.java": {
+      "fingerprint": "2e49356f519afbfd88bb1da98753243ce5dcce41c998008ccdf3d7684e33578d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.0482066
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/user/UserRepository.java": {
+      "fingerprint": "97ad3a440f85e3ae93116f10b2ae707daf38da7e41d72d13d6ea80a2b651b99e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.063263
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/user/UserRepositoryCustom.java": {
+      "fingerprint": "1d614136093d77866853557162984242bbf39ca0e19fa4231823403950250355",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.0791862
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/repositories/user/UserRepositoryImpl.java": {
+      "fingerprint": "806fc380b16e02fcce102770ca29b7f3465c2d1e4a0d1349ce62de1a18a1f67e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.0945807
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/catalog/CatalogEntryService.java": {
+      "fingerprint": "a2ce3a675684795eeedd288e0d79d37b58186ed3a30f96882aaef77a68aeb141",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.1104577
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/catalog/CatalogEntryServiceImpl.java": {
+      "fingerprint": "f1afb64001c579ca48df116ac0fb30394cecdb39581435fdb66ebfe0f1b8aaaf",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.1251812
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/catalog/CatalogService.java": {
+      "fingerprint": "16a545318b1553842bb951968830b75dac39977ac69d564d6e75cda7b886cbe6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.1460986
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/catalog/CatalogServiceImpl.java": {
+      "fingerprint": "54e5d27da6571b5419d5f60d5b1f10517b0931d4d000f2722bd7cdbc742c5696",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.1726677
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/category/CategoryService.java": {
+      "fingerprint": "5637e399f4a5a65b848376a24dd9dd587a98e0f73f9611e0b9f901d56e301c1c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.1886506
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/category/CategoryServiceImpl.java": {
+      "fingerprint": "0a4692aa43055664b6358b271b32ba58ca76547d0418f59b7f287199434c9657",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.226963
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/inventory/ProductInventoryService.java": {
+      "fingerprint": "e51a4f38a030056df24316fa966f41b5ff6aaa79759b148cbe7ef45074689e27",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.2044096
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/inventory/ProductInventoryServiceImpl.java": {
+      "fingerprint": "8497dee99a585f557ca65f94f99dcb7224a1529f257f2db9da2113db02aef969",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.2419481
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/marketplace/MarketPlaceService.java": {
+      "fingerprint": "54094d25acbf36b130e9a468cef3aa4e6cfb235c58994e3c683510876a0536eb",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.2583635
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/pricing/PricingService.java": {
+      "fingerprint": "adf31f2d46569010a8cc44c204fb0c2a93a355854a9b0ced08ddc6820f1354a3",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.273991
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/pricing/PricingServiceImpl.java": {
+      "fingerprint": "5e04b77a2be31588ba402d3dbcc19afe7e33fcd11528bcc86b7ea7c11694ecbb",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.2836356
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductAttributeService.java": {
+      "fingerprint": "3fa07dd36b1b0b5ecc717396f9eb6b8e7314ec1eb89168feccd0e1805e245dce",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.3144243
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductAttributeServiceImpl.java": {
+      "fingerprint": "b2b8d8c0199f47c894d0361ae6969db51ba272954e01bc0a5017ca76eccc9e4c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.3302026
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductOptionService.java": {
+      "fingerprint": "b2220bc337e4127f9506a9bda49d444a010b28df498d577ccaacc6dea37a776d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.3624046
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductOptionServiceImpl.java": {
+      "fingerprint": "c3bd37113a5c5fe5aa7a8d0d3b1e108a82da59b3b249a4cfc37701ea8d3bebf3",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.3463004
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductOptionSetService.java": {
+      "fingerprint": "7b79cceed36d437f8136769a59dba184acc202a34beb29a459d0c53c40c2358c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.3800058
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductOptionSetServiceImpl.java": {
+      "fingerprint": "53608e24954622b7af5b851addba12a235c34797943bef84be4df784018d015b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.410586
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductOptionValueService.java": {
+      "fingerprint": "9e7944b6741c0477e78953f7fd4d00a2dd2859cbf27290cef15be24467998490",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.3944507
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/attribute/ProductOptionValueServiceImpl.java": {
+      "fingerprint": "8edc065834f6ca68a9a1da2034afd38e169138b70849597a3c0e84adaccf641a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.4264917
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/availability/ProductAvailabilityService.java": {
+      "fingerprint": "fa2b32ddd4274dcaccaa5e22f7a9870dcf4ba7d624d9dcdd86a51290311c753d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.444505
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/availability/ProductAvailabilityServiceImpl.java": {
+      "fingerprint": "3a3546b437094ead60cb07365dc0fb83c0a570a64e1cbf3d2df9de0f8bf9cd2a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.4698808
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/file/DigitalProductService.java": {
+      "fingerprint": "b755c48ec230092b7f374e8092e318a3edc2163c0da7c6e874d47d9881121f95",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.4612427
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/file/DigitalProductServiceImpl.java": {
+      "fingerprint": "9e9d94867b4edc17ae79888e2c6a74442ce340b1efb696b481a356619c8bc6fa",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.4883904
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/image/ProductImageService.java": {
+      "fingerprint": "2d4fee4e5fc7f9b75c79c9be74a2f63005dbbc8cef97832ed74fd60b18d11baa",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.5035806
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/image/ProductImageServiceImpl.java": {
+      "fingerprint": "f449082a3156e444c922eb4c92ae2293acded31d5e7c14feefc17824b893b62e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.5144129
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/manufacturer/ManufacturerService.java": {
+      "fingerprint": "6eb115706bd16d5af0d9c308bad344232200b4a762019dff1ae4af48c4061ceb",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.5334113
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/manufacturer/ManufacturerServiceImpl.java": {
+      "fingerprint": "e4b53e414768f33cf6af64bddd7e3a02d1df6616746479765c6bc3b768776c27",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.578161
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/price/ProductPriceService.java": {
+      "fingerprint": "3615a8e416e781fc3a677401710f54ae0e396110bf831984d11bb70ec6a2e8de",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.551125
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/price/ProductPriceServiceImpl.java": {
+      "fingerprint": "34e0adc6c7c2d53adb0427716b901ade7c069100feb73489b9e2cfe1a35fe564",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.5622838
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/ProductService.java": {
+      "fingerprint": "270d3f458204646c44c7a06e17d30ed2cafcb3fda26afc0b7e0eec0da2acb69d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.6038976
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/ProductServiceImpl.java": {
+      "fingerprint": "8087289167b79aa0adfa1b3fb8071ae232e3580ea85ccd97e7a915e8efff65f5",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.6185365
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/relationship/ProductRelationshipService.java": {
+      "fingerprint": "3d5a5da595d5640301cc1f262417387cc4a6509ec4ae9beba71eadb82feb29d1",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.6281805
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/relationship/ProductRelationshipServiceImpl.java": {
+      "fingerprint": "3272ee09da43a34d826f332d5feb7f1a542ea46d740a1187f172f62405d4447a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.641596
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/review/ProductReviewService.java": {
+      "fingerprint": "c4120ec71a444884bd2c608a3e3f45a004d85ef29dd7d47febd60e51b3641e03",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.6622176
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/review/ProductReviewServiceImpl.java": {
+      "fingerprint": "81e5ce2b2c18abbd7caff095a760652013831a8f84f7adc83b669b195fc2fd17",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.6779687
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/type/ProductTypeService.java": {
+      "fingerprint": "9816fbf144e963fdfa7db4e69c82186ca61a850271aa3e41c829ca0428e47178",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.6939583
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/type/ProductTypeServiceImpl.java": {
+      "fingerprint": "3eae8d075bf6dbb6e29a7cc302d5bbac5b6d33cb58474324e9758ccb470d40d0",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.7056134
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/variant/ProductVariantGroupService.java": {
+      "fingerprint": "a619b6dae640746a50124962cd941bacba2cec224eade47949bef6e9651e5677",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.7255797
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/variant/ProductVariantGroupServiceImpl.java": {
+      "fingerprint": "163dd3b68f2087737ed8ae4176d1f58c9cdeef03aa72ce95408729a8390a9977",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.7374346
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/variant/ProductVariantImageService.java": {
+      "fingerprint": "8a8023a4325135f6939cf94bf5e9b1b04b5d74ac82ab72f45657c0eb022d7d9b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.756843
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/variant/ProductVariantImageServiceImpl.java": {
+      "fingerprint": "9d8fdb7658e688adaa0bd11eb2b3bea354ec001db3b846ce076c9e1c93553781",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.7945948
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/variant/ProductVariantService.java": {
+      "fingerprint": "0a8e7849c47456505b51938f68ee1d4b8118d67554c284e5d83f4ac0efa811e0",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.7724793
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/variant/ProductVariantServiceImpl.java": {
+      "fingerprint": "00a03a94222128f75789f60d229d3bf978433d253731439030316d7979f9f99a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.803967
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/variation/ProductVariationService.java": {
+      "fingerprint": "4713fd199b315d02867ca885fb3c4b4850f17114b16bf3b91eae5bb5af3ec74b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.8171208
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/catalog/product/variation/ProductVariationServiceImpl.java": {
+      "fingerprint": "0f579790fe5bc46d9822b8a8ea616915d205f89d06e5fdf5aca6b235d0a92bfc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.8377383
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/common/generic/SalesManagerEntityService.java": {
+      "fingerprint": "efac0918685de05ca5d84fc351862efe49e375c2c67be7a7041267753408f457",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.8536813
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/common/generic/SalesManagerEntityServiceImpl.java": {
+      "fingerprint": "5ae01aa06cf6ac566d28ed3e553a29fa1d4df03f22819d06c053e13fb2bbc770",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.8654478
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/common/generic/TransactionalAspectAwareService.java": {
+      "fingerprint": "c7501e7ee4fa5f6efeb0f42da9e62e9099c3aa801fe5de032e85d984e5950af2",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.8876252
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/content/ContentService.java": {
+      "fingerprint": "983564a2cbda76375357ec4089ed127ac61440b6666dfd6e5ecd2c45dca09f0d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.9038134
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/content/ContentServiceImpl.java": {
+      "fingerprint": "4de3af38f1ef78cf30a49efae132401070639cec0fe1bacb1d21bb7c8015c23b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.9291732
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerAttributeService.java": {
+      "fingerprint": "83bfa4a025cb13d90f470830f4c611e9f91092b945cefbe0d96980b95378f47b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.9119074
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerAttributeServiceImpl.java": {
+      "fingerprint": "76e30ee54e9ea12651d5c8adde5bd79ad204511708400588a103b46432bc8aa1",
+      "mode": "resume-hit",
+      "updatedAt": 1782810707.9437432
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionService.java": {
+      "fingerprint": "e9ef6d35f5d2cc975887d384cfaf5710f16637b296646279f59ffa18fa46fa48",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.5407808
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionServiceImpl.java": {
+      "fingerprint": "6a8d7be630d8fa91db610e2ec02c45a878d9c3a84d9cb69bb5233378b833b392",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.5743644
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionSetService.java": {
+      "fingerprint": "9b49fe1356d5a0d76087f1960db02b78e4ceb03e26a6b6352740ace7c4920e77",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.5924668
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionSetServiceImpl.java": {
+      "fingerprint": "65f0a2d3a934796c107fc77b2350ef40b5e2419f8567808a84c303432f2ef081",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.6202269
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionValueService.java": {
+      "fingerprint": "7bcad8d59c06f5529f2c49dc13a30f6e03c595f324ec48bb9641fd5d506ff651",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.6080694
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/customer/attribute/CustomerOptionValueServiceImpl.java": {
+      "fingerprint": "2f2169a83c2a78710f6c52ac3e17fb929d5d3d54cdc3179fffea11b8492adc2f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.6348453
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/customer/CustomerService.java": {
+      "fingerprint": "675fa066a7f1b76f716a2a71c0444e03a16007d9c4105de258f4b64d6c07f84e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.672314
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/customer/CustomerServiceImpl.java": {
+      "fingerprint": "0ad6f0dfb4b0ff2f68e57f0aecbf88b6f5decec75b079354425353262090ecf7",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.651141
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/customer/optin/CustomerOptinService.java": {
+      "fingerprint": "533fcb33917e1041c340c689f1a3879dc4d6e82dbd410a89f527d5323b66fab6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.689046
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/customer/optin/CustomerOptinServiceImpl.java": {
+      "fingerprint": "8c936b8004b3c9d8b2bea283f429ba69b6d5a9e23a1b888552983e6caf8138fc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.7159655
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/customer/review/CustomerReviewService.java": {
+      "fingerprint": "5beccbc72cdce8f2df0467ceaa12eba52c0166cbc99be1ad5102e363335ecc9e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.7305999
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/customer/review/CustomerReviewServiceImpl.java": {
+      "fingerprint": "19168c6a604a36999fad20ce48be92ea5d4cd6e80af2526bad12745360804f08",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.7640846
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/merchant/MerchantStoreService.java": {
+      "fingerprint": "cafe7fd523683166b21f4b9d9f946701299ec4ea58ef68909d36f80fce8981d8",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.7426739
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/merchant/MerchantStoreServiceImpl.java": {
+      "fingerprint": "e1723c356dcabcd9c283a3c3ff5df41deb34e82eb3fb183a56fa65362bf2f75d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.7795477
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/order/orderproduct/OrderProductDownloadService.java": {
+      "fingerprint": "e857159c3b28d2dd2cb60c92c098c0fa631c1b3ca828b22280109a824dad3e2c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.809191
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/order/orderproduct/OrderProductDownloadServiceImpl.java": {
+      "fingerprint": "f6c11382d8ae5cb5b3981d12f279656afe7bdeda5e69f2ee68e6f07c399b8d9c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.7963104
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/order/OrderService.java": {
+      "fingerprint": "3f03e1c0b79f8cc90fda775f43be7f02aa820acb0a8b71106a1854fa49217b89",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.8233032
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/order/OrderServiceImpl.java": {
+      "fingerprint": "26ff05c1e4b96c6ec53fce77f7d01def9aef730f6882bfd66054fa134cb1e6b0",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.8501937
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/order/orderstatushistory/OrderStatusHistoryService.java": {
+      "fingerprint": "d3ed32008219d970bd7b3d0d7ce422f83b51979a6149dcaff45a72f3ce4449e6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.8409915
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/order/orderstatushistory/OrderStatusHistoryServiceImpl.java": {
+      "fingerprint": "dbac0eaff6959f10c046a933033ac60cabf55b939b7ad4bf4c49d325c6c37e87",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.8876567
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/order/ordertotal/OrderTotalService.java": {
+      "fingerprint": "7b687d0047c776b44dbd95c47aa07c87300f0032555b64d7b1ad38f26020b924",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.8760214
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/order/ordertotal/OrderTotalServiceImpl.java": {
+      "fingerprint": "cfc860fd0f380d107a9bdb2e631fd95d5e2e2b1ac32fbcbbf6f61745a0d43c3f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.9092178
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/payments/PaymentService.java": {
+      "fingerprint": "fb74bb258d96c0076a0f59353014f2f9261ccbb7cd1257004fea5402a4fef223",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.9250872
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/payments/PaymentServiceImpl.java": {
+      "fingerprint": "1a122cd752344b8aa73592efa7849059fd75d9d4ae3742eb1d6fbceef62c0578",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.9569502
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/payments/TransactionService.java": {
+      "fingerprint": "6087599971b17928844d73362803fa78262310654ecac27cf2c369770a6f44b4",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.942031
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/payments/TransactionServiceImpl.java": {
+      "fingerprint": "affe3853d456618841a1a18a263e50fffff12c3b5204e47d84947c4a8ca50961",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.9903278
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/reference/country/CountryService.java": {
+      "fingerprint": "720f90d3ee06300a816e326e750d7f9ac5f1f7fed27491db19bffbdc856c8251",
+      "mode": "resume-hit",
+      "updatedAt": 1782810671.974609
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/reference/country/CountryServiceImpl.java": {
+      "fingerprint": "993297dd998354bad97dff5667266eca9a3fb035182945a6202c85ea9a122c89",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.0008101
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/reference/currency/CurrencyService.java": {
+      "fingerprint": "2f72433f550985ebb156fa833ce4d8a39d40572fb0dcbef84ce1e2c241106bf6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.0182593
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/reference/currency/CurrencyServiceImpl.java": {
+      "fingerprint": "dd5e58eadaa69065698c63a612f582c67f9b641654ab1b4899e8c2eeb22d1293",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.0320199
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/reference/init/InitializationDatabaseImpl.java": {
+      "fingerprint": "5077953f0133a9ecdd0e33453e0582b321706e3985b4d211a21ce90b9ce52fdd",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.0649855
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/reference/language/LanguageService.java": {
+      "fingerprint": "8536acdb7359236c4d516b9c5cfdc63e889bf2a72e77270ab7737bc41488cba6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.0482337
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/reference/language/LanguageServiceImpl.java": {
+      "fingerprint": "5227adb5d6bb0afbe8efa58418b8b4cca3e327494ac941de7dda5bdc5e312319",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.0977328
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/reference/loader/ConfigurationModulesLoader.java": {
+      "fingerprint": "47335686251ee731a55d1e4eccd9ba7a423a6558f66859a34099e9ddc5a712ae",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.11133
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/reference/loader/IntegrationModulesLoader.java": {
+      "fingerprint": "4f8e108e245a4168c8416dd40db43af2ae0a8aeb97e2a0936a6cbf9067fa59cc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.1273196
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/reference/loader/ZonesLoader.java": {
+      "fingerprint": "ccfd49c0fecf522405e8013802aa3a72c88151aebf1df47c8a3f5f2b970402cf",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.1460724
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/reference/zone/ZoneService.java": {
+      "fingerprint": "5ae046658e3092a14c0a9b5965de6c090f418b5dfab6ff0ee0b6c302754470e7",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.1591132
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/reference/zone/ZoneServiceImpl.java": {
+      "fingerprint": "1bfcdd6c24940727541e3e7b936833208c038854f4ed884246ee1edd0bfafe79",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.1779468
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/search/SearchService.java": {
+      "fingerprint": "79a5c13a9a44be92f82a1cf0c8cee4ba95cd9a240fdb9737d2289e845dce7dbd",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.1915293
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/search/SearchServiceImpl.java": {
+      "fingerprint": "20c79462969fd1ef77613b8a8767062d9a2ce30b2d22b2514511566433244e0b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.2272065
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingOriginService.java": {
+      "fingerprint": "c630d3b7ea34626e0bce0b21d7643d02f0c98396b5819679342eb4b59a326693",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.2086504
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingOriginServiceImpl.java": {
+      "fingerprint": "aaf0116c4875a4af0a84ad379275e44ce76fa23118945c4ab351954fd92fa0a2",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.238562
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingQuoteService.java": {
+      "fingerprint": "1a3ec58b52a965b16eeae9259f7b99ff358364de9261d3b225fc258ef06b657f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.25565
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingQuoteServiceImpl.java": {
+      "fingerprint": "9ea3659b1e8d1262589626d525afd5f0f606721a059851305b15138ab35e94dd",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.269075
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingService.java": {
+      "fingerprint": "c913b16d42b37434467317fea8d318d63133ac68650f0382d527ce97c3d67d12",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.2930493
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/shipping/ShippingServiceImpl.java": {
+      "fingerprint": "71f4411583cb8ec85f19adab1806c0083111041d7a1b02062c164c861861d614",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.3094478
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartCalculationService.java": {
+      "fingerprint": "b40a1d5dd8b75059815a44f35e5c5ee56985ddb13417a167e5369d3c89ab6bba",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.326721
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartCalculationServiceImpl.java": {
+      "fingerprint": "4bc77016e4e62a012233c611759f24cd045cac0e8369feb67cf9a85e6c41d38e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.3343422
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartService.java": {
+      "fingerprint": "5faba96f4734778a32f190f621a808684e5547bd612c22f15c8b4af6597e4d5e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.3587165
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/shoppingcart/ShoppingCartServiceImpl.java": {
+      "fingerprint": "3d6c5cfef2acb4ecc15232a24b7945544651c3f02cf5a3a5a467ce45630ed30f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.3879895
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/system/EmailService.java": {
+      "fingerprint": "796d2e4448805d5bf827d836fe15016d97bfcb3f56c2fc6abede9698c12bcbcc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.3744383
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/system/EmailServiceImpl.java": {
+      "fingerprint": "4d2d83f00f2e033b4747e2e1fda7fa8da723337de5637c4be35ac714b99d63af",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.4158018
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/system/MerchantConfigurationService.java": {
+      "fingerprint": "c9c98d819792860411e62c7f5078470ef050dafb60c1db36cd4277579200f015",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.4066393
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/system/MerchantConfigurationServiceImpl.java": {
+      "fingerprint": "737ebe4871c234bf6509d623228e1988d4cdfc983823f294858af7ebebd52c80",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.4413674
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/system/MerchantLogService.java": {
+      "fingerprint": "723eb832a91537818c1731869aaa08e5ce32b41c276998da8f0ec9f8153b3288",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.4445288
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/system/MerchantLogServiceImpl.java": {
+      "fingerprint": "f38f231087a7347a14c6b21b85c5c9dbb189cd59325be3f24daea2e02e3b3496",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.4720612
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/system/ModuleConfigurationService.java": {
+      "fingerprint": "cedeb8a1b2bee955ec34c94b68b680a8c138fbc181243df3d2567b859db38443",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.4798584
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/system/ModuleConfigurationServiceImpl.java": {
+      "fingerprint": "97a46f73cd295c7bdfad875aaae13607977e8a591d0cec2e7134f63a8b2efc8e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.5057101
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/system/optin/OptinService.java": {
+      "fingerprint": "7a4f29002ca96808ee37665449f5117bf6704d93ca4ed90c25f400fa7317977e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.5168557
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/system/optin/OptinServiceImpl.java": {
+      "fingerprint": "342216868dd2f17891a6093c7ffb55fac3386e7a0baff4f47b4ca2772727ead1",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.5335991
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/system/SystemConfigurationService.java": {
+      "fingerprint": "da5dd9c5a2e25f666545d6d2049269a0bbb9c154ff78573afaa033e20c98dc82",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.549938
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/system/SystemConfigurationServiceImpl.java": {
+      "fingerprint": "db7b06dff431356ccba37cc2860e3ea0c2f71dc8effc877522a13bc57a658d09",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.5671496
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/tax/TaxClassService.java": {
+      "fingerprint": "99018cbe9ad1ecbd9d5061795403bea358fcb8b8f97d6910ba5e5639baea60a5",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.5818167
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/tax/TaxClassServiceImpl.java": {
+      "fingerprint": "4e23b5e31a8fa8cfd5b86f05735586d18115d6522b9993806dcfac7f694b6bbe",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.6027722
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/tax/TaxRateService.java": {
+      "fingerprint": "e5974cb8e41290dc2efcb7afb8888f74be5c9f397ed8a9cf131764ae1c8166bf",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.614342
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/tax/TaxRateServiceImpl.java": {
+      "fingerprint": "4d48ed8102e66da075a15ee8d28c33b7b561fd95467350fac8ae451e290282ad",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.6319797
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/tax/TaxService.java": {
+      "fingerprint": "a3c955a3998cf1deb631324725a3dc674a39ef1b98447c7cfb487a8271a2b27a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.658611
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/tax/TaxServiceImpl.java": {
+      "fingerprint": "36069aa6e1b5d23af62a3e6fff3ae5abfb92bbd20abaf23adf96fd90bee785d4",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.6674178
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/user/GroupService.java": {
+      "fingerprint": "2c6f57b47a47f9513182cb4d48e37da53143d141ea26dc64bd17a605f55c1741",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.7082205
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/user/GroupServiceImpl.java": {
+      "fingerprint": "98ebf17d7c664c1df2bbb0f170e53e1ce5f3c4642ab0ed6c56460b9e1c1edd67",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.692747
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/user/PermissionService.java": {
+      "fingerprint": "98fb0ae56985e059fcbf769d67e9fa9b937513742aa1982dcb1574c827ab7983",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.740784
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/user/PermissionServiceImpl.java": {
+      "fingerprint": "30ff9fd94af5b9cc8a37ea218fac1d3edece6930830cf714d18800c212b3934b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.7248402
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/user/UserService.java": {
+      "fingerprint": "273c330f8a5730c01ba74b4f71b9a5304e9bab80c9e864a6ad885c42eeaf9e7b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.7582517
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/services/user/UserServiceImpl.java": {
+      "fingerprint": "8bd27dcd8f92a4769b128e6e12f992de03f717d7dc4d694007d8039549feb970",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.7746487
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/utils/CacheUtils.java": {
+      "fingerprint": "0d994612277675eac2e8f355b11a6fffe9b77783b042782da8d5ba03c637e5e4",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.791067
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/utils/CatalogServiceHelper.java": {
+      "fingerprint": "3c00a9ddb4b49a669b7a26a9797da350ab736faa1dd65d78cdead21c8dbf3eea",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.8042495
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/utils/CoreConfiguration.java": {
+      "fingerprint": "fbe3dbda5eb64ad5b427c690e4ca50a7a03d0779074257ad8bfe38c054e14d69",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.8212502
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/utils/EntityPopulator.java": {
+      "fingerprint": "d6107e63330c9f46ebaac96c82a6c27142d1e6f01e29f708d40c243f6b5e2c43",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.8396769
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/utils/ProductImageCropUtils.java": {
+      "fingerprint": "af731daf580c336c4efe6eac36bd33ae22c8d87503cc3ea2dd54501bdd6698af",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.8523233
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/utils/ProductPriceUtils.java": {
+      "fingerprint": "6615a22b520ee8e14b38d5a5b9457e19da13f632cf422c930027869588114801",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.8716621
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/utils/RepositoryHelper.java": {
+      "fingerprint": "0e1895507e5390c31d56166e5f5e783bcde5188dfd81d38244a8ca8266785968",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.8839803
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/utils/SecurityGroupsBuilder.java": {
+      "fingerprint": "7250f85df8efdd21792530b7f8c00a44105d31b1cd62ddfeac7dca715e266459",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.903364
+    },
+    "sm-core/src/test/java/com/salesmanager/test/common/AbstractSalesManagerCoreTestCase.java": {
+      "fingerprint": "dd12cb6a24af5a57597c5a0e37ed7c1e4c8d848b492edcb22e9399a3a4e5f58e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.9349077
+    },
+    "sm-core/src/test/java/com/salesmanager/test/configuration/ConfigurationTest.java": {
+      "fingerprint": "61c46583c479eaae26273f0b40114c407178495d42cb973f0df3ea24e9e318ad",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.9184675
+    },
+    "sm-core/src/test/java/com/salesmanager/test/content/ContentFolderTest.java": {
+      "fingerprint": "0acbb8b76cb848511579f9d9f4bcc7f36375cd2b2217349b917e80d2ffc340e4",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.9523764
+    },
+    "sm-core/src/test/java/com/salesmanager/test/content/ContentImagesTest.java": {
+      "fingerprint": "02752f044ef43ff3a06f04c04c81254e38bad19024c35c52b2f15df8fc95621f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.970618
+    },
+    "sm-core/src/test/java/com/salesmanager/test/content/StaticContentTest.java": {
+      "fingerprint": "dba61f9f2f628a7cd7b02cd8eb10ddc25548173ea3f4e21dc8863bf875a696b6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810672.9953978
+    },
+    "sm-core/src/test/java/com/salesmanager/test/references/ReferencesTest.java": {
+      "fingerprint": "fd8a18ea156d27ee40c01abd893c0b990650abad7e7de2f157cef63203e64bf1",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.0297573
+    },
+    "sm-core/src/test/java/com/salesmanager/test/shipping/ShippingDistanceProcessorTest.java": {
+      "fingerprint": "a2f2afbdf0c8fa477eb28ed9a88380d19fc3562ce7b5c58f17f8307b22b1b268",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.0142488
+    },
+    "sm-core/src/test/java/com/salesmanager/test/shipping/ShippingMethodDecisionTest.java": {
+      "fingerprint": "035a305676da8e97ebeffdb6ce8d6c54ab9169fc43733ff2357f4adc67dc1386",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.0446284
+    },
+    "sm-core/src/test/java/com/salesmanager/test/shipping/ShippingQuoteByWeightTest.java": {
+      "fingerprint": "fd48c8d6cbf3d0e002921d11f6e956871e13b647550c0bc87d6d893935876e4b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.059783
+    },
+    "sm-core/src/test/java/com/salesmanager/test/utils/ImportIntegrationModule.java": {
+      "fingerprint": "e0081276af91473ae5adda05b63e54fdf288bb79fec67f7c82f5590002cc536b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.0663655
+    },
+    "sm-core/src/test/java/com/salesmanager/test/utils/SendEmailTest.java": {
+      "fingerprint": "8dbce75353b1cc5a7917be734ccd5b49726dd62ba8379d930658ae9aa8e3f765",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.092545
+    },
+    "sm-core/src/test/java/com/salesmanager/test/utils/UtilsTestCase.java": {
+      "fingerprint": "9862b662104045b1ed0e679d13e992e818b65d7b3d157b5c72464564657e9419",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.108805
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/business/exception/ServiceException.java": {
+      "fingerprint": "cf9412cd2bb8837e54bcf79ed21d2436311432cc57f3c7dadbe1338a65e19e7c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.1238844
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/catalog/Catalog.java": {
+      "fingerprint": "8a3d0801a3eb4b3e1bacdbeedf1e71eda9616fb3549108f89d059bcfdde4411e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.1412458
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/catalog/CatalogCategoryEntry.java": {
+      "fingerprint": "b4319251620a693bcbe0fa5248f84ab97a65db5c049285da8aca2a42ab9dd1b4",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.1563418
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/category/Category.java": {
+      "fingerprint": "e78f0a2f94bc191666a5a5cb74f45af190a98a3f251268a289fe216b2f4e5948",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.1733866
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/category/CategoryDescription.java": {
+      "fingerprint": "a1ac80c217b634615d22cad5612a53d711771746ca2fb5fc8cec21047d5eeb2e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.1897829
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/marketplace/Catalog.java": {
+      "fingerprint": "67245c9503eef56e39d93517a56b92687548f183c31d602ffbe778d15bcc17cf",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.2074044
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/marketplace/MarketPlace.java": {
+      "fingerprint": "e9ac96037f9758ab08530b96b6682ffe382e405b0b14d4d9cef741b6f1e8a540",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.224612
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/attribute/ProductAttribute.java": {
+      "fingerprint": "9bdc2bdba4838c651163ec2461a6b31710c85f1d0f0c3fc7287c87b2eaf1dda0",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.241494
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/attribute/ProductOption.java": {
+      "fingerprint": "20b82c1262086491224fa8de43231e801034730f4a6a71af3aabe33b6bdf4902",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.2591295
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/attribute/ProductOptionDescription.java": {
+      "fingerprint": "8aa46a088cf3579be0a9a8857b5e9c80ba9325b1aa26cdf2ebc716c9897b5a20",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.276025
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/attribute/ProductOptionSet.java": {
+      "fingerprint": "003b88bc03c05a100e579e7f9685b531922ecd0261bf4312418c76346ec14f2d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.2927406
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/attribute/ProductOptionValue.java": {
+      "fingerprint": "e7e3a88e9ddb0d9b1ecf229de7f221fa8eaf219453caf47ccfa2547f6a709b7f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.3092022
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/attribute/ProductOptionValueDescription.java": {
+      "fingerprint": "e30cce077a64df8dfad00a54f9d43d3affa9467cbda4eb047cffd80181224bb3",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.3260787
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/availability/ProductAvailability.java": {
+      "fingerprint": "f5ddded801ed2ef0cf24d55b88d97a31c88c1388a144a0519f7a24d7fb6f1360",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.3430398
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/description/ProductDescription.java": {
+      "fingerprint": "7b4caff9dab2638edbc930ef85ea9f97b7cc191dec0837ca8c8108840845cbba",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.3606203
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/file/DigitalProduct.java": {
+      "fingerprint": "2b7ce8c9a702d3ffeeaaec8c09a09065ad1f196b4f28b3d71c78af2207d47d68",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.3777316
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/image/ProductImage.java": {
+      "fingerprint": "fef78618fa7d98ff73062d4f0e1e28514514e31a61338e39192d1e7251c4ccf9",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.39473
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/image/ProductImageDescription.java": {
+      "fingerprint": "29f25967a3a378ad629d623528b1e59f7b307be7fb1f5a6a3716e0dbd956882e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.4125452
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/manufacturer/Manufacturer.java": {
+      "fingerprint": "69b4cce206404dc2feec4855578bded171a1c8d016f64a58d826b6ed6d755ac6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.4287992
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/manufacturer/ManufacturerDescription.java": {
+      "fingerprint": "9558417f7be0b745640941c57d177c182552b21cb8e8404175af1a2fbc20a821",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.445314
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/price/ProductPrice.java": {
+      "fingerprint": "9bf579bb027a264033ba718af37c28910c9ea2557ce4add1ee804cec7b5e11f3",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.461872
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/price/ProductPriceDescription.java": {
+      "fingerprint": "948f80700ee7b40de6162ee2f3604298d44245da7f87eeb099bcbf899073e6c9",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.4808095
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/Product.java": {
+      "fingerprint": "993f6fb7bb058dcb0b13cbec3ac06189ef65182f97c433b68fa318b2f3dceca1",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.524887
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/ProductDimensions.java": {
+      "fingerprint": "e96eb2f20e504484a454d8c553e7e7b5023706bb23ef552166eade426f7bb167",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.5027986
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/relationship/ProductRelationship.java": {
+      "fingerprint": "21bc127f7fe66da4e7c2cad26c3bc3c3f7d1b4f6219a4476fa3a8558a4c4a5b3",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.5498943
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/review/ProductReview.java": {
+      "fingerprint": "3b46ab003243298ae3a79e33faa02b23a099d1b834811761b0ffe886cc6edcf6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.5693576
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/review/ProductReviewDescription.java": {
+      "fingerprint": "ab4ce55d8993652068e4b1edeab208d4ad1e9d226421eba8a77051cd52ae0beb",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.5884855
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/type/ProductType.java": {
+      "fingerprint": "d194af2a4940616673cec69cd005123f546213155b23cdfffd7889e39098d155",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.6064668
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/type/ProductTypeDescription.java": {
+      "fingerprint": "49e39f739d2b45f9551aba96f1a87c8496883dd23077f6c7a0108451b8fe9dc0",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.625086
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/variant/ProductVariant.java": {
+      "fingerprint": "56bb1768dfcffc0690399a8202364c0930e98d99a06d986bf6ec71523952424f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.6431777
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/variant/ProductVariantGroup.java": {
+      "fingerprint": "ba4ad7bcba61842acc88cd944f0fb55c6ec45d8984342991265e9c7e0a259cdc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.6612074
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/variant/ProductVariantImage.java": {
+      "fingerprint": "cfa06c24da8969fa9dfad5d69f90f30435d7801957e1550bd732858db9770e0d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.679726
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/variant/ProductVariantImageDescription.java": {
+      "fingerprint": "16f54fe227485cb04e1a3c5d6c2b1289ee0a9edc2d2611e8bfaeb41980ea3007",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.6963236
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/catalog/product/variation/ProductVariation.java": {
+      "fingerprint": "1fa8ed16fa6879b7561d5fe6f3d1d3f229275ff40e4c5c6958503c8447d27171",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.7337263
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/common/audit/AuditListener.java": {
+      "fingerprint": "05fd5a1a80b37abef6b1db7696cbc4c0c7b283706d3687adfa1ee19461daa3d4",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.715744
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/common/audit/AuditSection.java": {
+      "fingerprint": "7f33d22a85ce7a328db5ac69107d515d41700ee22a6ec8b8df9b7719287d65cd",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.7515514
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/common/Billing.java": {
+      "fingerprint": "50aef52661a0c3ddb25830b5356b6ee23561baaec7f618fc044d3b234995f205",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.7683375
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/common/CredentialsReset.java": {
+      "fingerprint": "d30539104c1161561df123f194cb1733accee55c7d7f1e78c1ee9fb619d81507",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.786622
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/common/Delivery.java": {
+      "fingerprint": "00efd3bab2d93431e7297cdf0e7911ab4e34c403191e3d3dfd5bb655986135f0",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.8006587
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/common/description/Description.java": {
+      "fingerprint": "0f99777636af3271679d598656519e32417604b0201a3c2c4ad06d20cf900311",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.8304417
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/common/EntityList.java": {
+      "fingerprint": "12da5b1c1dbdd288a2d895801b08f065b439c33f9d2a08efe95fc8d1d4377a04",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.8156383
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/common/GenericEntityList.java": {
+      "fingerprint": "a7a4d5474a7665dbb2821a6e67cc6a2d2a0ce41775c665945aa95f7e42247655",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.8618128
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/content/Content.java": {
+      "fingerprint": "00ad8796ee5ea446ef31bdd6ba0d9ce7adab9b50d28fa945053607b04afb2be6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.8839839
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/content/ContentDescription.java": {
+      "fingerprint": "a453d48c380fed21c9bb7c17c64db8f94d73682255622cc51a1bd5b09a310bab",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.9037833
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/customer/attribute/CustomerAttribute.java": {
+      "fingerprint": "89d869f1befb4952c2b94b1d38b80ccf9f40006778de8a910af095dbc0625aa6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.9260528
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/customer/attribute/CustomerOption.java": {
+      "fingerprint": "640867157781656fb0e7d3d7c5418aad6771b15d3221843982537aa0dae8e5fa",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.948171
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/customer/attribute/CustomerOptionDescription.java": {
+      "fingerprint": "0f1147ee8c09a3077fdf40672007de1488bb87d43953e603b31b702f7b04e4de",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.966222
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/customer/attribute/CustomerOptionSet.java": {
+      "fingerprint": "32c581c09b4edbf757d0f5ada1323903a057fcf22ad81e2244aea93698ce515e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810673.9813893
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/customer/attribute/CustomerOptionValue.java": {
+      "fingerprint": "a2cfcaa8c99bff74eba13fe4b7b12385113c04c55464f60f1f0fe53c82b01888",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.0009146
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/customer/attribute/CustomerOptionValueDescription.java": {
+      "fingerprint": "e402635077a325df2fd5c390f72594d9bae20f7cf24925ea97a267367074caa0",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.0185864
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/customer/connection/AbstractUserConnection.java": {
+      "fingerprint": "040540c4f9e70b42d546b8e4e44e227a3bf61873ee593114e3d9d7af9d8a7190",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.0329528
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/customer/connection/AbstractUserConnectionWithCompositeKey.java": {
+      "fingerprint": "4d605ab74d8100e762d9837933158d7d6ac3a4ca3e7c075bedad35851a68dcd8",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.0479932
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/customer/connection/UserConnection.java": {
+      "fingerprint": "6ed4c8f5f440e1f998ea8ca1ab5fb0e6bb8518f97f2271097829d8104ec0aa3e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.0638418
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/customer/connection/UserConnectionPK.java": {
+      "fingerprint": "c33a09baf4d79e8724831be83f693c5f30e4a1ed89b88400d30ce928c93709ce",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.086995
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/customer/Customer.java": {
+      "fingerprint": "e41bf97f545228613feb7fb264cb7642e1d7cf47137608f8c7289d6103bd3f57",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.117298
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/customer/review/CustomerReview.java": {
+      "fingerprint": "e1e8ec485df2c4e39e7ca0936ea19025f9aeca5c7dac1b98e993572acb480ade",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.1039836
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/customer/review/CustomerReviewDescription.java": {
+      "fingerprint": "6bca137de2dec85b2cbe2c95609af543e84719412338ef412be1f99a663d82ca",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.135085
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/generic/SalesManagerEntity.java": {
+      "fingerprint": "1b3df11cdf2d098739e0ffb7c0d7d21a1191f23bd7a6f9eaabc84bac5260618c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.1488528
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/merchant/MerchantStore.java": {
+      "fingerprint": "fe3c5df2ed644f7c2d0c26ebe27be62742d1dd51e093fa7242a53dc4940caed6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.1808188
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/order/attributes/OrderAttribute.java": {
+      "fingerprint": "d5e72c6e3f20b4ab47b475216a13df3cdff11f71c4d62c578112596309e131e4",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.1703768
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/order/filehistory/FileHistory.java": {
+      "fingerprint": "2ef21a4a2b57cabe2bfc46a6b07844c99f948a4592aecbf464f0c181ce7a97cf",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.1965017
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/order/Order.java": {
+      "fingerprint": "32fd49cf11fcafb04776c734c77b80acef101aa6d4f85d33b988f52d811de5bd",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.2220838
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/order/orderaccount/OrderAccount.java": {
+      "fingerprint": "e3bb8e3b3f74200a6c62f673ef130543864e0e0f373d628d9080da0f37ca06e8",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.2546651
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/order/orderaccount/OrderAccountProduct.java": {
+      "fingerprint": "0116a44d96376d6dea9b49bb4784d9484aaeb30aeb6d1a553394adf15ce7835a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.2387097
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/order/orderproduct/OrderProduct.java": {
+      "fingerprint": "cc2ed0fbe774d9f28e888a11ac3d871356a617c770765cc098cf68091177c3de",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.269445
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/order/orderproduct/OrderProductAttribute.java": {
+      "fingerprint": "bc6bbb9cf668761f93ce68b43f4b06f28ea15236348800d1fb5d780d7008dcb1",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.2864769
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/order/orderproduct/OrderProductDownload.java": {
+      "fingerprint": "7449728e6b42755d2a67261ad87ab2791c2f55cd314bf1f938794330a653cf98",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.2960062
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/order/orderproduct/OrderProductPrice.java": {
+      "fingerprint": "a41baf316cb7ae2e332f3e24764f42b430ed521e832aff3dbd8ac8f1c2390e4b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.317633
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/order/orderstatus/OrderStatusHistory.java": {
+      "fingerprint": "fcba77bcb1fa139954c1d6302fd46c734878eaac2979551bfd3996ee1084861b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.3388324
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/order/OrderTotal.java": {
+      "fingerprint": "54aa76ccce47038b1a7617fdb57dbd8e72be34804c090c4d305db8523e37ebd8",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.3545215
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/order/payment/CreditCard.java": {
+      "fingerprint": "c1a588c97cd79104d1d3774290824238a5930037c2bc4fc32720b715bae9d3fc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.370699
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/payments/Transaction.java": {
+      "fingerprint": "9ce951b61d52721b68480dcb38a7032a63a853c112c302fffa579fc31596ac80",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.3860564
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/reference/country/Country.java": {
+      "fingerprint": "9f1bb1a9a43d1cd009e2f7abc9e4c94e559541830e0dcdd8a78d090fbfc5e379",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.4038413
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/reference/country/CountryDescription.java": {
+      "fingerprint": "ccdde4de2582fe73bffe817022134a5c578a471bdf5b23fd102ff5f5eadbb106",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.4190462
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/reference/currency/Currency.java": {
+      "fingerprint": "8adf1913cda18b9a58bd7d61dd3c5f4fde4c44e0699f015ec032eee243978ea1",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.453152
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/reference/geozone/GeoZone.java": {
+      "fingerprint": "29b1ed97f79a82148f1fcb2331019d07eb6c49ee5a62df4db7d1f62335a4c314",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.4351985
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/reference/geozone/GeoZoneDescription.java": {
+      "fingerprint": "3489b74a8c1052d99455af06e14d9bdac649d4557145dcb26e115a5ec54f80d2",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.471355
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/reference/language/Language.java": {
+      "fingerprint": "0be651c27a908d2df1b561b5945bddfca4e5c494761660a26ca964158e37e69a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.4865098
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/reference/zone/Zone.java": {
+      "fingerprint": "3e6cbce105dfc47ca871cdfa6356d15e988f7dddf8b87442a8172c10ec7b2575",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.5052285
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/reference/zone/ZoneDescription.java": {
+      "fingerprint": "5868ba9d662019729263c7609cc5637c74ce7c0a41d75ed605020bc843cf73ba",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.5251524
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/shipping/Quote.java": {
+      "fingerprint": "1c1351d85ed113af83507ec77f75ebe6942a47f4b22200f134741f6832af8443",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.5412314
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/shipping/ShippingConfiguration.java": {
+      "fingerprint": "5e4a7bcf649870e9f263744d1f28c39fbaba91ad8c1867cf52c62ad61835479c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.561846
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/shipping/ShippingOrigin.java": {
+      "fingerprint": "2cbc4a88c86f7d4c21eaf444966aa2204f537d7c77a77434af4073ccfed457b6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.5811663
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/shoppingcart/ShoppingCart.java": {
+      "fingerprint": "0a5119ab34a77bec5c3a7fcba5fa89c8259ce1f3181cd9d41eecdbc916856a17",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.596967
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/shoppingcart/ShoppingCartAttributeItem.java": {
+      "fingerprint": "45c6b8a6fb48b99ed9ef0d98823ee17bd15a0fe2d37099936054305697ca5b84",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.6161606
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/shoppingcart/ShoppingCartItem.java": {
+      "fingerprint": "dd18ddabff1c7241cda9f7beaf716d18c84e32bbc4a82b0c38faeb8a588488df",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.6341388
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/system/CustomIntegrationConfiguration.java": {
+      "fingerprint": "30ecc461d24c3fcc111bf3e832ae964717a1c18b3078be82e93c2d5416eacc93",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.6507869
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/system/IntegrationConfiguration.java": {
+      "fingerprint": "63a8ea33295072d1b032426ec1416ca1076fe5c8950fd67c92c44914e85002d4",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.6822767
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/system/IntegrationModule.java": {
+      "fingerprint": "aed915066c6ce0375bf972caf6330ed4c491b9627ec661cadd06c244f0a707a8",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.6666071
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/system/MerchantConfig.java": {
+      "fingerprint": "22111e72c858db1c5735209af9f0885fb8c6f4e0248a0c0f9ac2449fe4478b4b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.7138627
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/system/MerchantConfiguration.java": {
+      "fingerprint": "090e266b7a0bc4249313156758354c87d700c4ee8de29397c5246cc3e141e0a3",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.7016926
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/system/MerchantConfigurationType.java": {
+      "fingerprint": "f1d6aee2c68e85b1a0b82e351b047aa0e64479f022f5c1032b9fc57ad7ee5065",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.7337265
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/system/MerchantLog.java": {
+      "fingerprint": "303a47b07d8bb779151c8e4b9ec0021395d35176b59329cb188f7117ce11ac90",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.7609203
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/system/ModuleConfig.java": {
+      "fingerprint": "94d7ae80e413f26bc697e9f1d4f67ceff52871350755e7dee437ffd3f96b6fdd",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.7490623
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/system/optin/CustomerOptin.java": {
+      "fingerprint": "158b656d32ec75313533bf21c3e515aa5aa6d6a8455ef60fea30e0f9e9bdbfa0",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.7871463
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/system/optin/Optin.java": {
+      "fingerprint": "08ccfb535051cbe29779c32818320dde95656e4b466aaba380a3362d78442311",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.8018973
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/system/SystemConfiguration.java": {
+      "fingerprint": "b517fd56d4f2f603f5b4ef23718f415c579c5ab3bc3082cca57725dcf57d0b20",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.8188086
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/system/SystemNotification.java": {
+      "fingerprint": "a06421ac7604ea71697dc54989e9362c94e34ebe50f09d0e1230082f7f5eb453",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.8360453
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/tax/taxclass/TaxClass.java": {
+      "fingerprint": "687464f87616f8d8e3dac27a84a86ad114f21973e983d97c72521b99b9f015d3",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.8508947
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/tax/TaxConfiguration.java": {
+      "fingerprint": "3262b0443c22b8c511b5df24af5267ef70582784f6981291b8cf92a2595a4909",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.860863
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/tax/taxrate/TaxRate.java": {
+      "fingerprint": "ce27f7db4033ae23ffe5ddaa11f46996276764dda8b446529a5de57395e39295",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.887584
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/tax/taxrate/TaxRateDescription.java": {
+      "fingerprint": "b1fd78dcc789d5b051983c71d95ed325ea1fc274c28ab7814def9a9338664340",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.9054217
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/user/Group.java": {
+      "fingerprint": "4f5e29818a0c65de53efb122bbb9404a34c9eeed3c2a88159a4dfc15e68ec323",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.9412937
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/user/Permission.java": {
+      "fingerprint": "c757f0aa6da2e698581126e3408ff319362dba28b89f9d083a41ee2c80701926",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.9194753
+    },
+    "sm-core-model/src/main/java/com/salesmanager/core/model/user/User.java": {
+      "fingerprint": "03832e138a88669eaad23a8771ef55ee0be077da13c497de49509ad801fca1cb",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.9851274
+    },
+    "sm-core-modules/src/main/java/com/salesmanager/core/modules/integration/shipping/model/CustomShippingQuotesConfiguration.java": {
+      "fingerprint": "94b8d2662526145371369966a40b41dbaa2acdd009ab41b4145879651a7aebc7",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.968316
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/admin/security/AbstractAuthenticatinSuccessHandler.java": {
+      "fingerprint": "07d6b28dc333d318b863326e2f6dd02cd8c8b7995d14354df575d477e62e7a0c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810674.999001
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/admin/security/SecurityDataAccessException.java": {
+      "fingerprint": "5713473e1a8c7f62e1be33971834583f2a626ce3417fef3b643f5418f6bedd1f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.0285094
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/admin/security/UserAuthenticationSuccessHandler.java": {
+      "fingerprint": "9570485fd09f3a456a06467f6c10f258f0005254ee5babe234b245f63383f443",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.0452425
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/admin/security/UserServicesImpl.java": {
+      "fingerprint": "9ec491da2eb8b519f4430646b150237373b9cc976c3bdc69947d5694b4071bdd",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.0625305
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/admin/security/WebUserServices.java": {
+      "fingerprint": "26dd73a2bd96a165b9a99274f3d87a177505ddf00d52251f7cc1ab4e82aafbf3",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.0811431
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/application/config/AsyncConfig.java": {
+      "fingerprint": "2497dfbffe035d469860c995b4d80774dcb9cb6a85ec6307ad7b6d796ac41ce3",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.0946841
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/application/config/DocumentationConfiguration.java": {
+      "fingerprint": "7a4907abdc19807cee0ba98223927e30d1a43f77056f9406282045ab3c7c5c94",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.1103516
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/application/config/LanguageArgumentResolver.java": {
+      "fingerprint": "e9e849c71e4fe85101365f1cbe6bea96e3171ef7eb941fb74df3043d312a3861",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.158809
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/application/config/LocationImageConfig.java": {
+      "fingerprint": "b02df396c93c30df180e11e2b9ee8affd19f6e4f29859fa194b07c5c434fef78",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.1371477
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/application/config/MerchantStoreArgumentResolver.java": {
+      "fingerprint": "5f377ec09736ab5994ca5b443783f68c49d6e55a315bb6921f0f7004ea6e844f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.1763022
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/application/config/MethodSecurityConfig.java": {
+      "fingerprint": "d51bdae18b7b46e3442deb07f5cbf012ff1efc24c413aa46c7cc60b0a9bca5f7",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.1942515
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/application/config/MultipleEntryPointsSecurityConfig.java": {
+      "fingerprint": "49c90bfcfb3f334b40d3fb7adb7e3152861441caa89319189c00147ecdedfd7b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.2102022
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/application/config/ShopApplicationConfiguration.java": {
+      "fingerprint": "3eaca40b88b2e51f2b5f8c214b8d2dbedb19df69ee109df0eaf7539db9aab7c6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.2272353
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/application/config/ShopizerPropertiesConfig.java": {
+      "fingerprint": "56643405aa5d6bac84f4b542ace852d5cb0965df34ac7a21d66404bd4e5cfbc3",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.2455785
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/application/config/ShopServletContextListener.java": {
+      "fingerprint": "07461c9f855c5b018e479d531845077fddc945c532b5b2c95c8202b998ad5bc2",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.2642035
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/application/config/WebConfig.java": {
+      "fingerprint": "25fbfaa429e396709144a893e6439d0a88b02b728273a73960896a1aeb489af2",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.2927182
+    },
+    "sm-core/src/main/java/com/salesmanager/core/business/configuration/DataConfiguration.java": {
+      "fingerprint": "05e5afaaaac84c6d91ecc6d00d64db50050ee85cc01a32142baebf766c20c6a1",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.3318968
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/constants/ApplicationConstants.java": {
+      "fingerprint": "dc21cb182ce7d901860eac25322909f308fe805e4cc13005e6e86432bfabbb8d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.3246105
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/application/ShopApplication.java": {
+      "fingerprint": "d12da3194a1b5abf733ba8ec4e79ed6ba470d3196a3a6547aab2e6ece05e0270",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.3086455
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/controller/ImagesController.java": {
+      "fingerprint": "ec9b79bd7a0aaedf2b5be56f970e40bd7815162c1dc6888bced49ff010bb1f6c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.377545
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/filter/CorsFilter.java": {
+      "fingerprint": "e39f318209466709f376ddcf28a5b39882a032da4507fdf7f95b2f04f3f791cb",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.394639
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/filter/XssFilter.java": {
+      "fingerprint": "a88f4328a27f638a1ac0d55b7db63ba86c4be052af9c56373bc4fca8661e09b1",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.4126139
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/filter/XssHttpServletRequestWrapper.java": {
+      "fingerprint": "785b0c0f6bc93bf816f091225326475000d6662915d9d6de4d613ad6b49c63f7",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.4344761
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/init/data/InitializationLoader.java": {
+      "fingerprint": "3b53d8c102800f703a4d3ce0b3620356aef8753b325b935263a859d104b09b14",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.4790795
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/cart/ReadableShoppingCartMapper.java": {
+      "fingerprint": "4ea8fc78e27a36e06cf582453ec457bdef61098cd79aa3601d6bd02519fc554c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.4525595
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/PersistableCatalogCategoryEntryMapper.java": {
+      "fingerprint": "a506ba83492ac532aec68a3bedb09bec9bfd8df56360281d93cf30751afa5c01",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.5299702
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/PersistableCatalogMapper.java": {
+      "fingerprint": "0b0eade95892a17e152d8e12143da4412a5bf5a47efe8a83e90654ceef8b9575",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.5021005
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/PersistableProductAttributeMapper.java": {
+      "fingerprint": "f2aaf153f2117cfa590395dbdba2eef25d298012ade079a515ed7c26bc131da6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.5464437
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/PersistableProductOptionMapper.java": {
+      "fingerprint": "45c0ac998dc854f3b2b82b2cfd65dbc95b10a2043c3eec8b4d8a61b39c8f22f9",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.561415
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/PersistableProductOptionSetMapper.java": {
+      "fingerprint": "02c26723b693b7deca126d6ee9cdc6cb7fe0ff902c0e039d742ae01f92527ffc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.5865164
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/PersistableProductOptionValueMapper.java": {
+      "fingerprint": "61c72d3f4f43d06de79c0255a16ff372e88ea62e92d2019d7db616e4712bdc8d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.6028295
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/PersistableProductTypeMapper.java": {
+      "fingerprint": "3228c8b3e654a295505e3ff36dcddbbaac68602369d9fb22235a05e21d7e055a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.6244023
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/PersistableProductVariationMapper.java": {
+      "fingerprint": "e43b5afff9984e12f74ea9ea344728d151a993c888509bc95c4519e6fc244ff8",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.640625
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/product/PersistableProductAvailabilityMapper.java": {
+      "fingerprint": "ae2b2947e07082f84cb181a37ef18749606a0e519bc32d3d7dd5bb03d04a4d6d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.6568606
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/product/PersistableProductDefinitionMapper.java": {
+      "fingerprint": "d277b1d0012941002f41b40e8c44efb0aaf14668489ab6e9ff451df1ae09e457",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.6841972
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/product/PersistableProductMapper.java": {
+      "fingerprint": "ed6ed2596f84306f656fc7010059abf33569c0882d8b3113ccf647b1df37316a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.702338
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/product/PersistableProductVariantGroupMapper.java": {
+      "fingerprint": "004eaa0559171806981317b453906305fcd7d2352a3db983dd7029b7e1d75c6a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.7213128
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/product/PersistableProductVariantMapper.java": {
+      "fingerprint": "da83f1f30b0ffe488d445dbe0b7d7211b05b3298deda7528f01b4c7784081b2f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.7393057
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/product/ReadableProductDefinitionMapper.java": {
+      "fingerprint": "c6ec89714c84aed728469448aa52c1a8df220510e1a30a6aaee46c9392818208",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.7591052
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/product/ReadableProductMapper.java": {
+      "fingerprint": "7732c666a9519671c03bcb2a261aa910d2e0c8b28d386c0a5dce1c970e292250",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.7747672
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/product/ReadableProductVariantGroupMapper.java": {
+      "fingerprint": "d0b2485805d271fe098c5bdb1a531df6cc098ea29f6698bf1c58d51f74de9436",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.7969174
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/product/ReadableProductVariantMapper.java": {
+      "fingerprint": "17089cdf3a71ee76de89adcfe24fa9f32ac2d5def4d7e0675df81933940f2c0c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.812615
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/ReadableCatalogCategoryEntryMapper.java": {
+      "fingerprint": "c577ad7752ecf945eba7f0383ab98825f3fad531c8120c0307538d4156546600",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.8281453
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/ReadableCatalogMapper.java": {
+      "fingerprint": "e5069d542e7283afb55a230f10b95da377b2495cca56422cf1c1996de0f1c08c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.8440573
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/ReadableCategoryMapper.java": {
+      "fingerprint": "6b7a4b254ece426fd8947be0bcb00dcd6f20913b2da0f54c808e9b18097134cc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.8678565
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/ReadableManufacturerMapper.java": {
+      "fingerprint": "d9832ab49330995caa049aca606d862d873c83e83c800ef0b45d194116089112",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.8865285
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/ReadableMinimalProductMapper.java": {
+      "fingerprint": "1468a515c90879426e6c6f5310c51ead9d9d44f5c17333779210b9a1e5c82ed5",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.9037151
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/ReadableProductAttributeMapper.java": {
+      "fingerprint": "6aedbd9f4b529716370f18d323f7647089f3df8b3cc736c3bd64191e4fab1253",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.90932
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/controller/FilesController.java": {
+      "fingerprint": "7c887bd6b08c772448d2adf50ccfdfacf8306c163e9e6d2f2eae3c2f3bba107e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.3444812
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/ReadableProductImageMapper.java": {
+      "fingerprint": "cca5a2af55f2d59dc7fa943cf977d067fde81faff70db1162aa5ea55cf30d0bf",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.936161
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/ReadableProductOptionMapper.java": {
+      "fingerprint": "b4ceee72825fbc78156388cf4af774487a5cd39c71766d603b95aa88f04ccef1",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.9550092
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/ReadableProductOptionSetMapper.java": {
+      "fingerprint": "64caafb1104170315db133886a820ed0c36eef1df4195f33d2f0344fc26aeb2d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.995595
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/ReadableProductOptionValueMapper.java": {
+      "fingerprint": "881618e9f4a3e8654509426e8050437d52298e7fc5db98e029709c384284021f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810675.9777257
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/ReadableProductTypeMapper.java": {
+      "fingerprint": "258a0711c1200cb7ace156bdb1f10d2f443ac1c46107df92846edcd0dcc94e80",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.0133965
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/catalog/ReadableProductVariationMapper.java": {
+      "fingerprint": "31b18049b2b85c02567473eaf37aa2fbafff9e3666d007b94717db2460539dcf",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.0296302
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/customer/ReadableCustomerMapper.java": {
+      "fingerprint": "219de2da875555bd82d1507d24113526cfd670f45eeac02f089ab47ac1ca266a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.0459416
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/inventory/PersistableProductPriceMapper.java": {
+      "fingerprint": "3ae0d9e419b5c34f6e533e45aa5f8a49a2bcf149cd7d9d74c7afeef5e3b75456",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.0704625
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/inventory/ReadableInventoryMapper.java": {
+      "fingerprint": "58b927ff76a92399f1f1e6263577edd9212c9d45e7a41ee22711abd7c6f1bb22",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.0931501
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/inventory/PersistableInventoryMapper.java": {
+      "fingerprint": "62fe11c4281303f1d1ff9ca00f86ffcf28bc135b08c48f2438341592c373623b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.0615716
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/optin/PersistableOptinMapper.java": {
+      "fingerprint": "f2d9924dd1c765974fea28e656a8f93731014528b10216a8b6175b346dd724b4",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.1088338
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/optin/ReadableOptinMapper.java": {
+      "fingerprint": "bcc706c3b8639acec15407ada055f521e583c5fc802d8f9091a8d5aeb44f193c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.1302128
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/order/ReadableOrderTotalMapper.java": {
+      "fingerprint": "5a8c884f8a64e7c0560f4e5703f91f3120c9f162b2544fff546805087d6585b4",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.1618567
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/order/ReadableOrderProductMapper.java": {
+      "fingerprint": "d5b35f3be9bc164c52504f126304607489db526ba0e1834ddf2d6035164bbbc8",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.1462483
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/tax/PersistableTaxClassMapper.java": {
+      "fingerprint": "8e02758b5a3cd2060ea0de05b00baa942887bff8aa3048f52c6f39861f9d6a16",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.1776671
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/tax/PersistableTaxRateMapper.java": {
+      "fingerprint": "e68c6db3a92a7c147d63fa2096a2c3bb9952d72704c08b54e4f3c4a79c7a856b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.1941319
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/tax/ReadableTaxClassMapper.java": {
+      "fingerprint": "e4fdcb6f00982cfd9a73cad85e35fed3ea5c2db048bce24a8d12ccd3afe4dc32",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.214207
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/mapper/tax/ReadableTaxRateMapper.java": {
+      "fingerprint": "6ddf3d142ae0d83f3a7ddb3247262dbde9fffbe61dd4edab01e312280dee86a9",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.2304125
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/model/shop/ContactForm.java": {
+      "fingerprint": "b04aac94ba42d68dd9981e189c584477353b4a581aaafdc1d192828103557772",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.242506
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/populator/catalog/PersistableCategoryPopulator.java": {
+      "fingerprint": "218a48dfb160baa6bc83df1b6ea799fd079c96933e2367841e55af0e3dfb912b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.2628465
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/populator/customer/CustomerEntityPopulator.java": {
+      "fingerprint": "75b6e2e4178b3180dd78485ec881b68d6ba492289e66272894a412f4e9ffdce1",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.2962847
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/populator/catalog/ReadableProductPopulator.java": {
+      "fingerprint": "c87c44eedfc4b08c85e432290ed11a593d25d0bde53eac96f1f348441e1a0356",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.28056
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/populator/customer/PersistableCustomerBillingAddressPopulator.java": {
+      "fingerprint": "618f8f81fba18a093e818bb893e81ad0886eef19b2f03c8f785a43a90bde3e4b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.3287024
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/populator/customer/CustomerPopulator.java": {
+      "fingerprint": "75f517a18cace102436d325bfdd485a76623142455ebc8812a166d79913897f6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.3126934
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/populator/customer/PersistableCustomerShippingAddressPopulator.java": {
+      "fingerprint": "609227cc2150d424b9e9b26b420330e61cfa3e792e3e8546eff60f4a62eb0a13",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.3467987
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/populator/order/PersistableOrderApiPopulator.java": {
+      "fingerprint": "a1e63f716eb1348697e600c8cfff8d4a924c5442f2876632d8bb803d1b8d553f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.3625681
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/populator/order/ReadableOrderPopulator.java": {
+      "fingerprint": "95a151c70ded53f1d5f327272fedb0a9aadd463ebbc0605c1a23cb5b647c82bb",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.3766809
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/populator/PersistableAuditAspect.java": {
+      "fingerprint": "4a3a0c344a81f3fad807df6c1fa505a81b6042d44faae5c4ed33500f4b6bb919",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.3928938
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/populator/shoppingCart/ShoppingCartModelPopulator.java": {
+      "fingerprint": "65578b7eb6e102e68c2e1d1476f66482520e843f6a2119fcb5c10f04bec5e734",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.408713
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/populator/store/ReadableMerchantStorePopulator.java": {
+      "fingerprint": "aca8d07a0c797ac03baed2a36c3350bdb7f961eb0723c102b1d3a3519f186e97",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.4469597
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/populator/store/PersistableMerchantStorePopulator.java": {
+      "fingerprint": "5fe2bc8d13c3e8d3872deadb58447b3959f3d68805d12db136a81312ee83f60f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.4260979
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/populator/user/PersistableUserPopulator.java": {
+      "fingerprint": "7481c55d7c5ee63f08bbeb8feaa5d69682ba7014a05acbc2bd1be09e8026571b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.466649
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/DefaultController.java": {
+      "fingerprint": "570fd7c96404591d57eb17fc16046b9ff73dde6bc9d4fb0d64320a52ad97055d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.4880092
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/exception/ErrorEntity.java": {
+      "fingerprint": "e23a7f5726f30ed043105af479122a3dd425223334fc1810a6f7e8c8d5aba297",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.509165
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/exception/FileUploadExceptionAdvice.java": {
+      "fingerprint": "4521796491a9514512ebb8f5924e88c40cce4f3523634f3112ee842618eb4108",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.5275023
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/exception/RestErrorHandler.java": {
+      "fingerprint": "098c7615b44ace4b2c936258732b539f77ef756b9d8fe65ab7bcb414f92205ea",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.5504787
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/exception/ServiceRuntimeException.java": {
+      "fingerprint": "39693ef2d56a7eedc569f6124e6670a29bf9d4350a70c78c0b3e4c9c97ef7f92",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.5671825
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v0/store/StoreContactRESTController.java": {
+      "fingerprint": "c06544347a0999fce48bf7bde923851bdf2309f42543fb9625ed6520fc2c7366",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.5828745
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v0/system/SystemRESTController.java": {
+      "fingerprint": "5397bd25e235132427c659e59765d291448869c17979bbee911413870bb08931",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.5989754
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/catalog/CatalogApi.java": {
+      "fingerprint": "777c5431093ed979baa1c8343eadba470a86b1a70e4b100722138e82465f94ce",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.6216078
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/category/CategoryApi.java": {
+      "fingerprint": "0cc7ff0bf31bb50895f7fc1f1f4e7c208d778c4992ffa214a94ff73eb6480585",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.6351602
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/configurations/CacheApi.java": {
+      "fingerprint": "fac002c756a971d60db16c04c3cdea9b624518783b935409e624db43b3a3fa2e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.6577632
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/configurations/ConfigurationsApi.java": {
+      "fingerprint": "00536b635f4176d50849922435bea6f3e044efca2822edbe0b1dc1738269f9da",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.6735744
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/content/ContentAdministrationApi.java": {
+      "fingerprint": "772dff460d92a98635f1d9da471e54884ae6ddf90afab741d01db4bbe75ffbfc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.6889575
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/content/ContentApi.java": {
+      "fingerprint": "1941ffeeff391fbfa47bd8bf05510bf681c2286544eb5fed026c7e4bd83af6f1",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.7054627
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/customer/AuthenticateCustomerApi.java": {
+      "fingerprint": "fbe2d366dca696a48fb8718ac9f64efd8ad621763b5a00a729c40b90c03702de",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.7156925
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/customer/CustomerApi.java": {
+      "fingerprint": "020d63740f1534c1c46434f3b74f5c1d97c52e0731505842292a8b0cb1dd9d00",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.743037
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/customer/CustomerNewsletterApi.java": {
+      "fingerprint": "f80ab3eafbaa61cf23040e60817d0beb20b6f8a367f185139b7359c50b7c8f37",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.7608063
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/customer/CustomerReviewApi.java": {
+      "fingerprint": "e73c02303ee828f4d0233e568edd3a586c8cb178a0b98853e9b419288bffdeb0",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.7717726
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/customer/ResetCustomerPasswordApi.java": {
+      "fingerprint": "680903520c55f61aacc7ec7aa0974a3aecc8b40a820da72e3f03a48f53dc882f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.7920358
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/marketplace/MarketPlaceApi.java": {
+      "fingerprint": "e64d5a4a1f28dee37d2032aa915793c89f1a5cb54fd2424139b5978704d762ca",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.8096292
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/order/OrderApi.java": {
+      "fingerprint": "5dd41436db710d59fd78b5a9b0fbe770c123ac5e15f680e79adbe086c9b9894a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.8271873
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/order/OrderPaymentApi.java": {
+      "fingerprint": "d101343857c2b426c132a8eb6df76a7b90cc118cd1144513fd4867caf873552f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.84129
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/order/OrderShippingApi.java": {
+      "fingerprint": "043f86428e3ef5cc8f8a12258881f16d2ef2703b061480dfc300eefa965b4fb5",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.8768125
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/order/OrderStatusHistoryApi.java": {
+      "fingerprint": "d6d8319195d6ceb19a997129ea74f30a4a70eeda9d927e5acd1acc394ed29645",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.8498323
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/order/OrderTotalApi.java": {
+      "fingerprint": "cd80b27a9be1768f2902692c1ce3cd47e1cf3ec288c255fe5a4b6bf3f8d7e5cc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.8942826
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/payment/PaymentApi.java": {
+      "fingerprint": "5b89a0bedd4137ba9486ade8837a36ba5649fc4f98c6fb5b55b994fc5b99b1dd",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.910152
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/product/ProductApi.java": {
+      "fingerprint": "23fd7d9d59b64de64831ab617f1590f44ad39ccc5bcad1606f04256fe8153d28",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.926148
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/product/ProductAttributeOptionApi.java": {
+      "fingerprint": "2159d6a64273385c54a2510f2381a298d195937e20e347ee0badb36cfa51edce",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.9439964
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/product/ProductGroupApi.java": {
+      "fingerprint": "bd19279a674362c4039b379e37201fe6fa99aeff8f160004f3eacd6c11f93d93",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.95759
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/product/ProductImageApi.java": {
+      "fingerprint": "e59a3159c162b291d825bded57838eec2023fc37c4b715961ff0e9ba16bd306e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.9755776
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/product/ProductInventoryApi.java": {
+      "fingerprint": "634fe5e79081c26434dfa4d99c14b25eb945f86905cf6231124fcacd80176c48",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.0051515
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/product/ProductManufacturerApi.java": {
+      "fingerprint": "fbcfa2766b697a0cbdd33838f50a444b95e2a8735a18877fb99379fa054596cc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810676.9891593
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/product/ProductPropertySetApi.java": {
+      "fingerprint": "279bbc403dad28d1e082a29a1513247e5831c9b3b0b747395bab15c6d406cf0d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.0210931
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/product/ProductPriceApi.java": {
+      "fingerprint": "af9cbe232b77256636d93765f4f2dd9d5076a606b3397cdb09c2165a7e013cf9",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.040307
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/product/ProductReviewApi.java": {
+      "fingerprint": "7067d2e8ca2788b29b70b60f19148ee6985540029ca7860ae812469958037f04",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.0692298
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/product/ProductRelationshipApi.java": {
+      "fingerprint": "3c87971d2eae1ce6b0c7a241f298685b10c36d9b53f742bb6213154e2627e264",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.0577545
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/product/ProductTypeApi.java": {
+      "fingerprint": "79f1a3af7212c79f152e6d6023dbf0c3cbde4ac9446b25c184cfc7b2c505a682",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.085129
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/references/ReferencesApi.java": {
+      "fingerprint": "4477d4b5f703e80fe890d052b0cb38386f88d29f8e954789d062a94076236188",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.1010878
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/search/SearchApi.java": {
+      "fingerprint": "9d04c7472defc92669703dcb8b2aef1a4b4a24af1d26d846bd1d404b1d8190ed",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.1187654
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/security/SecurityApi.java": {
+      "fingerprint": "075fd44a599bfa8a086c837da06ed24a866e53de44a3f970e39d4a5998173615",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.132702
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/shipping/ShippingConfigurationApi.java": {
+      "fingerprint": "1bd18246c9f41071e677fd9f0296752943f1750e8f51d00c82426696bd8477f5",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.1484318
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/shipping/ShippingExpeditionApi.java": {
+      "fingerprint": "b5eceef5bce65363fddfb5478d617a598a41b84a6211bbbfd3535f9e9ec794b4",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.1683426
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/shoppingCart/ShoppingCartApi.java": {
+      "fingerprint": "b9b68f45a5a70bb44837ad726209a87b5b4745def049cff2f457fff455ec30d1",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.1843722
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/store/MerchantStoreApi.java": {
+      "fingerprint": "7ff7f070a1e6799fadcebbbe52e201090425627fe2ee80278ffcba7c1b4c96e4",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.199785
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/system/ContactApi.java": {
+      "fingerprint": "95ff2dc6ff8bb66c671686ef6d92826f419d14bff02a9921ca86bfa6fcea7527",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.2162886
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/system/OptinApi.java": {
+      "fingerprint": "ef0d6b6ae99f2c8e9bba0c7ffaa3fc003918db81668e3fd5728d1a8a2b035e78",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.245262
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/system/ModulesApi.java": {
+      "fingerprint": "56854fd1d40862e8078048c47439b32477afeb63238c3bbceba5ebf5eeeb1e30",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.228887
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/system/PublicConfigsApi.java": {
+      "fingerprint": "da853df851149d345f12ab23e4121d103d49646d9384ad7260283c97acb833cb",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.2662349
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/system/SearchToolsApi.java": {
+      "fingerprint": "f9ccb6af60be0349890b087f11866a4d22784816fe137e67924678f38a3d58e5",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.283059
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/tax/TaxClassApi.java": {
+      "fingerprint": "0768db96f4f4f03d9c373111859c9b8ca25b2bf3186e2c1235f12bc0d4e1f084",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.2994673
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/tax/TaxRatesApi.java": {
+      "fingerprint": "a6b6ff9dbb7e4a0050fcbf318eab54a4e462a49e727643ab490656d7410fd4e9",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.3168457
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/user/AuthenticateUserApi.java": {
+      "fingerprint": "d7013895d22a08f1012f0733c4135990992548b51ff6793af957ab67ffe0f5f9",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.34827
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/user/ResetUserPasswordApi.java": {
+      "fingerprint": "49bceae724b5b05c89555b9a16b7627e82e89aeb287ce90fcd2b27f478ce440c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.333706
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v1/user/UserApi.java": {
+      "fingerprint": "a0a3aa5c237638245b20db56720806d8295b49096569a94e2d81a37bea95ae52",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.3640082
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v2/product/ProductApiV2.java": {
+      "fingerprint": "9774a160da073f611b81a559a21c81ffbaa8beb85c8fc1e925e1835eb6612f89",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.3828754
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v2/product/ProductVariantApi.java": {
+      "fingerprint": "54345bb09cc43696d43d7560c2dd02aa9c303ed1c4e1200f5131ec2dd27949db",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.3957598
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v2/product/ProductVariantGroupApi.java": {
+      "fingerprint": "6197ee59493e7bfb44ddbbdb7e2c039fc028d659fe629e5d3b0851be00444c33",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.4275997
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/api/v2/product/ProductVariationApi.java": {
+      "fingerprint": "342d8cee50fe7c1005a1b777c6470fbc79b390adaf853075de8f345167c27258",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.4165056
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/controller/AbstractController.java": {
+      "fingerprint": "92937b0a8b52705f0bcd3fedd57974ae6b7a2a1bfd1c76a1f8daa9a496f3708f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.451626
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/controller/ControllerConstants.java": {
+      "fingerprint": "130ed769397cdbf564d054141da8801d3ddaa8f1b0918f574f42b8d785a1d621",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.4912052
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/controller/country/facade/CountryFacadeImpl.java": {
+      "fingerprint": "353b96eb2e4e715d941e4408222f5e9c5fdb08bae3a778c3819e19295eb27d21",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.4679477
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/controller/currency/facade/CurrencyFacadeImpl.java": {
+      "fingerprint": "50629526e575d74b9e078ee7719aca90c95e4c0bcebf251e6eb4bfe61ca4e9ce",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.5073154
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/controller/customer/facade/CustomerFacadeImpl.java": {
+      "fingerprint": "1be3ef9f0525988001f35d1c2b17e5a98eb6d1b44786a460b282e964a2589262",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.533675
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/controller/error/ShopErrorController.java": {
+      "fingerprint": "af1863c847adf3756952e4252d09dab8b1ee1ad69914ec6d1e611b870ffb4d2a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.5487528
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/controller/language/facade/LanguageFacadeImpl.java": {
+      "fingerprint": "ebaeccae3bd5c5672bbb0e5598e4add3ac3a8ee95d31a00cd5032335a24a715b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.5692565
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/controller/marketplace/facade/MarketPlaceFacadeImpl.java": {
+      "fingerprint": "fcfc73ef6adb987be37848cf181df9a279f85b0ac5cfc672422c8a2b2460a7b6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.5864904
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/controller/optin/OptinFacadeImpl.java": {
+      "fingerprint": "989e9ec93d02ea2f95c32314213bae0efc15eff81f9b97041356db980848879d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.602918
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/controller/order/facade/OrderFacadeImpl.java": {
+      "fingerprint": "fb8e17c8bc61ea13bcac5446a5f209bf159dda4371a51f5d919425040648f576",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.6347933
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/controller/security/facade/SecurityFacade.java": {
+      "fingerprint": "f8c57febfb0e4eadd9d30fd1b13358c82b49680a1eb5e9931de05937fe38e9da",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.6564379
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/controller/search/facade/SearchFacadeImpl.java": {
+      "fingerprint": "1e4a113f4904ded2eb084fca64f04343e6cda69613334ab1d875e790b6613d4e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.6190565
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/controller/security/facade/SecurityFacadeImpl.java": {
+      "fingerprint": "c281606fc64e80e628691a4aad8432d81cc5c9a170a5ae0abcba25ccd81a5456",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.6771047
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/controller/shoppingCart/facade/ShoppingCartFacade.java": {
+      "fingerprint": "f074274516815c9369d6a525118b573c9ddb3fdd90d930ced42715a4cde441f6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.710149
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/controller/shipping/facade/ShippingFacadeImpl.java": {
+      "fingerprint": "432302710ac3688eda0728b4982b4b02489a704046fd6ab6115ed1427b761d59",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.694635
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/controller/shoppingCart/facade/ShoppingCartFacadeImpl.java": {
+      "fingerprint": "7e2be96e83ad96058d52a867b2d1bcfa61774eb81bf8868dedf3f102d5038139",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.7246897
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/controller/store/facade/StoreFacade.java": {
+      "fingerprint": "0fa904270a86851d60e70637fbf3a716637d311017419b6509f90e47fe85e86a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.73711
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/controller/system/MerchantConfigurationFacade.java": {
+      "fingerprint": "daba5547ef48550f294e337fd87929cef8ecf5bffef46d0debb859730f983a3d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.7779622
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/controller/store/facade/StoreFacadeImpl.java": {
+      "fingerprint": "83732046f227279308e90af31bcec01ff294a172aef1ef2ed94d9a91b3f8aa72",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.7616348
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/controller/system/MerchantConfigurationFacadeImpl.java": {
+      "fingerprint": "a707967fdfe498c2b5bb43531f93b4b5ffaf965df60484c51bef41adba228c84",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.7937167
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/controller/zone/facade/ZoneFacadeImpl.java": {
+      "fingerprint": "bf040c58bd6d6e84c4099b645dda0c480fe8d9066641b4fbce461a3be25c1d37",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.8106163
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/catalog/CatalogFacadeImpl.java": {
+      "fingerprint": "242dd1e45b2a37140503ac54732595bfb6eb82063142531f96193218df34693e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.8174224
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/configuration/AbstractConfigurationFacadeImpl.java": {
+      "fingerprint": "2723bf6e8228aaca1a7b43ba7697dbe1ed4a49129ae068ba8393596c23f54be9",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.8331661
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/category/CategoryFacadeImpl.java": {
+      "fingerprint": "424ccbabc2e0befcb5a101673fa7b8bf08f1902db7af7028f4cd545e0568c775",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.8577592
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/content/ContentFacadeImpl.java": {
+      "fingerprint": "740a9cea2f3b81ced64faf327f3eaac0139645f4decf430167f5b27c4d8a7c21",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.89102
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/customer/CustomerFacadeImpl.java": {
+      "fingerprint": "bcc22aa9de43b6e3131860c19a41fd6f94a02b431f39dc45936cf04f1d193b7a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.8751345
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/items/ProductItemsFacadeImpl.java": {
+      "fingerprint": "3c5acbbb28c8b392f78276a9824fa627fdfbd3c6e3ea638cc321a266974dc132",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.8982794
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/manufacturer/ManufacturerFacadeImpl.java": {
+      "fingerprint": "3a7c2bde3e9cbe167f820e1d855f37e76278c8b509eb49042c938128536a19dc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.9230523
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/order/OrderFacadeImpl.java": {
+      "fingerprint": "bae3b2c6171a2f04a273c14ec92c4b1c0e79675d8c981a29e75637d5193edca2",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.9545527
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/payment/PaymentConfigurationFacadeImpl.java": {
+      "fingerprint": "a8e97a91c9bb9236bf1cc39febe5fc86096fb75108096005c4851d118a9e738c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.938943
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductCommonFacadeImpl.java": {
+      "fingerprint": "8464c384cb955feb3cc083df9871052641ab266a78305438a8d8426178493b6d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.9702518
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductDefinitionFacadeImpl.java": {
+      "fingerprint": "ec44a3451983ba35c0feae2d910bc57e860ed5c116c2d67e773047d1848db55e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810677.98754
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductFacadeImpl.java": {
+      "fingerprint": "aef7e4ff5771aac5eb44bb74f3d20fdb68b56cb7ff9dca62a01368a87753957a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.001717
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductFacadeV2Impl.java": {
+      "fingerprint": "e9ed305cbd2056aa3119e8cf301cfe17a8ed1fbb325c147c588335ad697a258f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.0176353
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductInventoryFacadeImpl.java": {
+      "fingerprint": "433906f8b8d276fa5bfc4511bdd7ec3aef7e96a2f00151f24afc10e8529d7d4a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.0343137
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductOptionSetFacadeImpl.java": {
+      "fingerprint": "b2b4037cf39b374c3006235c4385c229ee4c98d669ac7b0c8eaff8f28cd0d5e2",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.0632944
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductPriceFacadeImpl.java": {
+      "fingerprint": "efd2b24b57ea09ce5ffc504a394120bfe63871a396dddc7a9795257976961f65",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.0798037
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductOptionFacadeImpl.java": {
+      "fingerprint": "f5fe73703ad3368538134d05d2bdc19aa5069bcf74d4300199a235c362caa492",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.0485237
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductVariantFacadeImpl.java": {
+      "fingerprint": "3690389912a04c8a6b50449c33a041b2ff1982c51446404cebdb8f950ba529d4",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.1132348
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductTypeFacadeImpl.java": {
+      "fingerprint": "20ca605004af1bc290fb1bdb69c377b7626faec1f981e983453ae633d5c34a93",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.096099
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductVariantGroupFacadeImpl.java": {
+      "fingerprint": "7ff48f01de5e2543752602e8ffc5ade853b734f24339d6864247f64cd1055e6d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.1466706
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/product/ProductVariationFacadeImpl.java": {
+      "fingerprint": "f9208bc9adbeb4687123839e0e9994e17182b9357377d8aba30832afeb4fe439",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.1301084
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/shipping/ShippingConfigurationFacadeImpl.java": {
+      "fingerprint": "70c25fb8ab0d6aa4f623d57c7eb584704215f430496e58be3ef77bbc1f4df464",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.1627474
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/shoppingCart/ShoppingCartFacadeImpl.java": {
+      "fingerprint": "681057b93ac0abf935dc8b721c71ad4ab363d22ba3dd9b4bf2b32ce84a45a7a4",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.179749
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/tax/TaxFacadeImpl.java": {
+      "fingerprint": "16a4ebb0854b78b5148990890ac854153b10adf629cc3f0395241acaedffd16e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.1963804
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/facade/user/UserFacadeImpl.java": {
+      "fingerprint": "f5bdec8c25edd70bb3244914c11f5aa6034319544a89588985641a5a37982646",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.2131357
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/security/AbstractCustomerServices.java": {
+      "fingerprint": "212a2bf2813ab0cf7a738982662af9aada00a4d09a7782b82e0cfceff4e9bee5",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.230267
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/security/admin/AdminAccessDeniedHandler.java": {
+      "fingerprint": "7aa66096996e2bcbe425d4332a5fa09d1a74c5c589870db4e1eff7838fa9bb73",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.2486012
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/security/admin/JWTAdminAuthenticationManager.java": {
+      "fingerprint": "912ddf4d9ea3df3ebf14b14a612b515ec4a70e3a61acc442e7fe5506e894d0ab",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.2663054
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/security/admin/JWTAdminAuthenticationProvider.java": {
+      "fingerprint": "01837a39d6bfba61aac3a8cea6da882c76e3c2ace4baba8058ab33b11290d727",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.2839053
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/security/admin/JWTAdminServicesImpl.java": {
+      "fingerprint": "273db475807fb6913bde4fcfed4d17826cf541734f10594ef8d05cdc273a96ee",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.301406
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/security/AuthenticationRequest.java": {
+      "fingerprint": "b3d68d87bb05f0fd104831497e6d0911beae0a578f455e69d88ea052d07e710c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.3170662
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/security/AuthenticationTokenFilter.java": {
+      "fingerprint": "1cd5e0d6b646b3f28248b03d46b79c8831f8c9cda278847a6ea08738ee91b08a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.3363962
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/security/common/CustomAuthenticationManager.java": {
+      "fingerprint": "6720b4c8a5b9bb841bc954c9c0ff2f36bd0f1048c4e1af296d871f7a3b600efb",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.353111
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/security/customer/JWTCustomerAuthenticationManager.java": {
+      "fingerprint": "2ae9fa3601e571791a5d749fca98f819f40b68af4c38f14fdb50a01121c97271",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.370982
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/security/customer/JWTCustomerAuthenticationProvider.java": {
+      "fingerprint": "558f4f0e461b4cad9ca51c4ad73c9ba9071d0fd1df0b128753d661e9cf2180f2",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.3890386
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/security/customer/JWTCustomerServicesImpl.java": {
+      "fingerprint": "4356cf650b9a9c2daced7231f52ffb58044e657fac15845ac79a16443c7d2d4d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.4105713
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/security/JWTTokenUtil.java": {
+      "fingerprint": "f22ce066cb406e6c397a9cb148dbb0e4a8d8b822ef109d5ac8564ea695810826",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.4521143
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/security/CustomerServicesImpl.java": {
+      "fingerprint": "0327f2604185532e3eea209f236fbdfed36688c48c1900604b1dc81f4a4f628a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.4329104
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/security/PasswordRequest.java": {
+      "fingerprint": "3620c52b36aca3bf1017df81c4380ff06d5d7f00c1e4c7b3e40c981da1b4edcc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.4709835
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/security/ResetPasswordRequest.java": {
+      "fingerprint": "c65dff2ce8bcc3fcc1a600ed0667b03076e99aeb792d4816208e785ea27e1883",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.4952378
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/security/services/CredentialsService.java": {
+      "fingerprint": "fdb1b2e7e8ad3e3c107ff69de3242fdb98e70b32a0853789a33cae2ce34c484e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.5359514
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/security/RestAuthenticationEntryPoint.java": {
+      "fingerprint": "afff484fe6d06a5bf7086759216933e26aab702542df9aa6dcd75df922e30596",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.5145514
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/security/services/CredentialsServiceImpl.java": {
+      "fingerprint": "73e6e4d1eed9e5160d13fb9d3ffbf4f265a7d49c902267a8aaffe097f1482f06",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.5544558
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/security/ServicesAuthenticationEntryPoint.java": {
+      "fingerprint": "43ef3cd3e9555ee058d00a25f6fa9afb059ff59547c4f092c7363bee19bf9423",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.5726085
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/security/ServicesAuthenticationSuccessHandler.java": {
+      "fingerprint": "658fa3953ee4e07353cdf24499c127b6af47694b177e6e64750e684dbde81fce",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.5917037
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/store/security/SocialCustomerServicesImpl.java": {
+      "fingerprint": "636dea3fa45837ffde8ad0bd8ebbe5f2fc11f29349e4a7011f3583c8b1a741d6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.6105154
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/AbstractimageFilePath.java": {
+      "fingerprint": "5980ee0e785b8b8685e813622d7a09f5858f9f7141f3583f6f4814e98fad414c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.6296346
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/AppConfiguration.java": {
+      "fingerprint": "182a112be5530139be7d47d138aa48074d532645c47c1b9c2886e97c8a3ed27d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.6694362
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/AdminAccessDeniedHandler.java": {
+      "fingerprint": "3553a40db87561709d9f10753130f35af271b2711a04eca072a97c0af6dfe1a1",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.650208
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/AuthorizationUtils.java": {
+      "fingerprint": "224567a8e66b63e8b01570c0e10554005c3b079dac35161a0dd88a860d997b8f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.686757
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/CaptchaRequestUtils.java": {
+      "fingerprint": "32e86c4fce3155adce833966ef358706a386ce92427795f4218c637933ae94da",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.7048686
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/CloudFilePathUtils.java": {
+      "fingerprint": "0d6b94b3ba1d564833511e2eca189160cfb04c98e967cd24cd51e8164f3a93df",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.722472
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/DateUtil.java": {
+      "fingerprint": "b8666f20cb886b326b227f9c6f9372ff6784c69b8d250e75bfe6f6d64daf93d4",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.7413173
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/EmailTemplatesUtils.java": {
+      "fingerprint": "7bd674efb3196f00961e3988b6068bca63cee288ddd08601128ad6fde8705b22",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.758514
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/Enum.java": {
+      "fingerprint": "c9582606b723dbbbe3e09914783eeec4e971bab6eec386d5d8c94a6770549117",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.7856104
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/EmailUtils.java": {
+      "fingerprint": "0cf8173cff3ed6984911a4d7adba07e32002d709c403d54f0a607405d4257615",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.7751296
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/EnumValidator.java": {
+      "fingerprint": "804cd7864b83d06142b35a556d12ec3e84f46a9446623e04afafe6b3ef5adcdc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.8117726
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/FieldMatch.java": {
+      "fingerprint": "a8e7195acdf5f8a3a23665221c29ef58d68520d9f404c4244cc03f10c21e3a6a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.8295286
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/FileNameUtils.java": {
+      "fingerprint": "7e719e613b0a3c68bbafee15f560e091c12716e22faccae7c4f9767d88bae41d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.8649397
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/FieldMatchValidator.java": {
+      "fingerprint": "16c7fa071a7c5e679d5ccd7f1a35419c57557b904cd9b1209c581bd5941aa969",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.838638
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/FilePathUtils.java": {
+      "fingerprint": "3d1c2787dc3d9e5dbe012267c8ec7d7e87bab08dba545cd5bda4b58b199de74e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.883563
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/ImageFilePathUtils.java": {
+      "fingerprint": "174abe51a8e2d1de67d28f1241443a079e50667b824703ddd713464a078efe58",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.9212997
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/GeoLocationUtils.java": {
+      "fingerprint": "8f74540a5479f46ba950f608160bb3b8daf3acfd1b40e5f8d09c6adbf32be337",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.9034736
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/LocalImageFilePathUtils.java": {
+      "fingerprint": "7952165d1e9feeeb809445e972b103937d934a3927aba839a8ffb8cccfb00e40",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.975127
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/ServerConfig.java": {
+      "fingerprint": "6dffc8a0244662823470a58f452cba4105dad98659d417912e02d2925524c54b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.956828
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/LanguageUtils.java": {
+      "fingerprint": "17ca96c066cad2d16912f37fdae0a65518cdf44a7aa1afb6deb651651a477bf8",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.939318
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/ServiceRequestCriteriaBuilderUtils.java": {
+      "fingerprint": "13b73a054983402b1a32560a43272c01726a87a7aab1cba4c05ab886a5f15ce6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810678.9927216
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/SessionUtil.java": {
+      "fingerprint": "cf77bdbc6cb2be442b8ea077ca7da33b033daebc5ff21154b4cc861bd0125e1a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.0088086
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/TokenizeTool.java": {
+      "fingerprint": "dd398b67458a391b5609b95928c34cd5dd195eb818d192fbf6cdec8fb038f0f6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.0263703
+    },
+    "sm-shop/src/main/java/com/salesmanager/shop/utils/WebApplicationCacheUtils.java": {
+      "fingerprint": "edeea0c80824472dfec74cc8118d0bbe270e8a21a604316f784e18fb0273b3f3",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.0417314
+    },
+    "sm-shop/src/test/java/com/salesmanager/test/shop/common/ServicesTestSupport.java": {
+      "fingerprint": "6d96dacc4570c96e137bd68a2f0774f27149a7931a98bdd64f53ab1b295a4e8d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.0607488
+    },
+    "sm-shop/src/test/java/com/salesmanager/test/shop/integration/cart/ShoppingCartAPIIntegrationTest.java": {
+      "fingerprint": "7eefdbd962c63e6cdf397a75c59b942a96d7a4259995afbcfa6357e55f11c635",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.0639617
+    },
+    "sm-shop/src/test/java/com/salesmanager/test/shop/integration/category/CategoryManagementAPIIntegrationTest.java": {
+      "fingerprint": "85f9d0d34bede6b5af99015d8cf9c290f80adbc821c2b31e14a744648c16f939",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.0836759
+    },
+    "sm-shop/src/test/java/com/salesmanager/test/shop/integration/customer/CustomerRegistrationIntegrationTest.java": {
+      "fingerprint": "8ff14643fafd1dbe24616f24cc9a4b98acacdbbc57896d65c3c05f7180f57959",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.1111002
+    },
+    "sm-shop/src/test/java/com/salesmanager/test/shop/integration/order/OrderApiIntegrationTest.java": {
+      "fingerprint": "cb23bec65e7bc83f61df97365c608e69640493807057ceb5dfdc83d71d3839e2",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.1291344
+    },
+    "sm-shop/src/test/java/com/salesmanager/test/shop/integration/product/ProductManagementAPIIntegrationTest.java": {
+      "fingerprint": "c9739c094baee9867902f19442ee43643def96e73243a746663c982fb97ac6fe",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.1443994
+    },
+    "sm-shop/src/test/java/com/salesmanager/test/shop/integration/product/ProductV2ManagementAPIIntegrationTest.java": {
+      "fingerprint": "1af3fd1a40666d3631e75f75905389998977e9705baaffca75e47dfea94a912d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.1616774
+    },
+    "sm-shop/src/test/java/com/salesmanager/test/shop/integration/search/SearchApiIntegrationTest.java": {
+      "fingerprint": "ab7bfd1c384576ec443cd518baa6976667dadfa6a67ff8d351e9e87809e8e9b3",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.1837165
+    },
+    "sm-shop/src/test/java/com/salesmanager/test/shop/integration/store/MerchantStoreApiIntegrationTest.java": {
+      "fingerprint": "91b353d3c8c17267eeffa2399bf41850664393d639c19e3c761951939fa5db89",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.2016501
+    },
+    "sm-shop/src/test/java/com/salesmanager/test/shop/integration/system/ActuatorTest.java": {
+      "fingerprint": "7fa121c30f53215daaced15f91c5fd54658901aa237a5015a6fbed3710114f37",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.219171
+    },
+    "sm-shop/src/test/java/com/salesmanager/test/shop/integration/system/OptinApiIntegrationTest.java": {
+      "fingerprint": "ee899de0f7c754ddbaf77ee6ea93437a0f714af02aeb4cafef5d4038d606689f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.2379396
+    },
+    "sm-shop/src/test/java/com/salesmanager/test/shop/integration/tax/TaxRateIntegrationTest.java": {
+      "fingerprint": "51f4156550914426f6932e0cb62105237b468b0a5f64a5cce944871c505ffad8",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.2555752
+    },
+    "sm-shop/src/test/java/com/salesmanager/test/shop/integration/user/UserApiIntegrationTest.java": {
+      "fingerprint": "7207d675d858b17993aa1daf30227451d2e8bbae288231a8218516866cf3d32b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.27372
+    },
+    "sm-shop/src/test/java/com/salesmanager/test/shop/util/GeneratePasswordTest.java": {
+      "fingerprint": "5868e4d69346d27ce69ce5660cce2a0242cb56616ea0bd0be5b8b58bfa1dc8dc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.292865
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/catalog/catalog/CatalogEntity.java": {
+      "fingerprint": "af1cb3b54e5f80c297c4a0e7b27f1b9385599dc6a97b8777c705ea552637e4d0",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.3110437
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/catalog/catalog/CatalogEntryEntity.java": {
+      "fingerprint": "67fddb59c23b7987f1968e5cfcb385719a8775a13163df9e71622f4f23080459",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.3288138
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/catalog/category/CategoryEntity.java": {
+      "fingerprint": "960f97818f6f6fad8efae3677c96c692f195a832aecb347e1ea4f68a87f39f9b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.347332
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/catalog/manufacturer/ManufacturerEntity.java": {
+      "fingerprint": "694e6e57544af1ee51d606634eee33307f7fa1f832f6193029695dcd4866749f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.3648844
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/catalog/NamedEntity.java": {
+      "fingerprint": "5ab3d8800e221c933254b8fb88448b733e0cb8b4a1bce10ec5819815042ba403",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.3827314
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/catalog/product/attribute/api/PersistableProductOptionEntity.java": {
+      "fingerprint": "d3446da324936f0547076caf50f0a7562bd4da2a8a768f463c568e81dc5ee4b6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.400217
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/catalog/product/attribute/api/PersistableProductOptionValueEntity.java": {
+      "fingerprint": "8c61465864c0d909a7270ddd85a5a65caba03028f43399975113b6b9ace16f29",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.424324
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/catalog/product/attribute/api/ProductAttributeEntity.java": {
+      "fingerprint": "41d2d9c1675395022b9d274710e4403851398b668a58eb5c6f5809cb3eda0bda",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.4648013
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/catalog/product/attribute/api/ProductOptionValueEntity.java": {
+      "fingerprint": "28aa30930e3714ee466f7836437acd9cfbae1a36296ff961b38e79cb55edc532",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.441961
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/catalog/product/attribute/api/ReadableProductAttributeEntity.java": {
+      "fingerprint": "4344480014573a61f1fcb2016136c0684dac65d8aa62d97ed7291bbfd2f720cf",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.484502
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/catalog/product/attribute/api/ReadableProductOptionEntity.java": {
+      "fingerprint": "3360f9fe562df98168f9e1744af69e96dda2c3c6e544cd2a8d74e707061c5a37",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.4987316
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/catalog/product/attribute/optionset/ProductOptionSetEntity.java": {
+      "fingerprint": "f580f7f29fcd991066f7ad3609f95991305778e94189ad14b8a2eaf032250a81",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.5231855
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/catalog/product/attribute/ProductOptionEntity.java": {
+      "fingerprint": "f3745431ebe703737f3539d968e9d0382e6426770b0cc8d96d6e01969577a6fc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.5441084
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/catalog/product/inventory/InventoryEntity.java": {
+      "fingerprint": "b7408fc3af91d6a2c89dcf4591f30f6ccc8f9d06d799269abd563cb9986f04e4",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.565991
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/catalog/product/inventory/PersistableInventory.java": {
+      "fingerprint": "3d13d37590fac26e17ecb9af42e93d25230b0a45134a7cd0a5dac64ae213977d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.5836997
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/catalog/product/PersistableProductReview.java": {
+      "fingerprint": "5864c4e4f8d17b4551b9b02a1199eca805dfdee4923a9e2bfb8a46a935257a8b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.5917666
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/catalog/product/product/ProductEntity.java": {
+      "fingerprint": "ce8a542792a8f1722f835db3b8b615f35d03017ce67280198cdc82acd7be9bf8",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.6168933
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/catalog/product/ProductPriceEntity.java": {
+      "fingerprint": "7a549c2a264e624901c0bbc399976e2c9dfdd7be7989562fd8b240029a977588",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.6332066
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/catalog/product/type/ProductTypeEntity.java": {
+      "fingerprint": "1b0cbd082932b751eba115339f1f2b4a80c25d72793a48e36ff4068c6b68dc5d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.68636
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/catalog/product/variation/ProductVariationEntity.java": {
+      "fingerprint": "b622716a697b934c106d7cb64e2e0bd3b7d8c42dc185183dad07a903fad97165",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.6722999
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/catalog/product/ProductReviewEntity.java": {
+      "fingerprint": "3463a55132f201041544c4c7097c84e7dfc1cfc33cab23c113d7bf6fea020f7f",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.6455941
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/configuration/ConfigurationEntity.java": {
+      "fingerprint": "94abbe49ccf440e6fb5201050a8030668c71b7bce712db30c13bd3c6f7bdf609",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.7182124
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/catalog/SearchProductRequest.java": {
+      "fingerprint": "2d39df60ad21afe979c303003d8783725b808e69f7405a40d10a9f4fb0684b64",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.7022977
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/configuration/PersistableConfiguration.java": {
+      "fingerprint": "1ba1d2db1bdde6ea38e636d049f1ca8597c7d6cab1dd0c8aaeb03c174cf0de44",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.734071
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/configuration/ReadableConfiguration.java": {
+      "fingerprint": "500c18b7a31fcb56c4248dc388c5f543f70f88187dd3b8f832401465c6c20555",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.7528343
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/content/ContentDescriptionEntity.java": {
+      "fingerprint": "0484583d61c98b0810c6478b04fd2de12fe935b5bf2b8f541c8cf4dd32e1e0e3",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.784053
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/content/Content.java": {
+      "fingerprint": "35c17b03baf713f74a4d0c15872cf44ae7d01b21332424ff76cb9649631be9c0",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.7723112
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/content/ContentEntity.java": {
+      "fingerprint": "2ee82a715285ce2fe72931a6a063ee4975727acc5593fd1d9f6217c32581abca",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.8068032
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/content/ReadableContentEntity.java": {
+      "fingerprint": "bc8e25919e4bece0df3775569344e6b1f2c0549adf2a71f8c0c34ba677ecfd98",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.834113
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/content/PersistableContentEntity.java": {
+      "fingerprint": "54424c81a834a57fcafd3672f06379b9b92a87eebb1b4388f8c37d02cd1f86a0",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.8232553
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/customer/attribute/CustomerAttributeEntity.java": {
+      "fingerprint": "3c437708a59639bf1e4a67ae1804ae45af52b149b18c82711e316ca99c9fd371",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.859082
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/customer/attribute/CustomerOptionEntity.java": {
+      "fingerprint": "86760de4024dffa3b3dca4c2343e32b4e8a985f9048d82d84765e74b8203bffd",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.8752131
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/customer/attribute/CustomerOptionValueEntity.java": {
+      "fingerprint": "2584f4e322977717dd8190ab4e428b85199d4a642082e95512c791cb7117e1f3",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.8925965
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/customer/BillingEntity.java": {
+      "fingerprint": "0847a746b8dc2a88a2afce2729a5ff0de93f9e6212726f7462f8bef7180e4318",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.9090297
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/customer/CustomerEntity.java": {
+      "fingerprint": "edfe4282b3d8accf866d46d6474aebeef2698cba473a1b3b1b3c5751d07cab92",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.9264014
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/customer/CustomerPassword.java": {
+      "fingerprint": "8768fd6e8753c7f21ec2dadf87b668bcf0aa6d8ab61fcd9a83df4e8b29890230",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.943761
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/customer/DeliveryEntity.java": {
+      "fingerprint": "d2b9b8a3f1e896848bf837887cc178794d93dc2bd96d78ccc3feeca695344776",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.968231
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/customer/CustomerReviewEntity.java": {
+      "fingerprint": "6c7755e27cfebf6c1dfddabca56fddbab09d80fbcf380db1a8ddb06e5c877e7d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.959022
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/customer/optin/CustomerOptinEntity.java": {
+      "fingerprint": "bad750ed7f27a2754d1c96e0b0981997638087247333dcb4bf2d5f1f55a72bb8",
+      "mode": "resume-hit",
+      "updatedAt": 1782810679.9913502
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/customer/SecuredCustomer.java": {
+      "fingerprint": "511d5c5fefc5e40ce72ec80f66eb84399cefc488c7fb6812bdc789146b3b89a6",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.0075884
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/entity/CodeEntity.java": {
+      "fingerprint": "25b252c0fa3943dc8902cfcf5f48659d5fbac6d9ae48f2534f789bfb21fb5023",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.0214627
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/entity/Entity.java": {
+      "fingerprint": "56c24e71db22582bad51b1577d9444ec0e3de16084e989f75dafd1e860ee5d95",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.0448773
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/entity/EntityExists.java": {
+      "fingerprint": "4abc0684533a35580d1b6e33ad125c68cf31b579ad0f6356bb7218552b2f2e1a",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.0607712
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/entity/ReadableEntity.java": {
+      "fingerprint": "7c51216d5b934e45ea7fbd960216eb4a8199a9282da96e4168c5009e62c67bdb",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.0921726
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/entity/NameEntity.java": {
+      "fingerprint": "a9f71e28bd786c4feede386282367f05703a40dc6e0d6faf97de669c6383f989",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.0784411
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/entity/ReadableEntityList.java": {
+      "fingerprint": "cb7cd8ec9707b27bc349a9faefc5b4253c80abbae419d9110a668c6271597f49",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.1083105
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/entity/ServiceEntity.java": {
+      "fingerprint": "f3235bd0dccecd63659a31e2a13821a5d47609cdd721c60f0c9f2c842c4b6afe",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.123979
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/entity/ShopEntity.java": {
+      "fingerprint": "ad795c02633bdc4eb26f0fbaf92e5a9a3656e258cfe55b628abf364dea2e790b",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.1400113
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/marketplace/MarketPlaceEntity.java": {
+      "fingerprint": "82caf30460b574f9fd49a991e55f91a516d3324fd0cb6cce047483bd00b90c8d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.1758447
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/entity/UniqueEntity.java": {
+      "fingerprint": "73dc68294789eebd24ecadfbee5c0e58c04fef7e76d7a2a5445539e389cee7f0",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.1562297
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/order/OrderEntity.java": {
+      "fingerprint": "2ce0d92a2b4c42857997539ad9ed1706318ad601f5e05488bae8c1c2973c8ac9",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.2102323
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/marketplace/SignupStore.java": {
+      "fingerprint": "390381f2ab2f9424fd379a4fc0addb6c4139c4b5c05a2cf6fcc657730fc7f98c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.1878324
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/order/OrderProductEntity.java": {
+      "fingerprint": "3c0d194f16fcea76ae027aa97dcffef612c635fce1576b817d5ae9507f8b5976",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.2247071
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/order/transaction/PaymentEntity.java": {
+      "fingerprint": "7c639847633212f2b12884edcb645c1ee55da772690849911d1650624cfcf5b4",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.2372942
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/order/transaction/TransactionEntity.java": {
+      "fingerprint": "cfff7d06a6fd3d38c1305ac9f7075a198ef915be424f8c9c0e6d6e4acfa5fcab",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.2506392
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/references/CountryEntity.java": {
+      "fingerprint": "fa008137e3de655e82f67eb12e2c303acbe7b8a8bbd4b412e9a2a056ef39e73d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.2752268
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/security/GroupEntity.java": {
+      "fingerprint": "b467042c4615b553718f4861ec49f5db9bb86e5381eb0aeb00ce9d6c7814bcdc",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.3099508
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/references/ZoneEntity.java": {
+      "fingerprint": "3a9b4c8ddb94ae6aea084f4536bee6d3dcf5904a20d6aa5c8a91bfd3a22c5347",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.2924473
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/security/PermissionEntity.java": {
+      "fingerprint": "ab4581ee4377f9ad35a6d30627d6974e1c2793e942d2ffcba6c10eae891d7954",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.3275433
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/shipping/BoxConfiguration.java": {
+      "fingerprint": "1af86323e006dfdc14e29822edc4bca0384c93d899d16c7948a7a765bd12c44d",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.3446994
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/shipping/ShippingConfiguration.java": {
+      "fingerprint": "6bd875502953adce6ebd82c8e74552e799f4db8ec5289792fa41301b2221bed4",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.379303
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/shipping/ExpeditionConfiguration.java": {
+      "fingerprint": "8cd7342123cf2076af7c9ec8f2f7ff926fdc68e4000e7befb30f3f86554c1b52",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.3617525
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/shoppingcart/ShoppingCartData.java": {
+      "fingerprint": "6e85a2f737352f9ae3d237023d24f62c2371e6fb8b18b0998928e3d4fe756c9c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.3960552
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/shoppingcart/ShoppingCartEntity.java": {
+      "fingerprint": "587a50a84a433c2b0258afe1fb9c97ffe2eec87848e0d2ff9cb8aabbcd3cbafe",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.4163425
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/store/MerchantConfigEntity.java": {
+      "fingerprint": "079590fba65bdd51f2978d747b80b703228a79b0e76d438cf3cc4609ec92f3e4",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.4337766
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/system/Configs.java": {
+      "fingerprint": "8414d3b9b6f4510851e6bb90ca4221274787c50f6c6540df279eb4c9674d5963",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.4672415
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/system/IntegrationModuleConfiguration.java": {
+      "fingerprint": "768f2c0bd6f707ec4be967f6404d3cb1226954fbec980595e3e3e5811f22857c",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.484732
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/store/MerchantStoreEntity.java": {
+      "fingerprint": "419b7bbdede77c36be48201299e98df88e99de724a738aca1d2d571955cf3185",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.4508438
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/system/IntegrationModuleEntity.java": {
+      "fingerprint": "168112f30a60aa11e3c46b57d6b63af6f0e505de7f239b55d6e6eab9db5c9bf4",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.4989235
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/system/IntegrationModuleSummaryEntity.java": {
+      "fingerprint": "5073575658da0936bad48cc8c0c51ea6aae6d40fe03685850897a964e9bcef72",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.5194046
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/system/OptinEntity.java": {
+      "fingerprint": "ba0872ebe8caa1c0e7ac8065a38adf5e0357d8fdc7d928d4c758399bbc4c8a42",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.5326114
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/tax/TaxRateEntity.java": {
+      "fingerprint": "4bcd589f560613f3e4e57a750eaec0d94e360d6e515eac0551617859fa806f1e",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.5710633
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/user/UserEntity.java": {
+      "fingerprint": "623a0b337512a2bd70f3c7fef1326048051e063cdb3bffd14bb831e52dc11247",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.586354
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/model/tax/TaxClassEntity.java": {
+      "fingerprint": "615574a843fdc8e85fb52a84ad80936bd7a5e6b58a1eaa038523aa764ba7a4fb",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.5484726
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/store/controller/catalog/facade/CatalogFacade.java": {
+      "fingerprint": "32ccf99aba56bbd1616e74a31a3efd08a8762fcc73bd557112f67304a5802bd1",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.6041462
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/store/controller/configurations/ConfigurationsFacade.java": {
+      "fingerprint": "b55e12bbb5eed90dbb1bd399f1dfc994f1107e86dfffbd901ee1afb8ef6e52fb",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.621422
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/store/controller/content/facade/ContentFacade.java": {
+      "fingerprint": "9eb4ca8fd4d9847f8318ae2fd5a2e4f39eb348e4d20a8190b86dc84d03f94648",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.6375055
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/store/controller/shipping/facade/ShippingModuleConfigurationFacade.java": {
+      "fingerprint": "2d9468b14f3c2a4c34d3a567f92219af23b5da4e0424b4b93c1f4d4ba2ba5924",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.6534276
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/store/controller/shoppingCart/facade/v1/ShoppingCartFacade.java": {
+      "fingerprint": "68bdb32513e15c51e11b5e672a585fa8ca4f9acdc09183901e70e4895e3e54cb",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.6731148
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/util/ReadableEntityUtil.java": {
+      "fingerprint": "d1767f2b36597d6b3f7e486c34ff2004bd74ad1dbb3b547e6b0b190f711a82f3",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.6910918
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/validation/Enum.java": {
+      "fingerprint": "296ae65186818217529fa864ea89837ce24d375adf38c2ba9dea7012d4832cea",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.7081716
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/validation/EnumValidator.java": {
+      "fingerprint": "55be5fd5be573570458bc49272d4516f9be0a72b5d721b71ee5bda4f4b1159ce",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.7260196
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/validation/FieldMatch.java": {
+      "fingerprint": "cfd10b4812523f38bd12f7984e93ce4d57defdbe2c825b74554fb4502b3f4525",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.7430482
+    },
+    "sm-shop-model/src/main/java/com/salesmanager/shop/validation/FieldMatchValidator.java": {
+      "fingerprint": "3c0efc8bd36a52f7af08e3d4d169db4aa28160a179203c757955ce86c2282288",
+      "mode": "resume-hit",
+      "updatedAt": 1782810680.7611885
+    },
+    "pom.xml": {
+      "fingerprint": "e09df8c6e78784e19b1b4e0c3d1861feea7334f678e9890ea4dbc59e429dc1df",
+      "mode": "resume-hit",
+      "updatedAt": 1782810704.0515068
+    }
+  },
+  "targetVersion": "21",
+  "updatedAt": 1782810697.184144
+}

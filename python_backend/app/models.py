@@ -56,6 +56,8 @@ class AnalysisResponse(BaseModel):
     reasoning: Optional[str] = None
     errorMessage: Optional[str] = None
     usedProvider: Optional[str] = None
+    llmUsage: Optional[Dict[str, Any]] = None
+    llmQuota: Optional[Dict[str, Any]] = None
 
 class MigrationResponse(BaseModel):
     success: bool
@@ -70,6 +72,8 @@ class MigrationResponse(BaseModel):
     gitDiff: Optional[str] = None
     fixHistory: Optional[List[Dict[str, Any]]] = []
     usedProvider: Optional[str] = None
+    llmUsage: Optional[Dict[str, Any]] = None
+    llmQuota: Optional[Dict[str, Any]] = None
 
 class ConvertedFile(BaseModel):
     originalName: str
@@ -110,4 +114,4 @@ class RunStatusResponse(BaseModel):
     endpoints: List[Dict[str, str]] = []
     errorReason: Optional[str] = None
     noUiMessage: Optional[str] = None        # Shown when project has no browser UI
-    swaggerUrl: Optional[str] = None          # Detected Swagger/OpenAPI URL
+    swaggerUrl: Optional[str] = None          # Detected API explorer URL

@@ -8,6 +8,9 @@ class GeminiClient(IAIProvider):
         self.model_name = os.getenv("GEMINI_MODEL_NAME", "gemini-2.5-flash")
     
     def generate(self, prompt: str, system_instruction: str = None, api_key: str = None, model_name: str = None) -> str:
+        return self.generate_with_metadata(prompt, system_instruction, api_key, model_name)["content"]
+
+    def generate_with_metadata(self, prompt: str, system_instruction: str = None, api_key: str = None, model_name: str = None) -> dict:
         key = api_key or os.getenv("GEMINI_API_KEY")
         if not key:
             raise ValueError("Gemini API key is not configured. Please configure it in settings.")
@@ -28,4 +31,9 @@ class GeminiClient(IAIProvider):
             contents=prompt,
             config=config
         )
-        return response.text
+        usage = getattr(response, "usage_metadata", None)
+        return {
+            "content": response.text,
+            "usage": usage,
+            "model": active_model,
+        }

@@ -19,3 +19,11 @@ class IAIProvider(ABC):
             Exception: If an error occurs, such as RateLimitError, which will be handled by ProviderManager.
         """
         pass
+
+    def generate_with_metadata(self, prompt: str, system_instruction: str = None, api_key: str = None, model_name: str = None) -> dict:
+        content = self.generate(prompt, system_instruction, api_key, model_name)
+        return {
+            "content": content,
+            "usage": None,
+            "model": model_name,
+        }

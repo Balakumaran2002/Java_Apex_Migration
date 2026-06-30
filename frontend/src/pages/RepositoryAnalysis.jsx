@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { GitBranch, Play, CheckCircle, AlertTriangle, ShieldAlert, BookOpen, ArrowRight, Database, Package, Layers, Globe, Shield, Code, Server } from 'lucide-react';
-import { analyzeRepository } from '../api';
+import { analyzeRepository, getStatus } from '../api';
 
 export default function RepositoryAnalysis({ 
   setActiveTab, 
@@ -18,6 +18,31 @@ export default function RepositoryAnalysis({
   timeTaken,
   setTimeTaken
 }) {
+  const [llmStatus, setLlmStatus] = useState(null);
+
+  useEffect(() => {
+    if (!loading) return undefined;
+    let active = true;
+    const poll = async () => {
+      try {
+        const data = await getStatus();
+        if (!active) return;
+        setLlmStatus(data.llmStatus || null);
+        const currentJob = data.llmStatus?.currentJob;
+        if (currentJob?.message) {
+          setStatusText(currentJob.message);
+        }
+      } catch (e) {
+        // ignore transient polling errors
+      }
+    };
+    poll();
+    const id = setInterval(poll, 2000);
+    return () => {
+      active = false;
+      clearInterval(id);
+    };
+  }, [loading, setStatusText]);
 
   const handleAnalyze = async (e) => {
     e.preventDefault();
@@ -122,6 +147,12 @@ export default function RepositoryAnalysis({
           </div>
         )}
 
+        {llmStatus?.currentJob?.totalChunks > 0 && (
+          <div className="mt-4 p-4 rounded-xl border border-slate-200/60 dark:border-dark-800 bg-slate-50/60 dark:bg-dark-950/30 text-xs text-slate-600 dark:text-slate-300">
+            Processing chunk {llmStatus.currentJob.currentChunk || 0} of {llmStatus.currentJob.totalChunks}
+          </div>
+        )}
+
         {timeTaken && result && !loading && (
           <div className="mt-6 p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-sm font-semibold flex items-center gap-2 font-sans">
             <CheckCircle size={18} className="text-emerald-500" />
@@ -214,6 +245,25 @@ export default function RepositoryAnalysis({
                     </tbody>
                   </table>
                 </div>
+
+                {(result.llmUsage || result.llmQuota) && (
+                  <div className="p-6 glass-card">
+                    <h3 className="text-md font-bold text-slate-900 dark:text-white mb-4">LLM Quota</h3>
+                    <div className="space-y-2 text-xs">
+                      {result.llmUsage && (
+                        <div className="text-slate-600 dark:text-slate-300">
+                          Request usage: in {result.llmUsage.input_tokens}, out {result.llmUsage.output_tokens}, total {result.llmUsage.total_tokens}
+                        </div>
+                      )}
+                      {result.llmQuota?.keys && Object.values(result.llmQuota.keys).slice(0, 3).map((key) => (
+                        <div key={key.keyName} className="flex items-center justify-between rounded-lg bg-slate-100/60 dark:bg-dark-900/40 px-3 py-2">
+                          <span className="font-semibold text-slate-500">{key.keyName}</span>
+                          <span className="font-mono text-slate-700 dark:text-slate-300">{key.remainingTokens} left</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* Deprecated APIs */}
                 {result.deprecatedApis && result.deprecatedApis.length > 0 && (

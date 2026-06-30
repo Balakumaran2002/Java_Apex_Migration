@@ -1,0 +1,106 @@
+{
+  "analyze:https://github.com/RameshMF/ReactJS-Spring-Boot-CRUD-Full-Stack-App.git": {
+    "documents": {
+      "springboot-backend/pom.xml": {
+        "chunks": {
+          "8968d49abdf5fcb1ac98eaed8916b28557a3d11c1b11d0c6970e6a5c7287e33f": {
+            "summary": "* Build settings: \n  * Build tool: Maven\n  * Packaging: jar\n  * Java version: 17\n  * Spring Boot version: 3.0.4\n* Framework usage: \n  * Spring Boot\n  * Spring Web MVC\n  * Spring Data JPA\n* Dependencies: \n  * spring-boot-starter-data-jpa\n  * spring-boot-starter-web\n  * spring-boot-devtools\n  * mysql-connector-j\n  * spring-boot-starter-test\n* Migration risks: \n  * Risk level: Low\n  * Planned migration target: Java 21\n  * No deprecated APIs found\n* Runtime behavior: \n  * Database: MySQL\n  * REST endpoints: 6\n  * Separate frontend: React\n* Configuration: \n  * Properties: java.version set to 17\n  * Dependencies compatibility: managed by Spring Boot starter dependencies\n  * Database driver configuration: mysql-connector-j\n* Migration considerations: \n  * Upgrade to Java 21 using org.openrewrite.java.migrate.UpgradeToJava21 recipe\n  * No need to upgrade Spring Boot version as it is already 3.0.4\n  * No need to replace javax import namespaces with jakarta as the project is already on Spring Boot 3.0.4\n  * Verify database driver configuration and properties for Hibernate 6 compatibility",
+            "updatedAt": 1782792098.3061094
+          }
+        },
+        "content_hash": "8968d49abdf5fcb1ac98eaed8916b28557a3d11c1b11d0c6970e6a5c7287e33f"
+      },
+      "springboot-backend/src/main/resources/application.properties": {
+        "chunks": {
+          "2898a2dd113f5b082b0e069039109e2f1a4294c58d04748d776680a8cf180f4d": {
+            "summary": "* Build settings: \n  * Build Tool: Maven\n  * Packaging: jar\n  * Multi-module: False\n* Framework usage: \n  * Framework Type: Spring Boot / Web MVC\n  * Spring Boot Version: 3.0.4\n  * Current Java Version: 17\n  * Planned Migration Target: Java 21\n* Dependencies: \n  * Database: MySQL\n  * Database configuration: \n    * URL: jdbc:mysql://localhost:3306/employee_management_system?useSSL=false\n    * Username: root\n    * Password: root\n    * Hibernate dialect: org.hibernate.dialect.MySQLDialect\n    * DDL auto: update\n* Migration risks: \n  * Risk Level: Low\n  * Potential risks: \n    * Upgrading to Java 21 may require changes to dependencies and compiler settings\n    * Spring Boot 3 uses Hibernate 6, which requires updated dialects and properties\n* Deprecated APIs: \n  * None found\n* Runtime behavior: \n  * REST Endpoints Detected: 6\n  * Separate Frontend: True (React)\n  * Database interactions: \n    * Uses Spring Data JPA with Hibernate\n    * Configured to update database schema automatically\n* Migration considerations: \n  * Upgrade to Java 21 using `org.openrewrite.java.migrate.UpgradeToJava21` recipe\n  * Update Spring Boot version to 3.x.y (e.g., 3.2.5) in `pom.xml`\n  * Replace `javax` import namespaces with `jakarta` (if necessary)\n  * Update database driver configurations and Hibernate dialects for Spring Boot 3 and Hibernate 6 compatibility",
+            "updatedAt": 1782792099.649819
+          }
+        },
+        "content_hash": "2898a2dd113f5b082b0e069039109e2f1a4294c58d04748d776680a8cf180f4d"
+      },
+      "springboot-backend/src/main/java/net/javaguides/springboot/SpringbootBackendApplication.java": {
+        "chunks": {
+          "57257f0832c55732c3b1535a82bc3de217c22c2d37402c655bf7ff26061fb7f9": {
+            "summary": "* Build settings: \n  * Build Tool: Maven\n  * Packaging: jar\n  * Current Java Version: 17\n  * Planned Migration Target: Java 21\n* Framework usage: \n  * Framework Type: Spring Boot / Web MVC\n  * Spring Boot Version: 3.0.4\n* Dependencies: \n  * Database: MySQL\n* Migration risks: \n  * Risk Level: Low\n  * Potential risks: upgrading to Java 21, updating database driver configurations for Hibernate 6\n* Deprecated APIs: \n  * Deprecated APIs Found: None\n* Runtime behavior: \n  * Application entry point: SpringbootBackendApplication.java\n  * Main class: SpringbootBackendApplication\n  * Spring Boot application configuration: @SpringBootApplication\n  * Application runtime: executed via SpringApplication.run()\n* Context for later chunks: \n  * Separate frontend: React\n  * REST Endpoints Detected: 6\n  * Multi-module: False\n  * Upgrade strategy: may require replacing `javax` import namespaces with `jakarta`, updating Spring Security declarations, and changing database driver configurations.",
+            "updatedAt": 1782792100.7383704
+          }
+        },
+        "content_hash": "57257f0832c55732c3b1535a82bc3de217c22c2d37402c655bf7ff26061fb7f9"
+      },
+      "springboot-backend/src/main/java/net/javaguides/springboot/controller/EmployeeController.java": {
+        "chunks": {
+          "33c3df755eb4c788cac400031cd52038578e27419e496354b9bfb773d1b37284": {
+            "summary": "* Build settings: \n  * Build Tool: Maven\n  * Framework Type: Spring Boot / Web MVC\n  * Database: MySQL\n  * Packaging: jar\n  * Multi-module: False\n  * Has Separate Frontend: True (React)\n* Framework usage: \n  * Spring Boot Version: 3.0.4\n  * Current Java Version: 17\n  * Planned Migration Target: Java 21\n  * Spring Security: Not explicitly mentioned in this chunk\n* Dependencies: \n  * EmployeeRepository: Used for database operations\n  * Employee: Model class for employee data\n  * ResourceNotFoundException: Custom exception class\n* Migration risks: \n  * Risk Level: Low\n  * Potential issues with database driver configurations due to Hibernate 6 update in Spring Boot 3\n* Deprecated APIs: \n  * None found\n* Runtime behavior: \n  * REST Endpoints: 4 detected in this chunk (/employees, /employees/{id}, /employees for POST, /employees/{id} for PUT)\n  * EmployeeController: Handles CRUD operations for employees\n  * CrossOrigin: Enabled for \"http://localhost:3000\"\n  * Autowired: Used for EmployeeRepository instance\n* Migration considerations: \n  * Upgrade to Java 21 using org.openrewrite.java.migrate.UpgradeToJava21 recipe\n  * Potential need to migrate import namespaces from javax to jakarta for JEE applications\n  * Update database driver configurations for Hibernate 6 compatibility\n  * Verify Spring Security declarations and upgrade to component-based config if necessary",
+            "updatedAt": 1782792102.1333888
+          },
+          "f49b1c47cff89cb56869e10880bf2cc5c12367bd3cdf901d31d1a25dd1ea3f0a": {
+            "summary": "Here are the concise grounded notes that preserve technical details, versions, APIs, configuration, and migration risks:\n\n* Build settings: \n  * Build Tool: Maven\n  * Framework Type: Spring Boot / Web MVC\n  * Database: MySQL\n  * Packaging: jar\n  * Multi-module: False\n  * Has Separate Frontend: True (React)\n* Framework usage: \n  * Spring Boot Version: 3.0.4\n  * Current Java Version: 17\n  * Planned Migration Target: Java 21\n* Dependencies: \n  * EmployeeRepository: Used for database operations\n  * Employee: Model class for employee data\n  * ResourceNotFoundException: Custom exception class\n* Migration risks: \n  * Risk Level: Low\n  * Potential issues with database driver configurations due to Hibernate 6 update in Spring Boot 3\n* Deprecated APIs: \n  * None found\n* Runtime behavior: \n  * REST Endpoints: 2 detected in this chunk (/employees/{id} for PUT, /employees/{id} for DELETE)\n  * EmployeeController: Handles update and delete operations for employees\n  * CrossOrigin: Not explicitly mentioned in this chunk\n  * Autowired: Used for EmployeeRepository instance \n* Migration considerations: \n  * Upgrade to Java 21 using org.openrewrite.java.migrate.UpgradeToJava21 recipe\n  * Potential need to migrate import namespaces from javax to jakarta for JEE applications\n  * Update database driver configurations for Hibernate 6 compatibility\n  * Verify Spring Security declarations and upgrade to component-based config if necessary \n\nTotal REST Endpoints Detected: 6 (4 from previous chunk, 2 from this chunk)",
+            "updatedAt": 1782792103.1459107
+          }
+        },
+        "content_hash": "947d11db18a7b3495222102f19655250022353b9f6b45ed3bc2141147abb646d"
+      },
+      "springboot-backend/src/main/java/net/javaguides/springboot/exception/ResourceNotFoundException.java": {
+        "chunks": {
+          "62a0171f87f81745b4777a5689ed5fe8e25a89fd41dbf507d0a58cf1021c9f10": {
+            "summary": "* Build settings: \n  * Build Tool: Maven\n  * Packaging: jar\n  * Current Java Version: 17\n  * Planned Migration Target: Java 21\n* Framework usage: \n  * Framework Type: Spring Boot / Web MVC\n  * Spring Boot Version: 3.0.4\n* Dependencies: \n  * Database: MySQL\n* Migration risks: \n  * Risk Level: Low\n  * Potential risks: Upgrading to Java 21, Spring Boot 3.x compatibility\n* Deprecated APIs: \n  * Deprecated APIs Found: None\n* Runtime behavior: \n  * REST Endpoints Detected: 6\n  * Exception handling: Custom exception class `ResourceNotFoundException` with `@ResponseStatus` annotation\n  * Multi-module: False\n  * Has Separate Frontend: True (React)\n* Migration path: \n  * Upgrade to Java 21 using `org.openrewrite.java.migrate.UpgradeToJava21` recipe\n  * Upgrade Spring Boot to version 3.x using `org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_0` recipe\n  * Replace `javax` import namespaces with `jakarta` using `org.openrewrite.java.migrate.jakarta.JavaxMigrationToJakarta` recipe (if necessary)",
+            "updatedAt": 1782792105.432533
+          }
+        },
+        "content_hash": "62a0171f87f81745b4777a5689ed5fe8e25a89fd41dbf507d0a58cf1021c9f10"
+      },
+      "springboot-backend/src/main/java/net/javaguides/springboot/model/Employee.java": {
+        "chunks": {
+          "b867fdc13cad6d7eb5b1ced09adeb7b7d182fe07005691d9004aa62175677b5d": {
+            "summary": "* Build settings: \n  * Build Tool: Maven\n  * Framework Type: Spring Boot / Web MVC\n  * Database: MySQL\n  * Packaging: jar\n  * Multi-module: False\n  * Has Separate Frontend: True (React)\n* Framework usage: \n  * Spring Boot Version: 3.0.4\n  * Current Java Version: 17\n  * Planned Migration Target: Java 21\n* Dependencies: \n  * Uses Jakarta Persistence API (JPA) for database operations\n  * No explicit dependencies mentioned in this chunk\n* Migration risks: \n  * Risk Level: Low\n  * No deprecated APIs found in this chunk\n* Runtime behavior: \n  * This chunk contains a Java class `Employee` that represents a database entity\n  * The class uses JPA annotations for mapping to a database table\n  * The class has getter and setter methods for its properties\n  * The class has a no-arg constructor and a constructor that takes `firstName`, `lastName`, and `emailId` as parameters\n* Migration considerations: \n  * The project is already using Java 17, which is the baseline version for Spring Boot 3.x\n  * The project is using Spring Boot 3.0.4, which supports Java 21\n  * The `jakarta.persistence` package is used, which is compatible with Spring Boot 3.x\n  * No explicit migration risks or deprecated APIs are found in this chunk\n  * The `UpgradeToJava21` recipe from OpenRewrite may be applicable for migrating the project to Java 21\n  * The `UpgradeSpringBoot_3_0` recipe from OpenRewrite may be applicable for upgrading the Spring Boot application to version 3.0.x",
+            "updatedAt": 1782792106.7139003
+          }
+        },
+        "content_hash": "b867fdc13cad6d7eb5b1ced09adeb7b7d182fe07005691d9004aa62175677b5d"
+      },
+      "springboot-backend/src/main/java/net/javaguides/springboot/repository/EmployeeRepository.java": {
+        "chunks": {
+          "fdc79fc0a5942486229ba647021537a29876a3ab2b80f2943f020e15e0fcfe4d": {
+            "summary": "* Build settings: \n  * Build Tool: Maven\n  * Packaging: jar\n  * Current Java Version: 17\n  * Planned Migration Target: Java 21\n* Framework usage: \n  * Framework Type: Spring Boot / Web MVC\n  * Spring Boot Version: 3.0.4\n  * Database: MySQL\n* Dependencies: \n  * Spring Data JPA (JpaRepository)\n* Migration risks: \n  * Risk Level: Low\n  * Potential risks: Upgrading to Java 21, potential issues with MySQL database driver configurations\n* Deprecated APIs: \n  * None found\n* Runtime behavior: \n  * Repository interface (EmployeeRepository) extends JpaRepository for Employee model with Long ID type\n  * Annotated with @Repository for Spring component scanning\n  * No custom query methods or other configurations present in this chunk\n* Migration considerations: \n  * Upgrade to Java 21 using org.openrewrite.java.migrate.UpgradeToJava21 recipe\n  * Review and update database driver configurations for Hibernate 6 compatibility\n  * No javax to jakarta namespace migration needed in this chunk, but may be required in other parts of the repository",
+            "updatedAt": 1782792107.7979622
+          }
+        },
+        "content_hash": "fdc79fc0a5942486229ba647021537a29876a3ab2b80f2943f020e15e0fcfe4d"
+      },
+      "__java_imports__": {
+        "chunks": {
+          "bb2a17c2d565f5a0acabe67072274d686caf40a54c1e621ff7de2b3661cac322": {
+            "summary": "* Build settings: \n  * Build Tool: Maven\n  * Packaging: jar\n  * Current Java Version: 17\n  * Planned Migration Target: Java 21\n* Framework usage: \n  * Framework Type: Spring Boot / Web MVC\n  * Spring Boot Version: 3.0.4\n  * Spring Security: potentially used, but no explicit configuration found in this chunk\n* Dependencies: \n  * Database: MySQL\n  * JPA (Java Persistence API) used with jakarta.persistence package\n  * Spring Data JPA used with JpaRepository\n* Migration risks: \n  * Risk Level: Low\n  * Potential risks: updating database driver configurations, replacing deprecated APIs (none found in this chunk)\n* Deprecated APIs: \n  * None found in this chunk\n* Runtime behavior: \n  * REST Endpoints Detected: 6 (across the repository, not all in this chunk)\n  * Example endpoints: @GetMapping, @PostMapping, @PutMapping, @DeleteMapping\n  * Error handling: custom exception (ResourceNotFoundException) and HTTP status codes (e.g., @ResponseStatus)\n  * Cross-origin resource sharing (CORS) enabled with @CrossOrigin annotation\n* Code organization: \n  * Separate frontend: True (React, but not shown in this chunk)\n  * Repository pattern used (e.g., EmployeeRepository)\n  * Service layer not explicitly shown in this chunk, but potentially used elsewhere in the repository\n* Migration path: \n  * Upgrade to Java 21 using OpenRewrite recipes (e.g., org.openrewrite.java.migrate.UpgradeToJava21)\n  * Follow Spring Boot 3 migration guide (e.g., update database driver configurations, replace deprecated APIs)",
+            "updatedAt": 1782792109.336218
+          }
+        },
+        "content_hash": "bb2a17c2d565f5a0acabe67072274d686caf40a54c1e621ff7de2b3661cac322"
+      }
+    },
+    "updatedAt": 1782792109.336218
+  },
+  "analyze:https://github.com/keycloak/keycloak.git": {
+    "documents": {
+      "maven-settings.xml": {
+        "chunks": {
+          "a60ed6a9c57befafc3ead0f6a9b0b95b4c56b58d9d41349f7389d60272c89aba": {
+            "summary": "* Build settings: \n  * Maven is used as the build tool\n  * The `maven-settings.xml` file configures the build environment, including plugin groups and repositories\n  * The JBoss Public Maven Repository Group is used for both releases and snapshots\n  * The `jboss-public-repository` profile is active\n* Framework usage: \n  * JSP/Servlet framework is used\n  * No Spring Boot version is detected\n* Dependencies: \n  * No explicit dependencies are mentioned in this chunk, but the repository settings suggest that dependencies will be resolved from the JBoss Public Maven Repository Group\n* Migration risks: \n  * The risk level is currently low\n  * The planned migration target is Java 21, which may introduce changes to the build version, dependencies compatibility, and compiler release levels\n* Deprecated APIs: \n  * No deprecated APIs are found in this chunk\n* Runtime behavior: \n  * The application uses Java 17 as the current version\n  * The application is packaged as a JAR file\n  * The application has a separate frontend built with Node.js\n  * No REST endpoints are detected in this chunk\n* Potential migration considerations: \n  * Upgrading to Java 21 may require adjustments to source compatibility settings, upgrades to Maven compilers and core plugins, and replacements for deprecated APIs\n  * The `org.openrewrite.java.migrate.UpgradeToJava21` recipe may be applicable for this migration\n  * The `org.openrewrite.java.migrate.jakarta.JavaxMigrationToJakarta` recipe may be applicable if the application uses JEE applications transitioning to Jakarta 9/10+",
+            "updatedAt": 1782816401.01083
+          }
+        },
+        "content_hash": "a60ed6a9c57befafc3ead0f6a9b0b95b4c56b58d9d41349f7389d60272c89aba"
+      },
+      "pom.xml": {
+        "chunks": {
+          "1adeba4116364749b871ace9a6f2747947159556525c16180e0a031cd0141ed1": {
+            "summary": "* Build settings: \n  * Maven version: 3.9.8\n  * Java version: 17 (source, target, and release)\n  * Maven compiler plugin version: not explicitly specified, but likely 3.8.1 or higher (required for Java 17)\n  * Packaging: pom (parent project)\n* Framework usage: \n  * JSP/Servlet (detected in repository facts)\n  * Quarkus version: 3.33.2.1 (build and runtime)\n* Dependencies: \n  * Quarkus: 3.33.2.1\n  * JBoss logging annotations: 3.0.4.Final\n  * Asciidoctor plugin: 1.5.8\n* Migration risks: \n  * Low (detected in repository facts)\n  * Potential risks due to Quarkus version compatibility with Java 21 (target migration version)\n* Deprecated APIs: \n  * None detected in this chunk\n* Runtime behavior: \n  * Uses JDK internals (potential restriction in Java 17 and later)\n  * No explicit --add-opens flags or other workarounds for JDK internal access restriction\n  * No removed APIs (like Java EE modules) detected in this chunk\n* Context for later chunks: \n  * Parent project (packaging: pom) with version 999.0.0-SNAPSHOT\n  * Maven version and Java version already set to compatible values for Java 17\n  * Quarkus version and dependencies may require updates for Java 21 compatibility",
+            "updatedAt": 1782816402.6056738
+          }
+        },
+        "content_hash": "f448a5d0aa9239c542a047d4c86723e3fd282801d64e00a4b6e857e81207f690"
+      }
+    },
+    "updatedAt": 1782816402.6056738
+  }
+}

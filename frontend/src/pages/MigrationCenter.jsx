@@ -1,7 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { RefreshCw, Play, FileText, CheckCircle, ShieldAlert, Cpu, Download, Clock, Trash2, Server, Terminal, ExternalLink, Copy, Search, StopCircle, Globe, Check } from 'lucide-react';
-import { migrateRepository, getMigrationReportUrl, getMigrationStatus, startProject, stopProject, getProjectStatus } from '../api';
+import { migrateRepository, getMigrationReportUrl, getMigrationStatus, startProject, stopProject, getProjectStatus, getMigrationHistory, clearMigrationHistory } from '../api';
 import Prism from 'prismjs';
+
+const MIGRATION_SESSION_KEY = 'migration_session';
+const TERMINAL_MIGRATION_STATES = new Set(['SUCCESS', 'FAILURE', 'FAILED', 'CANCELLED', 'CANCELED', 'REVOKED', 'COMPLETED']);
+
+const readMigrationSession = () => {
+  try {
+    const raw = localStorage.getItem(MIGRATION_SESSION_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (error) {
+    return null;
+  }
+};
+
+const writeMigrationSession = (session) => {
+  if (!session) {
+    localStorage.removeItem(MIGRATION_SESSION_KEY);
+    return;
+  }
+  localStorage.setItem(MIGRATION_SESSION_KEY, JSON.stringify(session));
+};
 
 const parseGitDiff = (diffStr) => {
   if (!diffStr) return [];
@@ -36,6 +56,40 @@ const parseGitDiff = (diffStr) => {
   return files;
 };
 
+const getRepoNameFromUrl = (repoUrl) => {
+  if (!repoUrl) return '';
+  return repoUrl.split('/').pop().replace('.git', '');
+};
+
+const getRepoBranch = (repoUrl) => {
+  if (!repoUrl) return 'unknown';
+  const branchMatch = repoUrl.match(/[#?]branch=([^&#]+)/i);
+  return branchMatch ? decodeURIComponent(branchMatch[1]) : 'default';
+};
+
+const safeParseDetailedReport = (detailedReport) => {
+  if (!detailedReport) return null;
+  try {
+    const cleaned = String(detailedReport).trim().replace(/^```json\s*/i, '').replace(/^```/, '').replace(/```$/, '').trim();
+    return JSON.parse(cleaned);
+  } catch (error) {
+    return null;
+  }
+};
+
+const parseProgressMessage = (message) => {
+  if (!message) return null;
+  const match = String(message).match(/Java Files \((\d+)\/(\d+)\) - (\d+)% - ETA ([^ ]+) - ([\d.]+) file\/s/i);
+  if (!match) return null;
+  return {
+    completed: Number(match[1]),
+    total: Number(match[2]),
+    percent: Number(match[3]),
+    eta: match[4],
+    speed: match[5],
+  };
+};
+
 export default function MigrationCenter({ 
   setActiveTab, 
   analysisResult,
@@ -57,7 +111,9 @@ export default function MigrationCenter({
   timeTaken,
   setTimeTaken
 }) {
-  const repoName = repoUrl ? repoUrl.split('/').pop().replace('.git', '') : '';
+  const repoName = getRepoNameFromUrl(repoUrl);
+  const [migrationSession, setMigrationSession] = useState(() => readMigrationSession());
+  const [, setSelectorTick] = useState(0);
 
   const [runnerStatus, setRunnerStatus] = useState('IDLE');
   const [runnerPort, setRunnerPort] = useState(null);
@@ -73,6 +129,74 @@ export default function MigrationCenter({
   const [activePreviewTab, setActivePreviewTab] = useState('logs');
   const [copiedPath, setCopiedPath] = useState(null);
   const [endpointSearch, setEndpointSearch] = useState('');
+  const [llmStatus, setLlmStatus] = useState(null);
+
+  const isSessionActive = Boolean(
+    migrationSession &&
+    migrationSession.locked !== false &&
+    migrationSession.repoUrl &&
+    migrationSession.repoUrl === repoUrl &&
+    !TERMINAL_MIGRATION_STATES.has(String(migrationSession.status || '').toUpperCase())
+  );
+
+  const activeTargetVersion = isSessionActive ? String(migrationSession.selectedJavaVersion || targetVersion) : targetVersion;
+  const activeLoading = loading || isSessionActive;
+  const activeStatusText = isSessionActive
+    ? migrationSession.statusText || statusText || 'Migration in progress.'
+    : statusText;
+  const activeElapsedTime = isSessionActive
+    ? ((Date.now() - (migrationSession.startedAt || Date.now())) / 1000).toFixed(1)
+    : elapsedTime;
+  const activeLlmStatus = isSessionActive ? migrationSession.llmStatus || llmStatus : llmStatus;
+  const activeProgress = isSessionActive ? migrationSession.progress ?? null : null;
+  const activeProgressMessage = activeLlmStatus?.currentJob?.message || activeStatusText;
+  const parsedProgress = parseProgressMessage(activeProgressMessage);
+  const isFallbackMode = /fallback mode|rate limit|exhausted|skipping ai rewrite/i.test(activeProgressMessage || '');
+
+  useEffect(() => {
+    const tickInterval = isSessionActive ? setInterval(() => setSelectorTick((value) => value + 1), 1000) : null;
+    return () => {
+      if (tickInterval) clearInterval(tickInterval);
+    };
+  }, [isSessionActive]);
+
+  useEffect(() => {
+    writeMigrationSession(migrationSession);
+  }, [migrationSession]);
+
+  useEffect(() => {
+    getMigrationHistory().then(setHistory).catch(console.error);
+  }, [setHistory]);
+
+  const clearHistory = async () => {
+    try {
+      await clearMigrationHistory();
+      setHistory([]);
+    } catch (e) {
+      console.error(e);
+      setHistory([]);
+    }
+  };
+
+  useEffect(() => {
+    if (!isSessionActive) {
+      return;
+    }
+
+    if (!loading) {
+      setLoading(true);
+    }
+
+    if (targetVersion !== activeTargetVersion) {
+      setTargetVersion(activeTargetVersion);
+    }
+    if (result) {
+      setResult(null);
+    }
+    if (timeTaken) {
+      setTimeTaken(null);
+    }
+  }, [isSessionActive, loading, activeTargetVersion, result, timeTaken, setLoading, setResult, setTargetVersion, setTimeTaken, targetVersion]);
 
   const getPreviewSrc = (previewUrl) => {
     if (!previewUrl) return null;
@@ -255,28 +379,76 @@ export default function MigrationCenter({
       return;
     }
 
+    if (isSessionActive || loading) {
+      setError('A migration is already running. Please wait until it completes.');
+      setStatusText('A migration is already running. Please wait until it completes.');
+      return;
+    }
+
     setLoading(true);
     setError(null);
     setResult(null);
     setTimeTaken(null);
     setStatusText('Queuing migration task...');
+    setLlmStatus(null);
 
-    const startTime = Date.now();
+    const startedAt = Date.now();
+    setMigrationSession({
+      repoUrl,
+      selectedJavaVersion: targetVersion,
+      taskId: null,
+      status: 'QUEUING',
+      statusText: 'Queuing migration task...',
+      locked: true,
+      progress: 0,
+      startedAt,
+      updatedAt: startedAt,
+      llmStatus: null,
+    });
 
     try {
       const taskData = await migrateRepository(repoUrl, targetVersion);
       const taskId = taskData.task_id;
+      setMigrationSession((current) => current ? {
+        ...current,
+        taskId,
+        status: 'PENDING',
+        statusText: 'Migration task is running in the background...',
+        updatedAt: Date.now(),
+      } : current);
 
       setStatusText('Migration task is running in the background...');
 
       const pollStatus = async () => {
         try {
           const statusData = await getMigrationStatus(taskId);
+          setLlmStatus(statusData.llmStatus || null);
+          const currentJob = statusData.llmStatus?.currentJob || {};
+          const totalChunks = currentJob.totalChunks || 0;
+          const currentChunk = currentJob.currentChunk || 0;
+          const progress = totalChunks ? Math.min(100, Math.round((currentChunk / totalChunks) * 100)) : null;
+          const currentMessage = currentJob.message || (statusData.status === 'SUCCESS' ? 'Migration Completed Successfully' : statusData.status);
+
+          setMigrationSession((current) => current ? {
+            ...current,
+            status: statusData.status,
+            statusText: currentMessage,
+            progress,
+            llmStatus: statusData.llmStatus || null,
+            updatedAt: Date.now(),
+          } : current);
+
+          if (statusData.llmStatus?.currentJob?.message) {
+            setStatusText(statusData.llmStatus.currentJob.message);
+          }
+          if (statusData.llmStatus?.currentJob?.currentChunk != null && statusData.llmStatus?.currentJob?.totalChunks != null) {
+            setStatusText(statusData.llmStatus.currentJob.message || `Java Files (${statusData.llmStatus.currentJob.currentChunk}/${statusData.llmStatus.currentJob.totalChunks})`);
+          }
           
           if (statusData.status === 'SUCCESS') {
             const data = statusData.result;
             const endTime = Date.now();
-            const duration = ((endTime - startTime) / 1000).toFixed(1);
+            const duration = ((endTime - startedAt) / 1000).toFixed(1);
 
             if (data.errorMessage) {
               setError(data.errorMessage);
@@ -286,28 +458,20 @@ export default function MigrationCenter({
               localStorage.setItem('last_migration_time', JSON.stringify(duration));
               localStorage.setItem('last_migration', JSON.stringify(data));
 
-              // Add to migration history
-              const historyEntry = {
-                id: Date.now(),
-                repoUrl,
-                targetVersion: data.targetVersion,
-                success: data.success,
-                buildStatus: data.buildStatus,
-                modifiedFiles: data.modifiedFiles?.length || 0,
-                timestamp: new Date().toLocaleString(),
-              };
-              const updatedHistory = [historyEntry, ...history].slice(0, 20); // Keep last 20
+              const detailedReport = safeParseDetailedReport(data.detailedReport);
+              const updatedHistory = await getMigrationHistory();
               setHistory(updatedHistory);
-              localStorage.setItem('migration_history', JSON.stringify(updatedHistory));
               
               // Update stats
               const stats = JSON.parse(localStorage.getItem('assistant_stats') || '{"reposAnalyzed":0,"migrationsRun":0,"filesConverted":0}');
               stats.migrationsRun += 1;
               localStorage.setItem('assistant_stats', JSON.stringify(stats));
             }
+            setMigrationSession(null);
             setLoading(false);
-          } else if (statusData.status === 'FAILURE') {
+          } else if (['FAILURE', 'FAILED', 'CANCELLED', 'CANCELED', 'REVOKED'].includes(String(statusData.status || '').toUpperCase())) {
             setError(statusData.error || 'Migration task failed in the background queue.');
+            setMigrationSession(null);
             setLoading(false);
           } else {
             // Still PENDING or RUNNING
@@ -315,7 +479,6 @@ export default function MigrationCenter({
           }
         } catch (err) {
           setError(err.response?.data?.message || err.message || 'Error polling migration status.');
-          setLoading(false);
         }
       };
 
@@ -323,14 +486,11 @@ export default function MigrationCenter({
 
     } catch (err) {
       setError(err.response?.data?.message || err.message || 'An error occurred during repository migration queueing.');
+      setMigrationSession(null);
       setLoading(false);
     }
   };
 
-  const clearHistory = () => {
-    setHistory([]);
-    localStorage.removeItem('migration_history');
-  };
 
   return (
     <div className="space-y-8 animate-fadeIn">
@@ -360,89 +520,134 @@ export default function MigrationCenter({
             <label className="block text-sm font-semibold text-slate-500 dark:text-slate-400 mb-2">
               Select Target Java Version
             </label>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl">
-              <label className={`p-4 rounded-xl border flex items-center gap-3 cursor-pointer transition-all ${
-                targetVersion === '11' 
+            {isSessionActive && (
+              <div className="mb-4 p-4 rounded-xl border border-blue-200/60 bg-blue-50/80 text-blue-700 dark:border-blue-900/40 dark:bg-blue-950/20 dark:text-blue-300 text-sm font-semibold">
+                Migration in progress. Java version selection is locked until the migration completes.
+              </div>
+            )}
+            <div className={`grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl ${isSessionActive ? 'pointer-events-none select-none' : ''}`}>
+              <label className={`relative p-4 rounded-xl border flex items-center gap-3 transition-all ${
+                activeTargetVersion === '11' 
                   ? 'border-brand-500 bg-brand-500/10 text-brand-700 dark:text-brand-400' 
-                  : 'border-slate-200 dark:border-dark-800 bg-transparent hover:bg-slate-100/30'
-              }`}>
+                  : 'border-slate-200 dark:border-dark-800 bg-transparent hover:bg-slate-100/30 cursor-pointer'
+              } ${isSessionActive && activeTargetVersion !== '11' ? 'opacity-60' : ''}`}>
                 <input
                   type="radio"
                   name="targetVersion"
                   value="11"
-                  checked={targetVersion === '11'}
+                  checked={activeTargetVersion === '11'}
                   onChange={() => setTargetVersion('11')}
+                  disabled={isSessionActive}
                   className="hidden"
                 />
                 <span className="font-bold text-lg">Java 11</span>
                 <span className="text-xs opacity-75">(Older LTS)</span>
+                {isSessionActive && activeTargetVersion === '11' && (
+                  <span className="ml-auto inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-brand-500/15 text-brand-700 dark:text-brand-300">
+                    <svg className="h-3 w-3 animate-spin" viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="10" className="opacity-25" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    Processing
+                  </span>
+                )}
               </label>
 
-              <label className={`p-4 rounded-xl border flex items-center gap-3 cursor-pointer transition-all ${
-                targetVersion === '17' 
+              <label className={`relative p-4 rounded-xl border flex items-center gap-3 transition-all ${
+                activeTargetVersion === '17' 
                   ? 'border-brand-500 bg-brand-500/10 text-brand-700 dark:text-brand-400' 
-                  : 'border-slate-200 dark:border-dark-800 bg-transparent hover:bg-slate-100/30'
-              }`}>
+                  : 'border-slate-200 dark:border-dark-800 bg-transparent hover:bg-slate-100/30 cursor-pointer'
+              } ${isSessionActive && activeTargetVersion !== '17' ? 'opacity-60' : ''}`}>
                 <input
                   type="radio"
                   name="targetVersion"
                   value="17"
-                  checked={targetVersion === '17'}
+                  checked={activeTargetVersion === '17'}
                   onChange={() => setTargetVersion('17')}
+                  disabled={isSessionActive}
                   className="hidden"
                 />
                 <span className="font-bold text-lg">Java 17</span>
                 <span className="text-xs opacity-75">(LTS Baseline)</span>
+                {isSessionActive && activeTargetVersion === '17' && (
+                  <span className="ml-auto inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-brand-500/15 text-brand-700 dark:text-brand-300">
+                    <svg className="h-3 w-3 animate-spin" viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="10" className="opacity-25" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    Processing
+                  </span>
+                )}
               </label>
 
-              <label className={`p-4 rounded-xl border flex items-center gap-3 cursor-pointer transition-all ${
-                targetVersion === '21' 
+              <label className={`relative p-4 rounded-xl border flex items-center gap-3 transition-all ${
+                activeTargetVersion === '21' 
                   ? 'border-brand-500 bg-brand-500/10 text-brand-700 dark:text-brand-400' 
-                  : 'border-slate-200 dark:border-dark-800 bg-transparent hover:bg-slate-100/30'
-              }`}>
+                  : 'border-slate-200 dark:border-dark-800 bg-transparent hover:bg-slate-100/30 cursor-pointer'
+              } ${isSessionActive && activeTargetVersion !== '21' ? 'opacity-60' : ''}`}>
                 <input
                   type="radio"
                   name="targetVersion"
                   value="21"
-                  checked={targetVersion === '21'}
+                  checked={activeTargetVersion === '21'}
                   onChange={() => setTargetVersion('21')}
+                  disabled={isSessionActive}
                   className="hidden"
                 />
                 <span className="font-bold text-lg">Java 21</span>
                 <span className="text-xs opacity-75">(Virtual Threads)</span>
+                {isSessionActive && activeTargetVersion === '21' && (
+                  <span className="ml-auto inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-brand-500/15 text-brand-700 dark:text-brand-300">
+                    <svg className="h-3 w-3 animate-spin" viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="10" className="opacity-25" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    Processing
+                  </span>
+                )}
               </label>
 
-              <label className={`p-4 rounded-xl border flex items-center gap-3 cursor-pointer transition-all ${
-                targetVersion === '25' 
+              <label className={`relative p-4 rounded-xl border flex items-center gap-3 transition-all ${
+                activeTargetVersion === '25' 
                   ? 'border-brand-500 bg-brand-500/10 text-brand-700 dark:text-brand-400' 
-                  : 'border-slate-200 dark:border-dark-800 bg-transparent hover:bg-slate-100/30'
-              }`}>
+                  : 'border-slate-200 dark:border-dark-800 bg-transparent hover:bg-slate-100/30 cursor-pointer'
+              } ${isSessionActive && activeTargetVersion !== '25' ? 'opacity-60' : ''}`}>
                 <input
                   type="radio"
                   name="targetVersion"
                   value="25"
-                  checked={targetVersion === '25'}
+                  checked={activeTargetVersion === '25'}
                   onChange={() => setTargetVersion('25')}
+                  disabled={isSessionActive}
                   className="hidden"
                 />
                 <span className="font-bold text-lg">Java 25</span>
                 <span className="text-xs opacity-75">(Next LTS)</span>
+                {isSessionActive && activeTargetVersion === '25' && (
+                  <span className="ml-auto inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full bg-brand-500/15 text-brand-700 dark:text-brand-300">
+                    <svg className="h-3 w-3 animate-spin" viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="10" className="opacity-25" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    Processing
+                  </span>
+                )}
               </label>
             </div>
           </div>
 
           <button
             type="submit"
-            disabled={loading || !repoUrl}
+            disabled={activeLoading || !repoUrl}
             className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm font-sans"
           >
-            {loading ? (
+            {activeLoading ? (
               <>
                 <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                 </svg>
-                Processing Migration... ({elapsedTime}s)
+                Processing Migration... ({activeElapsedTime}s)
               </>
             ) : (
               <>
@@ -452,16 +657,62 @@ export default function MigrationCenter({
           </button>
         </form>
 
-        {loading && (
+        {activeLoading && (
           <div className="mt-6 p-4 rounded-xl border border-indigo-100 dark:border-indigo-950 bg-indigo-50/30 dark:bg-indigo-950/20 text-sm text-indigo-700 dark:text-indigo-300 font-semibold animate-pulse">
-            Status: {statusText} ({elapsedTime}s)
+            Status: {activeStatusText} ({activeElapsedTime}s)
           </div>
         )}
 
-        {timeTaken && result && !loading && (
+        {activeLlmStatus?.currentJob?.totalChunks > 0 && (
+          <div className="mt-4 p-4 rounded-xl border border-slate-200/60 dark:border-dark-800 bg-slate-50/60 dark:bg-dark-950/30 text-xs text-slate-600 dark:text-slate-300">
+            <div className="font-semibold">
+              Current step: {activeProgressMessage}
+            </div>
+            <div className="mt-1">
+              Processing chunk {activeLlmStatus.currentJob.currentChunk || 0} of {activeLlmStatus.currentJob.totalChunks}
+              {activeProgress != null && ` • ${activeProgress}% complete`}
+            </div>
+            {parsedProgress && (
+              <div className="mt-1 text-[11px] opacity-80">
+                ETA {parsedProgress.eta} • {parsedProgress.speed} file/s
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeLoading && isFallbackMode && (
+          <div className="mt-4 p-4 rounded-xl border border-amber-500/25 bg-amber-500/10 text-amber-700 dark:text-amber-300 text-sm font-semibold">
+            LLM fallback mode is active. Deterministic migration continues while AI rewrites are skipped or retried with smaller chunks.
+          </div>
+        )}
+
+        {isSessionActive && (
+          <div className="mt-4 p-4 rounded-xl border border-slate-200/60 dark:border-dark-800 bg-slate-50/60 dark:bg-dark-950/30 text-xs text-slate-600 dark:text-slate-300">
+            Migration progress is preserved for this browser session and will resume after a refresh.
+          </div>
+        )}
+
+        {timeTaken && result && !activeLoading && (
           <div className="mt-6 p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-sm font-semibold flex items-center gap-2 font-sans">
             <CheckCircle size={18} className="text-emerald-500" />
             Migration & compiler verification completed in {timeTaken}s.
+          </div>
+        )}
+
+        {result && (result.llmUsage || result.llmQuota) && (
+          <div className="mt-4 p-4 rounded-xl border border-slate-200/60 dark:border-dark-800 bg-slate-50/60 dark:bg-dark-950/30 text-xs text-slate-600 dark:text-slate-300">
+            {result.llmUsage && (
+              <div>LLM usage: in {result.llmUsage.input_tokens}, out {result.llmUsage.output_tokens}, total {result.llmUsage.total_tokens}</div>
+            )}
+            {result.llmQuota?.keys && (
+              <div className="mt-2 flex flex-wrap gap-2">
+                {Object.values(result.llmQuota.keys).slice(0, 3).map((key) => (
+                  <span key={key.keyName} className="px-2 py-1 rounded bg-slate-100 dark:bg-dark-900 font-mono">
+                    {key.keyName}: {key.remainingTokens} left
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -487,14 +738,14 @@ export default function MigrationCenter({
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-md font-bold text-slate-900 dark:text-white flex items-center gap-2">
                   <FileText className="text-indigo-500" size={18} />
-                  OpenRewrite Execution Log
+                  LLM Engine Execution Log
                 </h3>
                 <span className={`px-3 py-1 text-xs font-bold rounded-full border ${
                   result.success 
                     ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400' 
                     : 'bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-400'
                 }`}>
-                  {result.success ? 'Recipes Executed' : 'Execution Notice'}
+                  {result.success ? 'Migration Completed Successfully' : 'Execution Notice'}
                 </span>
               </div>
               <pre className="p-4 rounded-xl bg-slate-900 text-slate-100 text-xs font-mono overflow-x-auto max-h-96 leading-relaxed">
@@ -775,9 +1026,9 @@ export default function MigrationCenter({
                         <div className="flex items-center gap-3 mb-3">
                           <Server size={22} className="text-indigo-500" />
                           <div>
-                            <h4 className="font-bold text-slate-800 dark:text-slate-100 text-sm">REST API Running — No Browser UI</h4>
+                            <h4 className="font-bold text-slate-800 dark:text-slate-100 text-sm">No Frontend Application Detected</h4>
                             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                              This project does not have a web interface. It is a backend REST API application.
+                              This runtime does not expose a browser UI for live preview.
                             </p>
                           </div>
                         </div>
@@ -791,7 +1042,7 @@ export default function MigrationCenter({
                       {runnerSwaggerUrl && (
                         <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 mb-4 flex items-center justify-between">
                           <div>
-                            <p className="text-xs font-bold text-emerald-700 dark:text-emerald-400 mb-1">Swagger / OpenAPI UI Detected</p>
+                            <p className="text-xs font-bold text-emerald-700 dark:text-emerald-400 mb-1">API Explorer Detected</p>
                             <p className="font-mono text-xs text-emerald-600 dark:text-emerald-300">{runnerSwaggerUrl}</p>
                           </div>
                           <a
@@ -874,7 +1125,7 @@ export default function MigrationCenter({
                       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 shrink-0">
                         <div className="text-left">
                           <h4 className="font-bold text-sm text-slate-800 dark:text-slate-200 mb-1 flex items-center gap-2">
-                            <Cpu size={16} className="text-brand-500" /> API Endpoints Ready
+                            <Cpu size={16} className="text-brand-500" /> Backend Information
                           </h4>
                           <p className="text-xs text-slate-400">
                             Swagger documentation is available at: {' '}
@@ -1038,38 +1289,38 @@ export default function MigrationCenter({
               </thead>
               <tbody>
                 {history.map((entry) => (
-                  <tr key={entry.id} className="border-b border-slate-100/50 dark:border-dark-800/30 hover:bg-slate-50/50 dark:hover:bg-dark-900/20 transition-colors">
+                  <tr key={entry.migration_id || entry.id} className="border-b border-slate-100/50 dark:border-dark-800/30 hover:bg-slate-50/50 dark:hover:bg-dark-900/20 transition-colors cursor-pointer" onClick={() => { if(entry.details_json) { localStorage.setItem('last_migration', entry.details_json); setActiveTab('migration-report'); } }}>
                     <td className="py-3 px-3 font-mono text-indigo-600 dark:text-indigo-400 truncate max-w-[200px]">
-                      {entry.repoUrl?.split('/').slice(-1)[0] || entry.repoUrl}
+                      {entry.repository_name || entry.repoUrl?.split('/').slice(-1)[0] || entry.repoUrl || 'Unknown'}
                     </td>
                     <td className="py-3 px-3">
                       <span className="px-2 py-0.5 bg-brand-500/10 text-brand-600 dark:text-brand-400 rounded-md font-bold">
-                        Java {entry.targetVersion}
+                        Java {entry.target_version || entry.targetVersion}
                       </span>
                     </td>
                     <td className="py-3 px-3">
                       <span className={`px-2 py-0.5 rounded-md font-bold ${
-                        entry.success
+                        (entry.migration_status === 'SUCCESS' || entry.success)
                           ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
                           : 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
                       }`}>
-                        {entry.success ? 'Success' : 'Partial'}
+                        {entry.migration_status || (entry.success ? 'Success' : 'Partial')}
                       </span>
                     </td>
                     <td className="py-3 px-3">
                       <span className={`px-2 py-0.5 rounded-md font-bold ${
-                        (entry.buildStatus === 'Build Success' || entry.buildStatus === 'Success')
+                        (entry.build_status === 'Build Success' || entry.buildStatus === 'Build Success' || entry.buildStatus === 'Success')
                           ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
                           : 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
                       }`}>
-                        {entry.buildStatus}
+                        {entry.build_status || entry.buildStatus || 'Failed'}
                       </span>
                     </td>
                     <td className="py-3 px-3 text-center font-bold text-slate-600 dark:text-slate-400">
-                      {entry.modifiedFiles}
+                      {entry.files_changed_total !== undefined ? entry.files_changed_total : entry.modifiedFiles}
                     </td>
                     <td className="py-3 px-3 text-slate-400 whitespace-nowrap">
-                      {entry.timestamp}
+                      {entry.end_time ? new Date(entry.end_time).toLocaleString() : (entry.start_time ? new Date(entry.start_time).toLocaleString() : entry.timestamp)}
                     </td>
                   </tr>
                 ))}

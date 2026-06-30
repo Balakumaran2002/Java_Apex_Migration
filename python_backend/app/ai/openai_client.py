@@ -7,6 +7,9 @@ class OpenAIClient(IAIProvider):
         self.model_name = os.getenv("OPENAI_MODEL_NAME", "gpt-4-turbo")
     
     def generate(self, prompt: str, system_instruction: str = None, api_key: str = None, model_name: str = None) -> str:
+        return self.generate_with_metadata(prompt, system_instruction, api_key, model_name)["content"]
+
+    def generate_with_metadata(self, prompt: str, system_instruction: str = None, api_key: str = None, model_name: str = None) -> dict:
         key = api_key or os.getenv("OPENAI_API_KEY")
         if not key or key == "your_openai_api_key_here":
             raise ValueError("OpenAI API key is not configured.")
@@ -26,4 +29,8 @@ class OpenAIClient(IAIProvider):
             messages=messages,
             temperature=0.2
         )
-        return response.choices[0].message.content
+        return {
+            "content": response.choices[0].message.content,
+            "usage": getattr(response, "usage", None),
+            "model": active_model,
+        }

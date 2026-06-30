@@ -1,12 +1,22 @@
 import os
 import re
 import shutil
+import json
+import time
 from pathlib import Path
 from git import Repo
 from app.config import app_config
 from app.models import AnalysisResponse
 from app.ai.ai_factory import AIFactory
 from app.services.rag_service import rag_service
+from app.services.llm_runtime_service import llm_runtime_service
+import fnmatch
+
+def safe_rglob(directory: Path, pattern: str):
+    for root, dirs, files in os.walk(str(directory), onerror=lambda e: None):
+        for name in files:
+            if fnmatch.fnmatch(name, pattern):
+                yield Path(root) / name
 
 class AnalysisService:
     SKIP_DIRS = {".git", "target", "build", "node_modules", ".idea", ".vscode", ".mvn", "__pycache__", "test", "tests"}
@@ -32,7 +42,6 @@ class AnalysisService:
             cache_key = f"{repo_url}_{commit_hash}_analyze"
             if cache_file.exists():
                 try:
-                    import json
                     cache = json.loads(cache_file.read_text())
                     if cache_key in cache:
                         return AnalysisResponse(**cache[cache_key])
@@ -58,9 +67,7 @@ class AnalysisService:
             deprecated_apis = self.detect_deprecated_apis(build_dir)
             
             context_notes = []
-            context_parts = []
-            self.collect_project_context(build_dir, clone_dir, context_parts, context_notes)
-            project_context = "".join(context_parts)
+            documents = self.collect_project_documents(build_dir, clone_dir, context_notes)
             
             # Rule-based migration recommendation
             if is_java:
@@ -120,22 +127,35 @@ class AnalysisService:
                 f"- Current Java Version: {current_java_version}\n"
                 f"- Planned Migration Target: {recommendation}\n"
             )
-
-            user_prompt = (
-                f"{rag_context}\n\n"
-                f"{processing_summary}"
-                f"{detected_facts}\n"
-                f"Raw Project Files Context:\n{project_context}\n\n"
-                "Based on the facts above (not generic advice), provide detailed migration reasoning and step-by-step guidance."
-            )
             
             ai_client = AIFactory.get_client()
-            ai_result = ai_client.generate(user_prompt, system_instruction, api_key, model_name)
+            file_summaries, usage_totals = self._summarize_documents_with_cache(
+                ai_client,
+                documents,
+                rag_context,
+                detected_facts,
+                api_key,
+                model_name,
+            )
+            final_prompt = self._build_final_analysis_prompt(
+                rag_context,
+                processing_summary,
+                detected_facts,
+                file_summaries,
+            )
+            llm_runtime_service.update_job_progress(
+                message=f"Processing chunk {len(file_summaries)} of {len(file_summaries)}. Building final repository analysis..."
+            )
+            final_response = ai_client.generate_with_metadata(final_prompt, system_instruction, api_key, model_name)
+            final_usage = self._normalize_usage(final_response.get("usage"), final_prompt, final_response.get("content", ""))
+            usage_totals = self._merge_usage(usage_totals, final_usage)
+            ai_result = final_response.get("content", "")
                 
             reasoning = ai_result
             if processing_summary:
                 reasoning = processing_summary + ai_result
 
+            llm_status = llm_runtime_service.get_status()
             response = AnalysisResponse(
                 repoUrl=repo_url,
                 projectType=project_type,
@@ -156,17 +176,27 @@ class AnalysisService:
                 migrationRecommendation=recommendation,
                 reasoning=reasoning,
                 errorMessage=None,
-                usedProvider=getattr(ai_client, "last_provider_used", None)
+                usedProvider=getattr(ai_client, "last_provider_used", None),
+                llmUsage=usage_totals,
+                llmQuota=llm_status.get("providers", {}).get(getattr(ai_client, "last_provider_used", app_config.ai_provider), {}),
             )
             
             # Save to cache
             try:
-                import json
                 cache_data = {}
                 if cache_file.exists():
                     cache_data = json.loads(cache_file.read_text())
                 cache_data[cache_key] = response.model_dump()
                 cache_file.write_text(json.dumps(cache_data))
+            except Exception:
+                pass
+
+            try:
+                metadata_dir = app_config.workspace_directory / "reports" / "repository_metadata"
+                metadata_dir.mkdir(parents=True, exist_ok=True)
+                repo_key = repo_url.split("/")[-1].replace(".git", "")
+                metadata_path = metadata_dir / f"{repo_key}.json"
+                metadata_path.write_text(json.dumps(response.model_dump(), indent=2), encoding="utf-8")
             except Exception:
                 pass
                 
@@ -225,7 +255,7 @@ class AnalysisService:
                 return "", False
 
         def iter_project_files():
-            for root, dirs, files in os.walk(build_dir):
+            for root, dirs, files in os.walk(build_dir, onerror=lambda e: None):
                 dirs[:] = [d for d in dirs if d not in self.SKIP_DIRS and not d.startswith(".")]
                 for filename in files:
                     yield Path(root) / filename
@@ -294,6 +324,282 @@ class AnalysisService:
             append_context("Unique Java Imports Across Project", imports_block)
             if len(java_imports) > self.MAX_IMPORTS:
                 notes.append(f"Trimmed Java imports to the first {self.MAX_IMPORTS} unique entries to stay within prompt limits.")
+
+    def collect_project_documents(self, build_dir: Path, clone_dir: Path, notes: list) -> list:
+        documents = []
+
+        def is_binary(path: Path) -> bool:
+            try:
+                with open(path, "rb") as f:
+                    return b"\x00" in f.read(4096)
+            except Exception:
+                return True
+
+        def read_text_limited(path: Path, limit: int) -> tuple[str, bool]:
+            try:
+                if path.stat().st_size > limit:
+                    with open(path, "r", encoding="utf-8", errors="ignore") as f:
+                        content = f.read(limit)
+                    return content, True
+                return path.read_text(encoding="utf-8", errors="ignore"), False
+            except Exception:
+                return "", False
+
+        def iter_project_files():
+            for root, dirs, files in os.walk(build_dir, onerror=lambda e: None):
+                dirs[:] = [d for d in dirs if d not in self.SKIP_DIRS and not d.startswith(".")]
+                for filename in files:
+                    yield Path(root) / filename
+
+        config_seen = 0
+        for path in iter_project_files():
+            if path.suffix.lower() not in self.CONFIG_EXTENSIONS:
+                continue
+            if config_seen >= self.MAX_FILES_PER_CATEGORY:
+                break
+            if is_binary(path):
+                continue
+            content, was_truncated = read_text_limited(path, self.MAX_CONFIG_FILE_BYTES * 3)
+            if not content:
+                continue
+            documents.append(
+                {
+                    "path": str(path.relative_to(clone_dir)).replace("\\", "/"),
+                    "title": f"File: {path.relative_to(clone_dir)}",
+                    "content": content,
+                    "kind": "config",
+                    "truncated": was_truncated,
+                }
+            )
+            config_seen += 1
+
+        java_imports = set()
+        java_seen = 0
+        for path in iter_project_files():
+            if path.suffix.lower() != ".java":
+                continue
+            if java_seen >= self.MAX_JAVA_FILES:
+                break
+            if is_binary(path):
+                continue
+            content, was_truncated = read_text_limited(path, self.MAX_JAVA_SCAN_BYTES * 4)
+            if not content:
+                continue
+            for line in content.splitlines():
+                stripped = line.strip()
+                if stripped.startswith("import "):
+                    java_imports.add(stripped)
+            documents.append(
+                {
+                    "path": str(path.relative_to(clone_dir)).replace("\\", "/"),
+                    "title": f"Source: {path.relative_to(clone_dir)}",
+                    "content": content,
+                    "kind": "source",
+                    "truncated": was_truncated,
+                }
+            )
+            java_seen += 1
+
+        if java_imports:
+            documents.append(
+                {
+                    "path": "__java_imports__",
+                    "title": "Unique Java Imports Across Project",
+                    "content": "\n".join(sorted(list(java_imports))[: self.MAX_IMPORTS]),
+                    "kind": "imports",
+                    "truncated": len(java_imports) > self.MAX_IMPORTS,
+                }
+            )
+        notes.append(f"Prepared {len(documents)} analysis documents for chunked LLM processing.")
+        return documents
+
+    def _summarize_documents_with_cache(self, ai_client, documents: list, rag_context: str, detected_facts: str, api_key: str, model_name: str) -> tuple[list, dict]:
+        provider_name = getattr(ai_client, "last_provider_used", None) or app_config.ai_provider
+        chunk_size = llm_runtime_service.get_recommended_chunk_size(provider_name, model_name)
+        overlap_tokens = llm_runtime_service.get_model_limits(provider_name, model_name)["chunk_overlap_tokens"]
+        cache = llm_runtime_service.get_chunk_cache()
+        resume = llm_runtime_service.get_resume_state()
+        job_id = llm_runtime_service.get_status().get("currentJob", {}).get("jobId", "analysis")
+        job_resume = resume.setdefault(job_id, {"documents": {}, "updatedAt": time.time()})
+        usage_totals = {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0}
+        summaries = []
+        hash_to_summary = {}
+
+        total_chunks = 0
+        prepared_docs = []
+        seen_hashes = {}
+        for document in documents:
+            content_hash = llm_runtime_service.hash_text(document["content"])
+            document["content_hash"] = content_hash
+            if content_hash in seen_hashes:
+                document["duplicate_of"] = seen_hashes[content_hash]
+                prepared_docs.append(document)
+                continue
+            seen_hashes[content_hash] = document["path"]
+            chunks = llm_runtime_service.chunk_text(document["content"], chunk_size, overlap_tokens)
+            document["chunks"] = chunks
+            total_chunks += len(chunks)
+            prepared_docs.append(document)
+
+        processed_chunks = 0
+        llm_runtime_service.update_job_progress(current_chunk=0, total_chunks=total_chunks, message=f"Processing chunk 0 of {total_chunks}")
+
+        for document in prepared_docs:
+            if document.get("duplicate_of"):
+                duplicate_summary = hash_to_summary.get(document["content_hash"])
+                if duplicate_summary:
+                    summaries.append(f"{document['title']} (duplicate of {document['duplicate_of']}):\n{duplicate_summary}")
+                continue
+
+            cache_key = f"{provider_name}:{model_name or 'default'}:{document['content_hash']}:v2"
+            if cache_key in cache:
+                document_summary = cache[cache_key]["summary"]
+                hash_to_summary[document["content_hash"]] = document_summary
+                summaries.append(f"{document['title']}:\n{document_summary}")
+                processed_chunks += len(document.get("chunks", []))
+                llm_runtime_service.update_job_progress(
+                    current_chunk=processed_chunks,
+                    total_chunks=total_chunks,
+                    message=f"Processing chunk {processed_chunks} of {total_chunks} (cache hit: {document['path']})",
+                )
+                continue
+
+            previous_summary = ""
+            chunk_outputs = []
+            doc_resume = job_resume["documents"].setdefault(document["path"], {"chunks": {}, "content_hash": document["content_hash"]})
+            if doc_resume.get("content_hash") != document["content_hash"]:
+                doc_resume = {"chunks": {}, "content_hash": document["content_hash"]}
+                job_resume["documents"][document["path"]] = doc_resume
+
+            for index, chunk in enumerate(document.get("chunks", [document["content"]]), start=1):
+                processed_chunks += 1
+                chunk_hash = llm_runtime_service.hash_text(chunk)
+                if chunk_hash in doc_resume["chunks"]:
+                    chunk_result = doc_resume["chunks"][chunk_hash]["summary"]
+                    previous_summary = chunk_result
+                    chunk_outputs.append(chunk_result)
+                    llm_runtime_service.update_job_progress(
+                        current_chunk=processed_chunks,
+                        total_chunks=total_chunks,
+                        message=f"Processing chunk {processed_chunks} of {total_chunks} (resume hit: {document['path']})",
+                    )
+                    continue
+
+                llm_runtime_service.update_job_progress(
+                    current_chunk=processed_chunks,
+                    total_chunks=total_chunks,
+                    message=f"Processing chunk {processed_chunks} of {total_chunks}: {document['path']}",
+                )
+                chunk_prompt = self._build_chunk_prompt(document, chunk, previous_summary, rag_context, detected_facts, index, len(document["chunks"]))
+                chunk_response = ai_client.generate_with_metadata(chunk_prompt, self._chunk_system_instruction(), api_key, model_name)
+                chunk_usage = self._normalize_usage(chunk_response.get("usage"), chunk_prompt, chunk_response.get("content", ""))
+                usage_totals = self._merge_usage(usage_totals, chunk_usage)
+                chunk_result = chunk_response.get("content", "")
+                chunk_outputs.append(chunk_result)
+                previous_summary = chunk_result
+                doc_resume["chunks"][chunk_hash] = {"summary": chunk_result, "updatedAt": time.time()}
+                job_resume["updatedAt"] = time.time()
+                llm_runtime_service.save_resume_state(resume)
+
+            if len(chunk_outputs) == 1:
+                document_summary = chunk_outputs[0]
+            else:
+                merge_prompt = self._build_document_merge_prompt(document, chunk_outputs)
+                merge_response = ai_client.generate_with_metadata(merge_prompt, self._document_merge_system_instruction(), api_key, model_name)
+                merge_usage = self._normalize_usage(merge_response.get("usage"), merge_prompt, merge_response.get("content", ""))
+                usage_totals = self._merge_usage(usage_totals, merge_usage)
+                document_summary = merge_response.get("content", "")
+
+            cache[cache_key] = {
+                "summary": document_summary,
+                "path": document["path"],
+                "updatedAt": time.time(),
+            }
+            hash_to_summary[document["content_hash"]] = document_summary
+            summaries.append(f"{document['title']}:\n{document_summary}")
+            llm_runtime_service.save_chunk_cache(cache)
+
+        return summaries, usage_totals
+
+    def _build_chunk_prompt(self, document: dict, chunk: str, previous_summary: str, rag_context: str, detected_facts: str, chunk_index: int, total_chunks: int) -> str:
+        return (
+            f"{detected_facts}\n"
+            f"{rag_context}\n"
+            f"Document: {document['path']}\n"
+            f"Chunk {chunk_index} of {total_chunks}\n"
+            f"Previous chunk summary:\n{previous_summary or 'None'}\n\n"
+            f"Chunk content:\n{chunk}\n\n"
+            "Summarize the build settings, framework usage, dependencies, migration risks, deprecated APIs, and runtime behavior in this chunk. "
+            "Preserve context so later chunks can be merged into the same result as a single-pass repository analysis."
+        )
+
+    def _chunk_system_instruction(self) -> str:
+        return (
+            "You are analyzing one chunk of a repository file for migration planning. "
+            "Return concise grounded notes that preserve technical details, versions, APIs, configuration, and migration risks. "
+            "Do not invent facts. Write in plain text bullets."
+        )
+
+    def _build_document_merge_prompt(self, document: dict, chunk_outputs: list) -> str:
+        numbered = "\n\n".join(f"Chunk Summary {index + 1}:\n{item}" for index, item in enumerate(chunk_outputs))
+        return (
+            f"Merge the following chunk summaries for file {document['path']} into one coherent file summary. "
+            "Preserve versions, APIs, migration blockers, framework details, and compiler/build settings. "
+            "Avoid duplication.\n\n"
+            f"{numbered}"
+        )
+
+    def _document_merge_system_instruction(self) -> str:
+        return (
+            "You are merging chunk-level repository notes into a single file-level summary. "
+            "The merged output must read as if the full file had been analyzed in one pass."
+        )
+
+    def _build_final_analysis_prompt(self, rag_context: str, processing_summary: str, detected_facts: str, file_summaries: list) -> str:
+        joined = "\n\n".join(file_summaries)
+        return (
+            f"{rag_context}\n\n"
+            f"{processing_summary}"
+            f"{detected_facts}\n"
+            f"File-Level Repository Summaries:\n{joined}\n\n"
+            "Based on the facts and file summaries above, provide detailed migration reasoning and step-by-step guidance. "
+            "Ground the answer in the repository evidence instead of generic advice."
+        )
+
+    def _normalize_usage(self, usage_obj, prompt: str, content: str) -> dict:
+        input_tokens = 0
+        output_tokens = 0
+        total_tokens = 0
+        if usage_obj:
+            for attr in ("prompt_tokens", "input_tokens", "prompt_token_count"):
+                value = getattr(usage_obj, attr, None) if not isinstance(usage_obj, dict) else usage_obj.get(attr)
+                if value is not None:
+                    input_tokens = int(value)
+                    break
+            for attr in ("completion_tokens", "output_tokens", "candidates_token_count"):
+                value = getattr(usage_obj, attr, None) if not isinstance(usage_obj, dict) else usage_obj.get(attr)
+                if value is not None:
+                    output_tokens = int(value)
+                    break
+            for attr in ("total_tokens", "total_token_count"):
+                value = getattr(usage_obj, attr, None) if not isinstance(usage_obj, dict) else usage_obj.get(attr)
+                if value is not None:
+                    total_tokens = int(value)
+                    break
+        if not input_tokens:
+            input_tokens = llm_runtime_service.estimate_tokens(prompt)
+        if not output_tokens:
+            output_tokens = llm_runtime_service.estimate_tokens(content)
+        if not total_tokens:
+            total_tokens = input_tokens + output_tokens
+        return {"input_tokens": input_tokens, "output_tokens": output_tokens, "total_tokens": total_tokens}
+
+    def _merge_usage(self, left: dict, right: dict) -> dict:
+        return {
+            "input_tokens": left.get("input_tokens", 0) + right.get("input_tokens", 0),
+            "output_tokens": left.get("output_tokens", 0) + right.get("output_tokens", 0),
+            "total_tokens": left.get("total_tokens", 0) + right.get("total_tokens", 0),
+        }
 
     def _process_context_batch(self, batch: list, clone_dir: Path, append_context, notes: list, read_text_limited, is_binary) -> tuple[int, bool]:
         processed = 0
@@ -563,8 +869,8 @@ class AnalysisService:
                 info["is_multi_module"] = True
 
         # Frontend detection from the broader clone directory
-        for package_json in clone_dir.rglob("package.json"):
-            if any(skip in package_json.parts for skip in ("node_modules", "target", "build", ".git")):
+        for package_json in safe_rglob(clone_dir, "package.json"):
+            if any(skip in str(package_json) for skip in ("node_modules", "target", "build", ".git")):
                 continue
             try:
                 import json
@@ -605,10 +911,10 @@ class AnalysisService:
             r'@(GetMapping|PostMapping|PutMapping|DeleteMapping|PatchMapping|RequestMapping|app\.get|app\.post|router\.get|router\.post|@app\.get|@app\.post|@router\.get)',
             re.IGNORECASE
         )
-        for src_file in build_dir.rglob("*.*"):
+        for src_file in safe_rglob(build_dir, "*.*"):
             if src_file.suffix not in {".java", ".py", ".ts", ".js"}:
                 continue
-            if any(p in src_file.parts for p in ("target", "build", ".git", "node_modules", "venv", "__pycache__")):
+            if any(p in str(src_file) for p in ("target", "build", ".git", "node_modules", "venv", "__pycache__")):
                 continue
             try:
                 content = src_file.read_text(encoding="utf-8", errors="ignore")
@@ -642,8 +948,8 @@ class AnalysisService:
         
         found = []
         scanned = 0
-        for java_file in build_dir.rglob("*.java"):
-            if any(p in java_file.parts for p in ("target", "build", ".git")):
+        for java_file in safe_rglob(build_dir, "*.java"):
+            if any(p in str(java_file) for p in (".git", "target", "build")):
                 continue
             if scanned >= 100:  # Cap for large repos
                 break

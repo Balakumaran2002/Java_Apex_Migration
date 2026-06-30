@@ -1,0 +1,67 @@
+{
+  "project": "complete",
+  "processed": {
+    "build.gradle": {
+      "fingerprint": "1f2b11a7297b305a8e8cf0087732b237a94ed9fe68e2ed5afd240ca6dcd9ae77",
+      "mode": "deterministic",
+      "updatedAt": 1782812188.3984416
+    },
+    "pom.xml": {
+      "fingerprint": "25ac7714864629a7f8d63ced9ffa0cf9ba1217ef8d4f17d2871a3c4a1a30002a",
+      "mode": "deterministic",
+      "updatedAt": 1782812188.3818736
+    },
+    "src/main/java/com/example/servingwebcontent/ServingWebContentApplication.java": {
+      "fingerprint": "ef83d2ea40616e01a7287850e4f405c09c5a84c9f96c07727fe656bdd0fc75c2",
+      "mode": "llm",
+      "updatedAt": 1782796319.2354429
+    },
+    "src/test/java/com/example/servingwebcontent/ServingWebContentApplicationTest.java": {
+      "fingerprint": "fdae1c0580c875808adad9d6d49d3224d8c5c5c8b2aa95be6fa7f9c25509becb",
+      "mode": "deterministic",
+      "updatedAt": 1782796319.250949
+    },
+    "src/main/java/com/example/servingwebcontent/GreetingController.java": {
+      "fingerprint": "aa69b72c6a03400fd60dce0bd04b2071e3142179bd09ef5a4c39d2ab94e18f1f",
+      "mode": "llm",
+      "updatedAt": 1782796319.2808018
+    },
+    "src/main/resources/application.properties": {
+      "fingerprint": "8e7b9d064deaf909f6ee04c8c0397547b8b97cdc0f46f9f6971479da7f7996c1",
+      "mode": "deterministic",
+      "updatedAt": 1782812188.4217887
+    },
+    "src/main/java/com/example/uploadingfiles/storage/FileSystemStorageService.java": {
+      "fingerprint": "c7303222936d09cd4827e106c6ee430687e84e792ab55bdb4d927008c593ba63",
+      "mode": "deterministic",
+      "updatedAt": 1782812188.431007
+    },
+    "src/main/java/com/example/uploadingfiles/storage/StorageProperties.java": {
+      "fingerprint": "ad02d14d244f3978acfe6aac977b09d465ccf761d7c41017b4c598b88bdc47a9",
+      "mode": "llm",
+      "updatedAt": 1782812188.822422
+    },
+    "src/main/java/com/example/uploadingfiles/storage/StorageService.java": {
+      "fingerprint": "57f24d0459db4459e7adf0f0fd33e2cb41f4ccb84bd5f96706d22d7025a823f9",
+      "mode": "deterministic",
+      "updatedAt": 1782812188.8428905
+    },
+    "src/main/java/com/example/uploadingfiles/UploadingFilesApplication.java": {
+      "fingerprint": "abd98cb5e273cda32b668d213092d18b97be995dfe3051f66e6a56fb6fe32135",
+      "mode": "llm",
+      "updatedAt": 1782812188.8634188
+    },
+    "src/test/java/com/example/uploadingfiles/storage/FileSystemStorageServiceTests.java": {
+      "fingerprint": "5b9121d2e687aa5a835e8d1906eb19333a631caa0f8f354239ca6ac83f8d6961",
+      "mode": "deterministic",
+      "updatedAt": 1782812188.879995
+    },
+    "src/main/java/com/example/uploadingfiles/FileUploadController.java": {
+      "fingerprint": "780d8f4d9994ce45ff7ec2fc0fd5d220995d487fba0e021f3c437b171f2659a4",
+      "mode": "llm",
+      "updatedAt": 1782812189.6160433
+    }
+  },
+  "targetVersion": "21",
+  "updatedAt": 1782812183.6031747
+}

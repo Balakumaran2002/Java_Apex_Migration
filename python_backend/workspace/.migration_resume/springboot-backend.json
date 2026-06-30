@@ -1,0 +1,42 @@
+{
+  "project": "springboot-backend",
+  "processed": {
+    "pom.xml": {
+      "fingerprint": "132c5360b3590ccc4bd97e719833fb79b21d00d37d14e25c3b25c55076dcb048",
+      "mode": "resume-hit",
+      "updatedAt": 1782795210.6626024
+    },
+    "src/main/java/net/javaguides/springboot/repository/EmployeeRepository.java": {
+      "fingerprint": "bc852859ca57a586a792f6771e5250f4d2ac3f8d53468de40280cc55c5f55fbe",
+      "mode": "resume-hit",
+      "updatedAt": 1782795210.7035606
+    },
+    "src/main/resources/application.properties": {
+      "fingerprint": "5bbfb9a2360e5a5759e4f5c19db75e1539d4e9bd27a9270205dee3f37b3b9212",
+      "mode": "resume-hit",
+      "updatedAt": 1782795210.7374337
+    },
+    "src/test/java/net/javaguides/springboot/SpringbootBackendApplicationTests.java": {
+      "fingerprint": "c887fd1b2de7169f3deffb70bcf2834a543af3a187f89314fb776d1e349a6726",
+      "mode": "resume-hit",
+      "updatedAt": 1782795210.723679
+    },
+    "src/main/java/net/javaguides/springboot/SpringbootBackendApplication.java": {
+      "fingerprint": "fabb4c0ce3adda78d84a14c74d382b6212bdcbcb1e53ea87609a2a637e8790a3",
+      "mode": "resume-hit",
+      "updatedAt": 1782795210.6741211
+    },
+    "src/main/java/net/javaguides/springboot/model/Employee.java": {
+      "fingerprint": "d44238b765e97ade0f08ea11c1e670fcbc68c5bba9416a6afaf92e2acaf0c18a",
+      "mode": "resume-hit",
+      "updatedAt": 1782792221.499134
+    },
+    "src/main/java/net/javaguides/springboot/controller/EmployeeController.java": {
+      "fingerprint": "7c4ccd0db9799820b44fae3b8cdc13bad74fa3398bf623a86b9738998ffa5852",
+      "mode": "resume-hit",
+      "updatedAt": 1782795210.6896942
+    }
+  },
+  "targetVersion": "25",
+  "updatedAt": 1782795202.3019705
+}

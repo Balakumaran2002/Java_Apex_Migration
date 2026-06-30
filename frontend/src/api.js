@@ -53,6 +53,11 @@ export const getStatus = async () => {
   return response.data;
 };
 
+export const getLLMStatus = async () => {
+  const response = await apiClient.get('/llm/status');
+  return response.data;
+};
+
 export const analyzeRepository = async (repoUrl) => {
   const response = await apiClient.post('/analyze', { repoUrl });
   return response.data;
@@ -107,6 +112,17 @@ export const getProjectStatus = async (repoName) => {
 
 export const getProjectLogs = async (repoName) => {
   const response = await apiClient.get(`/run/logs/${repoName}`);
+  return response.data;
+};
+
+// --- History Endpoints ---
+export const getMigrationHistory = async () => {
+  const response = await apiClient.get('/history');
+  return response.data;
+};
+
+export const clearMigrationHistory = async () => {
+  const response = await apiClient.delete('/history');
   return response.data;
 };
 

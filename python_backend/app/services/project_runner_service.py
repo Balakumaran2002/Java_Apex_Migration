@@ -121,6 +121,29 @@ class ProjectRunnerService:
 
         return "Unknown"
 
+    def find_frontend_directory(self, project_dir: Path) -> Optional[Path]:
+        """Locate a frontend package directory inside a mixed full-stack repository."""
+        if not project_dir.exists():
+            return None
+
+        for package_json in project_dir.rglob("package.json"):
+            if any(part in {"node_modules", "target", "build", ".git"} for part in package_json.parts):
+                continue
+            try:
+                import json
+                data = json.loads(package_json.read_text(encoding="utf-8", errors="ignore"))
+                deps = {**data.get("dependencies", {}), **data.get("devDependencies", {})}
+                scripts = data.get("scripts", {})
+                if any(dep.startswith("@angular") for dep in deps) or "ng" in scripts:
+                    return package_json.parent
+                if "react" in deps or "react-dom" in deps or "vite" in deps or any("vite" in script for script in scripts.values()):
+                    return package_json.parent
+                if "vue" in deps or "next" in deps:
+                    return package_json.parent
+            except Exception:
+                continue
+        return None
+
     def detect_java_preview_mode(self, run_dir: Path, project_type: str) -> str:
         """Classify Java/Spring Boot apps as web, cli, rest-api, or unknown."""
         if not project_type.startswith("Spring Boot"):
@@ -228,7 +251,7 @@ class ProjectRunnerService:
         return 8080
 
     def detect_swagger_url(self, run_dir: Path, port: int) -> Optional[str]:
-        """Check if the project has Swagger/OpenAPI and return the likely URL."""
+        """Check if the project has an API explorer URL and return the likely location."""
         build_content = self._read_build_content(run_dir).lower()
         if "springdoc-openapi" in build_content:
             return f"http://127.0.0.1:{port}/swagger-ui.html"
@@ -691,6 +714,10 @@ class ProjectRunnerService:
             }
             return
 
+        frontend_dir = self.find_frontend_directory(run_dir)
+        if frontend_dir and frontend_dir != run_dir:
+            run_dir = frontend_dir
+
         project_type = self.detect_project_type(run_dir)
         port = self.find_available_port()
         
@@ -946,11 +973,10 @@ class ProjectRunnerService:
                         "This project does not contain a web user interface. "
                         f"It is a REST API application running on port {port}. "
                         f"Found {len(endpoints)} API endpoint(s)."
-                        + (f" Swagger UI available at: {swagger_url}" if swagger_url else "")
                     )
                     self.add_log(repo_name, f"\n>>> REST API is LIVE on port {port} (No HTML UI) <<<")
                     if swagger_url:
-                        self.add_log(repo_name, f">>> Swagger UI: {swagger_url} <<<")
+                        self.add_log(repo_name, f">>> API Explorer available at: {swagger_url} <<<")
                 else:
                     if not port_task.done():
                         port_task.cancel()

@@ -102,26 +102,44 @@ def repository_analysis_node(state: MigrationState):
     
     project_dir = state["project_dir"]
     output_log = state.get("output_log", [])
+    cached_analysis = state.get("analysis_result") or {}
 
     if not project_dir.exists():
         state["error_message"] = "Project directory not found. Run analysis first."
         state["success"] = False
         return state
 
-    project_type = analysis_svc.detect_project_type(project_dir)
-    state["project_type"] = project_type
-    
-    # Resolve build dir
-    build_dir = project_dir
-    if project_type == "Java" and not (build_dir / "pom.xml").exists() and not (build_dir / "build.gradle").exists() and not (build_dir / "build.gradle.kts").exists():
-        sub_dir = analysis_svc.find_build_file_directory(project_dir)
-        if sub_dir:
-            build_dir = sub_dir
-            
-    state["build_dir"] = build_dir
-    
-    # Gather rich info
-    info = analysis_svc.detect_comprehensive_project_info(build_dir, project_dir)
+    if cached_analysis:
+        output_log.append("[Analysis] Reusing cached repository analysis metadata.")
+        state["project_type"] = "Java" if cached_analysis.get("isJava", True) else cached_analysis.get("projectType", "Unknown")
+        build_dir = project_dir
+        if not (build_dir / "pom.xml").exists() and not (build_dir / "build.gradle").exists() and not (build_dir / "build.gradle.kts").exists():
+            sub_dir = analysis_svc.find_build_file_directory(project_dir)
+            if sub_dir:
+                build_dir = sub_dir
+        state["build_dir"] = build_dir
+        info = {
+            "build_tool": cached_analysis.get("buildTool", "Unknown"),
+            "framework_type": cached_analysis.get("frameworkType", "Plain Java"),
+            "database": cached_analysis.get("database", "None"),
+            "packaging_type": cached_analysis.get("packagingType", "jar"),
+            "is_multi_module": cached_analysis.get("isMultiModule", False),
+            "has_frontend": cached_analysis.get("hasFrontend", False),
+            "frontend_framework": cached_analysis.get("frontendFramework"),
+            "endpoint_count": cached_analysis.get("endpointCount", 0),
+        }
+    else:
+        project_type = analysis_svc.detect_project_type(project_dir)
+        state["project_type"] = project_type
+
+        build_dir = project_dir
+        if project_type == "Java" and not (build_dir / "pom.xml").exists() and not (build_dir / "build.gradle").exists() and not (build_dir / "build.gradle.kts").exists():
+            sub_dir = analysis_svc.find_build_file_directory(project_dir)
+            if sub_dir:
+                build_dir = sub_dir
+        state["build_dir"] = build_dir
+        info = analysis_svc.detect_comprehensive_project_info(build_dir, project_dir)
+
     build_tool = info.get("build_tool", "Unknown")
     state["build_tool"] = build_tool
     state["is_maven"] = build_tool == "Maven"
@@ -138,7 +156,7 @@ def repository_analysis_node(state: MigrationState):
     state["frontend_dir"] = frontend_dir
     state["frontend_framework"] = frontend_framework
     
-    output_log.append(f"[Analysis] Project Type: {project_type}, Build Tool: {build_tool}")
+    output_log.append(f"[Analysis] Project Type: {state.get('project_type')}, Build Tool: {build_tool}")
     output_log.append(f"[Analysis] Frontend Detected: {frontend_framework} at {frontend_dir}")
     
     state["output_log"] = output_log
@@ -149,12 +167,11 @@ def migration_node(state: MigrationState):
     from app.services.migration_service import migration_service
     build_dir = state["build_dir"]
     target_version = state["target_version"]
+    api_key = state["api_key"]
+    model_name = state["model_name"]
     output_log = state.get("output_log", [])
     
-    if state["is_maven"]:
-        success = migration_service.run_maven_migration(build_dir, target_version, output_log)
-    else:
-        success = migration_service.run_gradle_migration(build_dir, target_version, output_log)
+    success = migration_service.run_llm_migration(build_dir, target_version, api_key, model_name, output_log)
         
     state["success"] = success
     state["output_log"] = output_log
@@ -176,15 +193,14 @@ def build_validation_node(state: MigrationState):
 def compilation_fix_node(state: MigrationState):
     from app.services.migration_service import migration_service
     output_log = state.get("output_log", [])
-    output_log.append("\n=== Auto-Healing triggered! Retrying OpenRewrite after AI build fixes ===")
+    output_log.append("\n=== Auto-Healing triggered! Retrying LLM Migration after AI build fixes ===")
     
     build_dir = state["build_dir"]
     target_version = state["target_version"]
+    api_key = state["api_key"]
+    model_name = state["model_name"]
     
-    if state["is_maven"]:
-        success = migration_service.run_maven_migration(build_dir, target_version, output_log)
-    else:
-        success = migration_service.run_gradle_migration(build_dir, target_version, output_log)
+    success = migration_service.run_llm_migration(build_dir, target_version, api_key, model_name, output_log)
         
     state["success"] = success
     state["output_log"] = output_log
@@ -327,7 +343,7 @@ def post_migration_analysis_node(state: MigrationState):
     }
     
     output_log.append(f"[Post-Migration] Preview Mode Detected: {preview_mode}")
-    output_log.append(f"[Post-Migration] Swagger/OpenAPI: {'Yes' if has_swagger else 'No'}")
+    output_log.append(f"[Post-Migration] API Explorer: {'Yes' if has_swagger else 'No'}")
     output_log.append(f"[Post-Migration] Frontend: {frontend_info}")
     
     state["output_log"] = output_log
@@ -440,15 +456,15 @@ def route_after_build(state: MigrationState):
     success = state.get("success", False)
     if not build_result.get("success"):
         output_log = "".join(state.get("output_log", []))
-        if state.get("project_type") == "Java" and "Retrying OpenRewrite" not in output_log:
+        if state.get("project_type") == "Java" and "Retrying migration repair" not in output_log:
             return "compilation_fix"
         elif state.get("project_type") != "Java" and "Analyzing build errors via AI" not in output_log:
             return "polyglot_auto_heal"
             
-    # Original logic for Java OpenRewrite retry if it succeeded after a fix
+    # Original logic for Java migration retry if it succeeded after a fix
     if not success and build_result.get("success") and len(build_result.get("fixHistory", [])) > 0:
         output_log = "".join(state.get("output_log", []))
-        if state.get("project_type") == "Java" and "Retrying OpenRewrite" not in output_log:
+        if state.get("project_type") == "Java" and "Retrying migration repair" not in output_log:
             return "compilation_fix"
     return "post_migration_analysis"
 

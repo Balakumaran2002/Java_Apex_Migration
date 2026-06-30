@@ -1,0 +1,72 @@
+{
+  "project": "Student-Repository",
+  "processed": {
+    "pom.xml": {
+      "fingerprint": "aa9e50dc0129421d59aba474bff2e1d69914f1a505f82b6011f9ca9c074a75f0",
+      "mode": "resume-hit",
+      "updatedAt": 1782803285.0806437
+    },
+    "src/main/resources/application.properties": {
+      "fingerprint": "b98bbe061d671d860ce208c8564ab655e1bebb1ce95afea192c8c8a6623550fb",
+      "mode": "resume-hit",
+      "updatedAt": 1782803285.09246
+    },
+    "src/main/java/com/example/thymeleaf/controller/ExceptionHandlerController.java": {
+      "fingerprint": "5a7adc52fa17c419ce2598e9c2b27556d994d76765ffe5bb5f49e6bc2dbeced0",
+      "mode": "resume-hit",
+      "updatedAt": 1782803285.1124108
+    },
+    "src/main/java/com/example/thymeleaf/controller/IndexController.java": {
+      "fingerprint": "07ce6d24a05e0bc50e8af3e9935441d448e73623c47b0e2bfe171e0bbb42b99d",
+      "mode": "resume-hit",
+      "updatedAt": 1782803285.0972066
+    },
+    "src/main/java/com/example/thymeleaf/dto/CreateStudentDTO.java": {
+      "fingerprint": "c402c2d6910fec3181e6b71a33de091bcd4e7487a54f7d09c96421a102592576",
+      "mode": "resume-hit",
+      "updatedAt": 1782803285.1124108
+    },
+    "src/main/java/com/example/thymeleaf/controller/StudentController.java": {
+      "fingerprint": "c19fff009abd3ee46a9594171d46a7ccb3609d6163a9ea7d1b964fe6c775ce63",
+      "mode": "resume-hit",
+      "updatedAt": 1782803285.128367
+    },
+    "src/main/java/com/example/thymeleaf/entity/Address.java": {
+      "fingerprint": "46800ad7f8961d50275fac390801d441153e45b21ba1da4afae9a776fc746583",
+      "mode": "resume-hit",
+      "updatedAt": 1782803285.1601064
+    },
+    "src/main/java/com/example/thymeleaf/repository/AddressRepository.java": {
+      "fingerprint": "6083e9584da36e93d1d59f63bfe09c6b674051caa86ccdc6d53bd186b4d8d27e",
+      "mode": "resume-hit",
+      "updatedAt": 1782803285.1761973
+    },
+    "src/main/java/com/example/thymeleaf/repository/StudentRepository.java": {
+      "fingerprint": "24a5048833305477041683da327b955b2d028eaad4d0e54f17075c1c5a257eb3",
+      "mode": "resume-hit",
+      "updatedAt": 1782803285.1877847
+    },
+    "src/main/java/com/example/thymeleaf/service/StudentService.java": {
+      "fingerprint": "b978c1b3ff94adcc86512ecfa9a01ed816b2ec79d3e1f18240bdf42726610eee",
+      "mode": "resume-hit",
+      "updatedAt": 1782803285.1995487
+    },
+    "src/main/java/com/example/thymeleaf/entity/Student.java": {
+      "fingerprint": "7f617e388b31986aac3c06490ec57b299d0dfc0694a24e5f4332cc34fe8ec199",
+      "mode": "resume-hit",
+      "updatedAt": 1782803285.144196
+    },
+    "src/test/java/com/example/thymeleaf/SprithymeApplicationTests.java": {
+      "fingerprint": "63d5797c2f5ba85f1c9be06e18813aa87ad3d5da9600ba8340b3f5f93784dc28",
+      "mode": "resume-hit",
+      "updatedAt": 1782803285.2076004
+    },
+    "src/main/java/com/example/thymeleaf/SpringThymeleafTemplateApplication.java": {
+      "fingerprint": "1d7c4fbb75d50b19280d91d56a9d947f182067b707f404d6e2c02e51bc7d9c29",
+      "mode": "resume-hit",
+      "updatedAt": 1782803285.2234983
+    }
+  },
+  "targetVersion": "25",
+  "updatedAt": 1782803279.913374
+}

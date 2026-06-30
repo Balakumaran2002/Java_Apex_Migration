@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { 
   LayoutDashboard, GitBranch, RefreshCw, Terminal, FileText, 
-  Settings, Sun, Moon, Sparkles, ChevronRight, Cpu, LogOut, Menu, X, Folder, Key
+  Settings, Sun, Moon, Sparkles, ChevronRight, Cpu, LogOut, Menu, X, Folder, Key, Clock
 } from 'lucide-react';
 
 // Import Pages
 import Dashboard from './pages/Dashboard';
 import RepositoryAnalysis from './pages/RepositoryAnalysis';
 import MigrationCenter from './pages/MigrationCenter';
+import MigrationHistory from './pages/MigrationHistory';
 import CodeConversionCenter from './pages/CodeConversionCenter';
 import RepositoryExplorer from './pages/RepositoryExplorer';
 import MigrationReport from './pages/MigrationReport';
 import ConversionReport from './pages/ConversionReport';
 import ApiKeyManagement from './pages/ApiKeyManagement';
 import ChatbotWidget from './components/ChatbotWidget';
+import { getMigrationHistory } from './api';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -67,9 +69,13 @@ export default function App() {
   const [migrationLoading, setMigrationLoading] = useState(false);
   const [migrationError, setMigrationError] = useState(null);
   const [migrationStatusText, setMigrationStatusText] = useState('');
-  const [migrationHistory, setMigrationHistory] = useState(() => getLocalItem('migration_history', []));
+  const [migrationHistory, setMigrationHistory] = useState([]);
   const [migrationElapsedTime, setMigrationElapsedTime] = useState(0);
   const [migrationTimeTaken, setMigrationTimeTaken] = useState(() => getLocalItem('last_migration_time', null));
+
+  useEffect(() => {
+    getMigrationHistory().then(setMigrationHistory).catch(console.error);
+  }, []);
 
   // Ticking effect for migration loading timer
   useEffect(() => {
@@ -196,6 +202,7 @@ export default function App() {
     { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={18} /> },
     { id: 'analysis', label: 'Repository Analysis', icon: <GitBranch size={18} /> },
     { id: 'migration', label: 'Migration Center', icon: <RefreshCw size={18} /> },
+    { id: 'history', label: 'Migration History', icon: <Clock size={18} /> },
     { id: 'explorer', label: 'Repository Explorer', icon: <Folder size={18} /> },
     { id: 'conversion', label: 'Code Conversion', icon: <Terminal size={18} /> },
     { id: 'migrationReport', label: 'Migration Report', icon: <FileText size={18} /> },
@@ -250,6 +257,14 @@ export default function App() {
             elapsedTime={migrationElapsedTime}
             timeTaken={migrationTimeTaken}
             setTimeTaken={setMigrationTimeTaken}
+          />
+        );
+      case 'history':
+        return (
+          <MigrationHistory
+            history={migrationHistory}
+            setHistory={setMigrationHistory}
+            setActiveTab={setActiveTab}
           />
         );
       case 'explorer':

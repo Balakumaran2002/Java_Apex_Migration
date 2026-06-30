@@ -1,0 +1,32 @@
+{
+  "providers": {
+    "groq": {
+      "keys": {
+        "702cde83-833a-4ceb-8809-351be594e5ac": {
+          "keyName": "FirstKey",
+          "inputTokens": 1186,
+          "outputTokens": 324,
+          "totalTokens": 1510,
+          "dailyLimit": 900000,
+          "remainingTokens": 898490,
+          "resetAt": 1782757800.0,
+          "updatedAt": 1782816402.5874496
+        }
+      },
+      "updatedAt": 1782816402.5874496,
+      "chunk_size_hints": {
+        "llama-3.3-70b-versatile": 500
+      }
+    }
+  },
+  "current_job": {
+    "jobId": "analyze:https://github.com/spring-guides/gs-uploading-files.git",
+    "label": "Analyzing repository gs-uploading-files.git",
+    "status": "idle",
+    "message": "Idle",
+    "currentChunk": 0,
+    "totalChunks": 0,
+    "startedAt": 1782819426.2294812,
+    "updatedAt": 1782819427.3918025
+  }
+}

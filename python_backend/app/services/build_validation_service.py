@@ -10,7 +10,7 @@ from pathlib import Path
 from app.ai.ai_factory import AIFactory
 from app.services.java_compatibility_service import java_compatibility_service
 from app.services.java_runtime_service import java_runtime_service
-
+from app.services.llm_runtime_service import llm_runtime_service
 
 class BuildValidationService:
     def validate_build(
@@ -25,6 +25,8 @@ class BuildValidationService:
     ) -> dict:
         fix_history = []
         max_attempts = 4
+        llm_usage = {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0}
+        used_provider = None
 
         plan = None
         env = os.environ.copy()
@@ -47,6 +49,8 @@ class BuildValidationService:
                     "suggestedFixes": plan["reason"],
                     "fixHistory": fix_history,
                     "javaCompatibility": plan,
+                    "llmUsage": llm_usage,
+                    "usedProvider": used_provider,
                 }
 
             env, java_home = java_runtime_service.prepare_env(project_dir=project_dir, selection=plan)
@@ -110,6 +114,8 @@ class BuildValidationService:
                 output_log.extend(self._java_plan_log_lines(plan, attempt))
 
             try:
+                msg = f"Running Build Phase (Attempt {attempt + 1}/{max_attempts})... This may take a few minutes."
+                llm_runtime_service.update_job_progress(message=msg, current_chunk=attempt, total_chunks=max_attempts)
                 output_log.append(f"--- Running Build Phase: {' '.join(command)} ---")
                 process = subprocess.Popen(
                     command,
@@ -168,6 +174,8 @@ class BuildValidationService:
                     runtime_command = ["echo", "Unknown project type"]
 
                 try:
+                    msg = f"Running Runtime Verification (Attempt {attempt + 1}/{max_attempts})... Checking startup."
+                    llm_runtime_service.update_job_progress(message=msg, current_chunk=attempt, total_chunks=max_attempts)
                     output_log.append(f"--- Running Runtime Phase: {' '.join(runtime_command)} ---")
                     run_process = subprocess.Popen(
                         runtime_command,
@@ -264,6 +272,8 @@ class BuildValidationService:
                     "test_status": "Success",
                     "runtime_status": "Success",
                     "javaCompatibility": plan,
+                    "llmUsage": llm_usage,
+                    "usedProvider": used_provider,
                 }
 
             if attempt < max_attempts - 1:
@@ -275,6 +285,8 @@ class BuildValidationService:
                         "buildLog": full_log,
                         "suggestedFixes": None,
                         "fixHistory": fix_history,
+                        "llmUsage": llm_usage,
+                        "usedProvider": used_provider,
                     }
 
                 if self._apply_java_version_repair(full_log, project_dir, build_tool, plan, output_log):
@@ -308,12 +320,17 @@ class BuildValidationService:
                         fix_history.append({"attempt": attempt + 1, "fixes": applied_fixes})
                         continue
 
-                analysis_json = self.analyze_build_failure(full_log, is_maven, api_key, model_name)
+                analysis_json, analysis_usage, analysis_provider = self.analyze_build_failure(full_log, is_maven, api_key, model_name)
+                llm_usage = self._merge_usage(llm_usage, analysis_usage)
+                used_provider = used_provider or analysis_provider
                 analysis = self.parse_json_dict(analysis_json)
                 is_compilation_error = analysis.get("is_compilation_error", True)
 
                 if is_compilation_error:
-                    fixes_json_str = self.get_ai_recommendations(full_log, is_maven, api_key, model_name, project_dir)
+                    llm_runtime_service.update_job_progress(message=f"AI generating fixes for build errors (Attempt {attempt + 1}/{max_attempts})...", current_chunk=attempt, total_chunks=max_attempts)
+                    fixes_json_str, fixes_usage, fixes_provider = self.get_ai_recommendations(full_log, is_maven, api_key, model_name, project_dir)
+                    llm_usage = self._merge_usage(llm_usage, fixes_usage)
+                    used_provider = used_provider or fixes_provider
                     applied_fixes = self.apply_fixes(fixes_json_str, project_dir)
                     if applied_fixes:
                         fix_history.append({"attempt": attempt + 1, "fixes": applied_fixes})
@@ -326,6 +343,8 @@ class BuildValidationService:
                             "suggestedFixes": self.format_fixes_for_ui(fixes_json_str),
                             "fixHistory": fix_history,
                             "javaCompatibility": plan,
+                            "llmUsage": llm_usage,
+                            "usedProvider": used_provider,
                         }
                 else:
                     plugin_name = analysis.get("failing_plugin", "Unknown validation plugin")
@@ -388,6 +407,8 @@ class BuildValidationService:
                             "suggestedFixes": f"Build failed due to plugin: {plugin_name}, but no skip property could be identified.",
                             "fixHistory": fix_history,
                             "javaCompatibility": plan,
+                            "llmUsage": llm_usage,
+                            "usedProvider": used_provider,
                         }
             else:
                 return {
@@ -397,6 +418,8 @@ class BuildValidationService:
                     "suggestedFixes": "Max self-healing attempts reached.",
                     "fixHistory": fix_history,
                     "javaCompatibility": plan,
+                    "llmUsage": llm_usage,
+                    "usedProvider": used_provider,
                 }
 
         return {
@@ -406,6 +429,8 @@ class BuildValidationService:
             "suggestedFixes": None,
             "fixHistory": fix_history,
             "javaCompatibility": plan,
+            "llmUsage": llm_usage,
+            "usedProvider": used_provider,
         }
 
     def _java_plan_log_lines(self, plan: dict, attempt: int) -> list:
@@ -441,7 +466,7 @@ class BuildValidationService:
             return True
         return False
 
-    def get_ai_recommendations(self, build_log: str, is_maven: bool, api_key: str, model_name: str, project_dir: Path = None) -> str:
+    def get_ai_recommendations(self, build_log: str, is_maven: bool, api_key: str, model_name: str, project_dir: Path = None) -> tuple[str, dict, str]:
         truncated_log = build_log[-15000:] if len(build_log) > 15000 else build_log
         build_file_content = ""
 
@@ -454,7 +479,7 @@ class BuildValidationService:
                 build_file_content = f"\n\nCurrent Build File ({build_file.name}):\n```\n{content}\n```\n"
 
         system_instruction = (
-            "You are an expert Java developer. A project failed to compile after being upgraded by OpenRewrite. "
+            "You are an expert Java developer. A project failed to compile after an automated migration. "
             "Analyze the build error log below. Identify the root cause. "
             "You MUST output a valid JSON array of objects representing the fixes. "
             "For Java source files (.java), each object must have 'file' (relative path from project root), 'search' (exact string to replace), and 'replace' (new string). Your 'search' string MUST exactly match the contents of the file provided, including whitespace. "
@@ -466,9 +491,12 @@ class BuildValidationService:
 
         try:
             ai_client = AIFactory.get_client()
-            return ai_client.generate(prompt, system_instruction, api_key, model_name)
+            response = ai_client.generate_with_metadata(prompt, system_instruction, api_key, model_name)
+            usage = response.get("usage") or {}
+            normalized = self._normalize_usage(usage, prompt, response.get("content", ""))
+            return response.get("content", "[]"), normalized, getattr(ai_client, "last_provider_used", None)
         except Exception:
-            return "[]"
+            return "[]", {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0}, None
 
     def apply_fixes(self, fixes_json_str: str, project_dir: Path) -> list:
         applied = []
@@ -608,7 +636,7 @@ class BuildValidationService:
         )
         return applied
 
-    def analyze_build_failure(self, build_log: str, is_maven: bool, api_key: str, model_name: str) -> str:
+    def analyze_build_failure(self, build_log: str, is_maven: bool, api_key: str, model_name: str) -> tuple[str, dict, str]:
         truncated_log = build_log[-15000:] if len(build_log) > 15000 else build_log
         system_instruction = (
             "You are an expert Java developer debugging a build or runtime failure. "
@@ -630,9 +658,38 @@ class BuildValidationService:
 
         try:
             ai_client = AIFactory.get_client()
-            return ai_client.generate(prompt, system_instruction, api_key, model_name)
+            response = ai_client.generate_with_metadata(prompt, system_instruction, api_key, model_name)
+            usage = response.get("usage") or {}
+            normalized = self._normalize_usage(usage, prompt, response.get("content", ""))
+            return response.get("content", "{}"), normalized, getattr(ai_client, "last_provider_used", None)
         except Exception:
-            return "{}"
+            return "{}", {"input_tokens": 0, "output_tokens": 0, "total_tokens": 0}, None
+
+    def _normalize_usage(self, usage_obj, prompt: str, content: str) -> dict:
+        def get_value(*names):
+            for name in names:
+                value = getattr(usage_obj, name, None) if not isinstance(usage_obj, dict) else usage_obj.get(name)
+                if value is not None:
+                    return int(value)
+            return 0
+
+        input_tokens = get_value("prompt_tokens", "input_tokens", "prompt_token_count")
+        if not input_tokens:
+            input_tokens = len(prompt) // 4
+        output_tokens = get_value("completion_tokens", "output_tokens", "candidates_token_count")
+        if not output_tokens:
+            output_tokens = len(content) // 4
+        total_tokens = get_value("total_tokens", "total_token_count")
+        if not total_tokens:
+            total_tokens = input_tokens + output_tokens
+        return {"input_tokens": input_tokens, "output_tokens": output_tokens, "total_tokens": total_tokens}
+
+    def _merge_usage(self, left: dict, right: dict) -> dict:
+        return {
+            "input_tokens": left.get("input_tokens", 0) + right.get("input_tokens", 0),
+            "output_tokens": left.get("output_tokens", 0) + right.get("output_tokens", 0),
+            "total_tokens": left.get("total_tokens", 0) + right.get("total_tokens", 0),
+        }
 
     def parse_json_dict(self, json_str: str) -> dict:
         try:

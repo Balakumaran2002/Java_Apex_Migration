@@ -24,7 +24,9 @@ from app.services.migration_service import migration_service
 from app.services.code_conversion_service import code_conversion_service
 from app.services.report_service import report_service
 from app.services.execution_service import execution_service
+from app.services.history_service import history_service
 from app.ai.ai_factory import AIFactory
+from app.services.llm_runtime_service import llm_runtime_service
 import asyncio
 
 router = APIRouter()
@@ -98,15 +100,16 @@ async def get_status():
     return {
         "ragInitialized": rag_service.is_initialized,
         "ragMessage": rag_service.initialization_status,
-        "provider": app_config.ai_provider
+        "provider": app_config.ai_provider,
+        "llmStatus": llm_runtime_service.get_status(),
     }
 
 @router.post("/analyze", response_model=AnalysisResponse)
 async def analyze(request: AnalyzeRequest):
     if request.provider:
         app_config.ai_provider = request.provider
-        
-    response = analysis_service.analyze_repository(request.repoUrl, request.apiKey, request.modelName)
+    with llm_runtime_service.with_job(f"analyze:{request.repoUrl}", f"Analyzing repository {request.repoUrl.split('/')[-1]}"):
+        response = analysis_service.analyze_repository(request.repoUrl, request.apiKey, request.modelName)
     save_report_to_file("last_analysis.json", response.model_dump())
     return response
 
@@ -122,21 +125,36 @@ async def migrate(request: MigrateRequest):
         request.modelName,
         request.provider
     )
+    history_service.create_record(task.id, request.repoUrl, request.targetVersion)
     return TaskResponse(task_id=task.id, status="PENDING")
 
 @router.get("/migrate/status/{task_id}")
 async def migrate_status(task_id: str):
     task_result = AsyncResult(task_id)
+    llm_status = llm_runtime_service.get_status()
     if task_result.state == 'PENDING':
-        return {"status": "PENDING"}
+        return {"status": "PENDING", "llmStatus": llm_status}
     elif task_result.state == 'SUCCESS':
         result = task_result.result
         save_report_to_file("last_migration.json", result)
-        return {"status": "SUCCESS", "result": result}
+        return {"status": "SUCCESS", "result": result, "llmStatus": llm_status}
     elif task_result.state == 'FAILURE':
-        return {"status": "FAILURE", "error": str(task_result.info)}
+        return {"status": "FAILURE", "error": str(task_result.info), "llmStatus": llm_status}
     else:
-        return {"status": task_result.state}
+        return {"status": task_result.state, "meta": task_result.info, "llmStatus": llm_status}
+
+@router.get("/history")
+async def get_history():
+    return history_service.get_history()
+
+@router.delete("/history")
+async def clear_history():
+    history_service.clear_history()
+    return {"status": "success"}
+
+@router.get("/llm/status")
+async def get_llm_status():
+    return llm_runtime_service.get_status()
 
 @router.post("/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
