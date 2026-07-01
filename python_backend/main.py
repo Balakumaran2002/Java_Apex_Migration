@@ -15,6 +15,10 @@ app.add_middleware(
 
 app.include_router(api.router, prefix="/api")
 app.include_router(api_keys.router)
+from app.routers import enterprise_api
+from app.routers import scheduler_api
+app.include_router(enterprise_api.router, prefix="/api")
+app.include_router(scheduler_api.scheduler_router)
 
 if __name__ == "__main__":
     import uvicorn

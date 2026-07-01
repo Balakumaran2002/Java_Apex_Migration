@@ -9,6 +9,16 @@ class AppConfig:
         self.ai_provider = os.getenv("AI_PROVIDER", "gemini")
         self.work_dir_name = os.getenv("APP_WORK_DIR", "workspace")
         self.vector_db = os.getenv("VECTOR_DB", "faiss").lower()
+        
+        # Scheduler Configuration
+        self.token_bucket_size = int(os.getenv("TOKEN_BUCKET_SIZE", "30"))
+        self.token_refill_interval = int(os.getenv("TOKEN_REFILL_INTERVAL", "60"))
+        self.max_concurrent_requests = int(os.getenv("MAX_CONCURRENT_REQUESTS", "5"))
+        self.request_timeout = int(os.getenv("REQUEST_TIMEOUT", "120"))
+        self.max_queue_size = int(os.getenv("MAX_QUEUE_SIZE", "10000"))
+        self.queue_poll_interval = int(os.getenv("QUEUE_POLL_INTERVAL", "1"))
+        self.enable_auto_rotation = os.getenv("ENABLE_AUTO_ROTATION", "true").lower() == "true"
+        self.enable_exponential_backoff = os.getenv("ENABLE_EXPONENTIAL_BACKOFF", "true").lower() == "true"
 
     @property
     def workspace_directory(self) -> Path:

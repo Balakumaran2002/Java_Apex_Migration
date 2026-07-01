@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, Body
 from typing import List, Dict, Any, Optional
 from app.services.key_manager_service import key_manager_service
+from app.ai.api_key_manager import api_key_manager
 
 router = APIRouter(prefix="/api/keys", tags=["API Keys"])
 
@@ -10,6 +11,10 @@ def _validate_provider(provider: str):
     if provider.lower() not in SUPPORTED_PROVIDERS:
         raise HTTPException(status_code=400, detail=f"Provider {provider} is not supported.")
     return provider.lower()
+
+@router.get("/dashboard-stats")
+def get_dashboard_stats():
+    return api_key_manager.get_dashboard_stats()
 
 @router.get("/active-provider")
 def get_active_provider():

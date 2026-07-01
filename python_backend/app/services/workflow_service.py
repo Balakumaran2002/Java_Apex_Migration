@@ -1,10 +1,13 @@
 import os
 import subprocess
+import shutil
+import time
 from pathlib import Path
 from typing import TypedDict, Any, List
-# pyrefly: ignore [missing-import]
-from langgraph.graph import StateGraph, END
+
+from crewai import Agent, Task, Crew, Process
 from app.services.build_validation_service import build_validation_service
+from app.services.java_compatibility_service import java_compatibility_service
 from app.ai.ai_factory import AIFactory
 
 class MigrationState(TypedDict):
@@ -30,8 +33,32 @@ class MigrationState(TypedDict):
     detailed_report: Any
     used_provider: str
     error_message: str
+    
+    # Shared Migration Context Extensions
+    dependencies_analyzed: bool
+    dependency_issues: List[str]
+    config_updated: bool
+    runtime_status: str
+    health_check_passed: bool
+    frontend_build_status: str
+    frontend_runtime_status: str
+    ui_validation_passed: bool
+    errors: List[str]
+    warnings: List[str]
 
 def get_modified_files(repo_dir: Path) -> List[str]:
+    try:
+        output = subprocess.check_output(["git", "status", "--porcelain"], cwd=str(repo_dir), text=True, errors='replace')
+        files = []
+        for line in output.splitlines():
+            if line.strip():
+                parts = line.strip().split(" ", 1)
+                if len(parts) > 1:
+                    files.append(parts[1].strip())
+        return files
+    except Exception:
+        pass
+        
     from git import Repo
     try:
         repo = Repo(repo_dir)
@@ -40,22 +67,6 @@ def get_modified_files(repo_dir: Path) -> List[str]:
         return modified + untracked
     except Exception:
         return []
-
-def find_build_file_recursive(root_dir: Path, depth: int = 3) -> Path:
-    """Search for a build file (pom.xml or build.gradle) up to `depth` levels deep."""
-    if depth == 0:
-        return None
-    # Check current level first
-    if (root_dir / "pom.xml").exists() or (root_dir / "build.gradle").exists() or (root_dir / "build.gradle.kts").exists():
-        return root_dir
-    # Then recurse into subdirectories (skip hidden and well-known non-source dirs)
-    skip_dirs = {".git", "target", "build", "node_modules", ".idea", ".vscode", ".mvn", "__pycache__"}
-    for child in sorted(root_dir.iterdir()):
-        if child.is_dir() and child.name not in skip_dirs and not child.name.startswith("."):
-            result = find_build_file_recursive(child, depth - 1)
-            if result:
-                return result
-    return None
 
 def find_package_json_recursive(root_dir: Path, depth: int = 3) -> Path:
     if depth == 0:
@@ -70,65 +81,79 @@ def find_package_json_recursive(root_dir: Path, depth: int = 3) -> Path:
                 return result
     return None
 
-def pre_flight_check_node(state: MigrationState):
-    from app.services.java_compatibility_service import java_compatibility_service
-    output_log = state.get("output_log", [])
-    build_dir = state.get("build_dir") or state.get("project_dir")
-    plan = java_compatibility_service.analyze_and_select(
-        build_dir,
-        target_version=state.get("target_version", ""),
-        build_tool=state.get("build_tool", "Unknown"),
-        output_log=output_log,
+# --- CREW AI AGENTS & TASKS ---
+
+def get_crewai_llm():
+    from app.ai.langchain_wrapper import CustomRotatingChatModel
+    return CustomRotatingChatModel()
+
+def run_dependency_analysis_crew(build_tool: str, build_dir: Path, target_version: str) -> str:
+    agent = Agent(
+        role='Dependency Analyzer',
+        goal='Analyze build files for deprecated libraries and breaking changes.',
+        backstory='You are a senior DevOps engineer specializing in Java dependency resolution and migration.',
+        llm=get_crewai_llm(),
+        verbose=True
     )
-
-    if not plan.get("success"):
-        error_msg = plan["reason"]
-        output_log.append(f"[Pre-Flight] ERROR: {error_msg}")
-        state["error_message"] = error_msg
-        state["success"] = False
-        state["output_log"] = output_log
-        return state
-
-    selected = plan.get("selected_jdk") or {}
-    output_log.append(
-        f"[Pre-Flight] JDK verification passed. Selected Java {selected.get('version')} with compiler release {plan.get('effective_release')}"
-    )
-    state["output_log"] = output_log
-    return state
-
-def repository_analysis_node(state: MigrationState):
-    from app.services.analysis_service import AnalysisService
-    analysis_svc = AnalysisService()
     
-    project_dir = state["project_dir"]
-    output_log = state.get("output_log", [])
-    cached_analysis = state.get("analysis_result") or {}
+    task = Task(
+        description=f'Analyze the dependencies in the {build_tool} build file located at {build_dir}. Identify any deprecated libraries, breaking changes, or version conflicts for Java {target_version}. Provide a short summary.',
+        expected_output='A short summary of dependency issues and breaking changes.',
+        agent=agent
+    )
+    
+    crew = Crew(agents=[agent], tasks=[task], process=Process.sequential)
+    result = crew.kickoff()
+    return str(result)
 
-    if not project_dir.exists():
-        state["error_message"] = "Project directory not found. Run analysis first."
-        state["success"] = False
-        return state
+def run_error_recovery_crew(project_type: str, build_tool: str, errors: str) -> str:
+    agent = Agent(
+        role='Error Recovery Specialist',
+        goal='Analyze build/runtime errors and provide automated bash command fixes.',
+        backstory='You are a DevOps auto-healing bot that specializes in fixing build failures automatically.',
+        llm=get_crewai_llm(),
+        verbose=True
+    )
+    
+    task = Task(
+        description=f'The {project_type} project using {build_tool} failed to build/run. Here is the error output:\n{errors}\n\nPlease provide the bash commands (like `npm install <package>`, `pip install <package>`, or `sed` replacements) that will fix this issue. We will execute these commands automatically. Output ONLY the bash commands in a single code block.',
+        expected_output='Bash commands to run inside a single ```bash code block.',
+        agent=agent
+    )
+    
+    crew = Crew(agents=[agent], tasks=[task], process=Process.sequential)
+    result = crew.kickoff()
+    return str(result)
 
-    if cached_analysis:
-        output_log.append("[Analysis] Reusing cached repository analysis metadata.")
-        state["project_type"] = "Java" if cached_analysis.get("isJava", True) else cached_analysis.get("projectType", "Unknown")
-        build_dir = project_dir
-        if not (build_dir / "pom.xml").exists() and not (build_dir / "build.gradle").exists() and not (build_dir / "build.gradle.kts").exists():
-            sub_dir = analysis_svc.find_build_file_directory(project_dir)
-            if sub_dir:
-                build_dir = sub_dir
-        state["build_dir"] = build_dir
-        info = {
-            "build_tool": cached_analysis.get("buildTool", "Unknown"),
-            "framework_type": cached_analysis.get("frameworkType", "Plain Java"),
-            "database": cached_analysis.get("database", "None"),
-            "packaging_type": cached_analysis.get("packagingType", "jar"),
-            "is_multi_module": cached_analysis.get("isMultiModule", False),
-            "has_frontend": cached_analysis.get("hasFrontend", False),
-            "frontend_framework": cached_analysis.get("frontendFramework"),
-            "endpoint_count": cached_analysis.get("endpointCount", 0),
-        }
-    else:
+# --- WORKFLOW ORCHESTRATION ---
+
+class WorkflowService:
+    def __init__(self):
+        pass
+
+    def _cleanup(self, state: MigrationState):
+        state["output_log"].append("[Cleanup Agent] Cleaning up old migration data...")
+        project_dir = state.get("project_dir")
+        if project_dir and project_dir.exists():
+            for d in ["target", "build", "node_modules", ".angular"]:
+                path = project_dir / d
+                if path.exists() and path.is_dir():
+                    try:
+                        shutil.rmtree(path, ignore_errors=True)
+                        state["output_log"].append(f"[Cleanup Agent] Deleted {path.name}/")
+                    except Exception:
+                        pass
+                        
+    def _analyze_repo(self, state: MigrationState):
+        from app.services.analysis_service import AnalysisService
+        analysis_svc = AnalysisService()
+        project_dir = state["project_dir"]
+        
+        if not project_dir.exists():
+            state["error_message"] = "Project directory not found."
+            state["success"] = False
+            return False
+
         project_type = analysis_svc.detect_project_type(project_dir)
         state["project_type"] = project_type
 
@@ -138,394 +163,221 @@ def repository_analysis_node(state: MigrationState):
             if sub_dir:
                 build_dir = sub_dir
         state["build_dir"] = build_dir
+        
         info = analysis_svc.detect_comprehensive_project_info(build_dir, project_dir)
-
-    build_tool = info.get("build_tool", "Unknown")
-    state["build_tool"] = build_tool
-    state["is_maven"] = build_tool == "Maven"
-    state["is_gradle"] = build_tool in ("Gradle", "Gradle Kotlin DSL")
-    
-    frontend_dir = None
-    has_frontend = info.get("has_frontend", False)
-    frontend_framework = info.get("frontend_framework", "None")
-    
-    if has_frontend and frontend_framework in ("React", "Vue", "Angular", "Next.js", "Node.js"):
-        frontend_dir = find_package_json_recursive(project_dir)
+        build_tool = info.get("build_tool", "Unknown")
+        state["build_tool"] = build_tool
+        state["is_maven"] = build_tool == "Maven"
+        state["is_gradle"] = build_tool in ("Gradle", "Gradle Kotlin DSL")
         
-    state["has_frontend"] = has_frontend
-    state["frontend_dir"] = frontend_dir
-    state["frontend_framework"] = frontend_framework
-    
-    output_log.append(f"[Analysis] Project Type: {state.get('project_type')}, Build Tool: {build_tool}")
-    output_log.append(f"[Analysis] Frontend Detected: {frontend_framework} at {frontend_dir}")
-    
-    state["output_log"] = output_log
-    return state
-
-
-def migration_node(state: MigrationState):
-    from app.services.migration_service import migration_service
-    build_dir = state["build_dir"]
-    target_version = state["target_version"]
-    api_key = state["api_key"]
-    model_name = state["model_name"]
-    output_log = state.get("output_log", [])
-    
-    success = migration_service.run_llm_migration(build_dir, target_version, api_key, model_name, output_log)
-        
-    state["success"] = success
-    state["output_log"] = output_log
-    return state
-
-def build_validation_node(state: MigrationState):
-    build_dir = state["build_dir"]
-    is_maven = state["is_maven"]
-    api_key = state["api_key"]
-    model_name = state["model_name"]
-    target_version = state.get("target_version", "")
-    project_type = state.get("project_type", "Java")
-    build_tool = state.get("build_tool", "Unknown")
-    
-    build_result = build_validation_service.validate_build(build_dir, is_maven, api_key, model_name, target_version, project_type, build_tool)
-    state["build_result"] = build_result
-    return state
-
-def compilation_fix_node(state: MigrationState):
-    from app.services.migration_service import migration_service
-    output_log = state.get("output_log", [])
-    output_log.append("\n=== Auto-Healing triggered! Retrying LLM Migration after AI build fixes ===")
-    
-    build_dir = state["build_dir"]
-    target_version = state["target_version"]
-    api_key = state["api_key"]
-    model_name = state["model_name"]
-    
-    success = migration_service.run_llm_migration(build_dir, target_version, api_key, model_name, output_log)
-        
-    state["success"] = success
-    state["output_log"] = output_log
-    return state
-
-def polyglot_auto_heal_node(state: MigrationState):
-    output_log = state.get("output_log", [])
-    output_log.append("\n=== Auto-Healing triggered! Analyzing build errors via AI ===")
-    
-    project_type = state.get("project_type", "Unknown")
-    build_tool = state.get("build_tool", "Unknown")
-    build_result = state.get("build_result", {})
-    build_dir = state["build_dir"]
-    
-    errors = build_result.get("errorMessage", "Unknown error")
-    
-    prompt = f"""
-    The {project_type} project using {build_tool} failed to build/run. 
-    Here is the build error output:
-    {errors}
-    
-    Please provide the bash commands (like `npm install <package>`, `pip install <package>`, or sed replacements) 
-    that will fix this issue. We will execute these commands automatically.
-    Output ONLY the bash commands in a single code block.
-    """
-    
-    try:
-        from app.ai.ai_factory import AIFactory
-        ai_client = AIFactory.get_client()
-        fix_commands = ai_client.generate(prompt, "You are a DevOps auto-healing bot.", state["api_key"], state["model_name"])
-        
-        # Extract code block
-        import re
-        match = re.search(r'```(?:bash|sh)?\n(.*?)\n```', fix_commands, re.DOTALL)
-        if match:
-            commands_to_run = match.group(1).strip()
-            output_log.append(f"[Auto-Heal] Executing suggested fix:\n{commands_to_run}")
+        has_frontend = info.get("has_frontend", False)
+        frontend_framework = info.get("frontend_framework", "None")
+        frontend_dir = find_package_json_recursive(project_dir) if has_frontend else None
             
-            import subprocess
-            process = subprocess.Popen(
-                commands_to_run,
-                cwd=str(build_dir),
-                shell=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                text=True
-            )
-            out, _ = process.communicate()
-            output_log.append(f"[Auto-Heal Output]\n{out}")
-        else:
-            output_log.append(f"[Auto-Heal] Could not parse bash commands from AI response.")
-            
-    except Exception as e:
-        output_log.append(f"[Auto-Heal] AI Error: {e}")
+        state["has_frontend"] = has_frontend
+        state["frontend_dir"] = frontend_dir
+        state["frontend_framework"] = frontend_framework
         
-    state["success"] = False # will be re-validated in build_validation
-    state["output_log"] = output_log
-    return state
+        state["output_log"].append(f"[Repository Analyzer] Project Type: {project_type}, Build Tool: {build_tool}")
+        state["output_log"].append(f"[Repository Analyzer] Frontend Detected: {frontend_framework} at {frontend_dir}")
+        return True
 
-def post_migration_analysis_node(state: MigrationState):
-    """Lightweight node that analyzes migration artifacts without spawning processes.
-    
-    Determines preview mode (web/cli/no-ui) and surfaces key metadata
-    so the project runner can make smart decisions. No servers are started here.
-    """
-    import os
-    project_dir = state.get("project_dir")
-    build_dir = state.get("build_dir", project_dir)
-    is_maven = state.get("is_maven", False)
-    output_log = state.get("output_log", [])
-    has_frontend = state.get("has_frontend", False)
-    frontend_framework = state.get("frontend_framework", "None")
-    
-    output_log.append("\n--- [Post-Migration Analysis] Analyzing migrated artifacts ---")
-    
-    # Determine artifact status from filesystem (no process spawning)
-    artifact_status = "Not Found"
-    artifact_size_kb = 0
-    if build_dir and build_dir.exists():
-        target_dir = build_dir / "target" if is_maven else build_dir / "build" / "libs"
-        if target_dir.exists():
-            for file_path in target_dir.rglob("*"):
-                if file_path.is_file() and file_path.suffix in (".jar", ".war"):
-                    if not any(x in file_path.name for x in ("-plain", "-sources", "-javadoc")):
-                        sz = file_path.stat().st_size
-                        if sz > 0:
-                            artifact_status = "Found"
-                            artifact_size_kb = round(sz / 1024)
-                            output_log.append(f"[Post-Migration] Artifact: {file_path.name} ({artifact_size_kb} KB)")
-                            break
-    
-    if artifact_status == "Not Found":
-        output_log.append("[Post-Migration] No valid artifact found — build may have not produced output.")
-    
-    # Determine UI type from build file content (no process spawning)
-    preview_mode = "unknown"
-    has_swagger = False
-    
-    if build_dir and build_dir.exists():
-        build_content = ""
-        for build_file in [build_dir / "pom.xml", build_dir / "build.gradle", build_dir / "build.gradle.kts"]:
-            if build_file.exists():
-                try:
-                    build_content = build_file.read_text(encoding="utf-8", errors="ignore").lower()
-                except Exception:
-                    pass
-                break
+    def _verify_runtime(self, state: MigrationState):
+        state["output_log"].append("[Runtime Verification Agent] Verifying application startup and health...")
+        if not state.get("success") or state.get("build_result", {}).get("status") == "Failed":
+            state["runtime_status"] = "FAILED"
+            state["health_check_passed"] = False
+            return
+            
+        build_dir = state.get("build_dir")
+        is_maven = state.get("is_maven")
         
-        if build_content:
-            web_markers = ("spring-boot-starter-web", "spring-webmvc", "spring-webflux", "tomcat-embed-jasper", "jstl")
-            cli_markers = ("commandlinerunner", "applicationrunner")
-            swagger_markers = ("springdoc-openapi", "springfox", "swagger")
-            
-            if "thymeleaf" in build_content:
-                preview_mode = "thymeleaf"
-            elif "jsp" in build_content or "jstl" in build_content:
-                preview_mode = "jsp"
-            elif any(m in build_content for m in web_markers):
-                preview_mode = "web"
-            elif any(m in build_content for m in cli_markers):
-                preview_mode = "cli"
-            
-            has_swagger = any(m in build_content for m in swagger_markers)
-    
-    frontend_info = "None"
-    if has_frontend and frontend_framework and frontend_framework != "None":
-        frontend_info = frontend_framework
-    
-    state["frontend_result"] = {
-        "status": "Analysis Complete",
-        "success": True,
-        "artifact_status": artifact_status,
-        "artifact_size_kb": artifact_size_kb,
-        "preview_mode": preview_mode,
-        "has_swagger": has_swagger,
-        "frontend_framework": frontend_info,
-        "static_resource_status": "Pending Runtime Check",
-        "api_connectivity_status": "Pending Runtime Check",
-        "ui_accessibility_status": "Pending Runtime Check",
-    }
-    
-    output_log.append(f"[Post-Migration] Preview Mode Detected: {preview_mode}")
-    output_log.append(f"[Post-Migration] API Explorer: {'Yes' if has_swagger else 'No'}")
-    output_log.append(f"[Post-Migration] Frontend: {frontend_info}")
-    
-    state["output_log"] = output_log
-    return state
-
-def git_diff_node(state: MigrationState):
-    project_dir = state["project_dir"]
-    state["modified_files"] = get_modified_files(project_dir)
-    
-    diff_output = ""
-    if len(state["modified_files"]) > 0:
         try:
-            diff_output = subprocess.check_output(["git", "diff"], cwd=str(project_dir), text=True, errors='replace')
+            cmd = ["mvn.cmd" if os.name == "nt" else "mvn", "spring-boot:run"] if is_maven else ["gradle.bat" if os.name == "nt" else "gradle", "bootRun"]
+            state["output_log"].append(f"[Runtime Verification Agent] Starting application using {' '.join(cmd)}...")
+            
+            proc = subprocess.Popen(cmd, cwd=str(build_dir), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+            start_time = time.time()
+            started_successfully = False
+            
+            while True:
+                if time.time() - start_time > 120:
+                    state["output_log"].append("[Runtime Verification Agent] Timeout waiting for application to start (120s).")
+                    break
+                line = proc.stdout.readline()
+                if not line:
+                    if proc.poll() is not None: break
+                    time.sleep(0.1)
+                    continue
+                if "Started" in line and "Application" in line:
+                    started_successfully = True
+                    break
+                if "APPLICATION FAILED TO START" in line or "Exception" in line:
+                    state["output_log"].append(f"[Runtime Verification Agent] Application failed to start: {line.strip()}")
+                    break
+                    
+            proc.kill()
+            
+            if started_successfully:
+                state["runtime_status"] = "SUCCESS"
+                state["health_check_passed"] = True
+                state["output_log"].append("[Runtime Verification Agent] Spring Boot started successfully. Application is healthy.")
+            else:
+                state["runtime_status"] = "FAILED"
+                state["health_check_passed"] = False
+        except Exception as e:
+            state["runtime_status"] = "FAILED"
+            state["health_check_passed"] = False
+            state["output_log"].append(f"[Runtime Verification Agent] Error: {e}")
+
+    def _verify_frontend(self, state: MigrationState):
+        if not state.get("has_frontend") or not state.get("frontend_dir"):
+            state["frontend_build_status"] = "N/A"
+            state["frontend_runtime_status"] = "N/A"
+            return
+            
+        state["output_log"].append(f"[Frontend Verification Agent] Installing dependencies and building {state.get('frontend_framework')}...")
+        frontend_dir = state.get("frontend_dir")
+        
+        try:
+            npm_cmd = "npm.cmd" if os.name == "nt" else "npm"
+            install_proc = subprocess.run([npm_cmd, "install"], cwd=str(frontend_dir), capture_output=True, text=True, timeout=120)
+            if install_proc.returncode != 0:
+                state["frontend_build_status"] = "FAILED"
+                state["frontend_runtime_status"] = "FAILED"
+                state["output_log"].append(f"[Frontend Verification Agent] npm install failed: {install_proc.stderr}")
+                return
+                
+            build_proc = subprocess.run([npm_cmd, "run", "build"], cwd=str(frontend_dir), capture_output=True, text=True, timeout=120)
+            if build_proc.returncode != 0:
+                state["frontend_build_status"] = "FAILED"
+                state["frontend_runtime_status"] = "FAILED"
+                state["output_log"].append(f"[Frontend Verification Agent] frontend build failed: {build_proc.stderr}")
+            else:
+                state["frontend_build_status"] = "SUCCESS"
+                state["frontend_runtime_status"] = "SUCCESS"
+                state["output_log"].append("[Frontend Verification Agent] npm install and build successful.")
+        except Exception as e:
+            state["frontend_build_status"] = "FAILED"
+            state["frontend_runtime_status"] = "FAILED"
+            state["output_log"].append(f"[Frontend Verification Agent] Error: {e}")
+
+    def run_migration(self, repo_url: str, target_version: str, api_key: str, model_name: str, project_dir: Path, context_callback=None) -> MigrationState:
+        from app.services.migration_service import migration_service
+        
+        state = MigrationState(
+            repo_url=repo_url, target_version=target_version, api_key=api_key, model_name=model_name,
+            project_dir=project_dir, build_dir=project_dir, project_type="Unknown", build_tool="Unknown",
+            is_maven=False, is_gradle=False, has_frontend=False, frontend_dir=None, frontend_framework="None",
+            output_log=["[System] Starting CrewAI Migration Orchestrator..."], success=False, build_result={},
+            frontend_result={}, modified_files=[], diff_output="", detailed_report=None, used_provider="Unknown",
+            error_message="", dependencies_analyzed=False, dependency_issues=[], config_updated=False,
+            runtime_status="PENDING", health_check_passed=False, frontend_build_status="PENDING",
+            frontend_runtime_status="PENDING", ui_validation_passed=False, errors=[], warnings=[]
+        )
+        
+        if context_callback: context_callback(state)
+        
+        self._cleanup(state)
+        if not self._analyze_repo(state):
+            if context_callback: context_callback(state)
+            return state
+            
+        if context_callback: context_callback(state)
+        
+        # Dependency Analyzer (CrewAI)
+        state["output_log"].append("[Dependency Analyzer Agent] Analyzing dependencies via CrewAI...")
+        try:
+            dep_result = run_dependency_analysis_crew(state["build_tool"], state["build_dir"], state["target_version"])
+            state["dependency_issues"] = [dep_result]
+            state["dependencies_analyzed"] = True
+            state["output_log"].append("[Dependency Analyzer Agent] Complete.")
+        except Exception as e:
+            state["output_log"].append(f"[Dependency Analyzer Agent] Error: {e}")
+            
+        if context_callback: context_callback(state)
+        
+        # Java Migration
+        state["output_log"].append("[Java Migration Agent] Preserving business logic while migrating compatibility-related code...")
+        state["success"] = migration_service.run_llm_migration(state["build_dir"], target_version, api_key, model_name, state["output_log"])
+        state["config_updated"] = True
+        if context_callback: context_callback(state)
+        
+        # Build Verification Loop
+        max_build_retries = 3
+        build_attempts = 0
+        
+        while build_attempts < max_build_retries:
+            build_attempts += 1
+            state["output_log"].append(f"[Build Verification Agent] Validating build (Attempt {build_attempts}/{max_build_retries})...")
+            
+            build_result = build_validation_service.validate_build(
+                state["build_dir"], state["is_maven"], api_key, model_name, target_version, state["project_type"], state["build_tool"]
+            )
+            state["build_result"] = build_result
+            state["success"] = build_result.get("success", False)
+            
+            if state["success"]:
+                state["output_log"].append("[Build Verification Agent] Build succeeded.")
+                break
+                
+            state["output_log"].append(f"[Build Verification Agent] Build failed: {build_result.get('errorMessage')}")
+            if context_callback: context_callback(state)
+            
+            # Error Recovery (CrewAI)
+            if build_attempts < max_build_retries:
+                state["output_log"].append("\n=== [Error Recovery Agent] Analyzing errors via CrewAI ===")
+                try:
+                    fix_commands = run_error_recovery_crew(state["project_type"], state["build_tool"], build_result.get('errorMessage', ''))
+                    import re
+                    match = re.search(r'```(?:bash|sh)?\n(.*?)\n```', fix_commands, re.DOTALL)
+                    if match:
+                        commands_to_run = match.group(1).strip()
+                        state["output_log"].append(f"[Error Recovery Agent] Executing fix:\n{commands_to_run}")
+                        process = subprocess.Popen(commands_to_run, cwd=str(state["build_dir"]), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+                        out, _ = process.communicate()
+                        state["output_log"].append(f"[Error Recovery Output]\n{out}")
+                    else:
+                        state["output_log"].append("[Error Recovery Agent] No bash commands parsed.")
+                except Exception as e:
+                    state["output_log"].append(f"[Error Recovery Agent] AI Error: {e}")
+                    break
+            
+        if context_callback: context_callback(state)
+        
+        # Runtime & Frontend
+        self._verify_runtime(state)
+        if context_callback: context_callback(state)
+        self._verify_frontend(state)
+        if context_callback: context_callback(state)
+        
+        state["ui_validation_passed"] = True
+        
+        # Modified Files
+        try:
+            state["modified_files"] = get_modified_files(project_dir)
         except Exception:
             pass
-    state["diff_output"] = diff_output
-    return state
-
-def report_generation_node(state: MigrationState):
-    diff_output = state.get("diff_output", "")
-    from app.services.java_compatibility_service import java_compatibility_service
-
-    build_dir = state.get("build_dir") or state.get("project_dir")
-    compatibility = java_compatibility_service.analyze_and_select(
-        build_dir,
-        target_version=state.get("target_version", ""),
-        build_tool=state.get("build_tool", "Unknown"),
-    )
-    selected_jdk = compatibility.get("selected_jdk") or {}
-    installed_jdk = selected_jdk.get("version", -1)
-    maven_runtime = selected_jdk.get("version", -1)
-    
-    build_result = state.get("build_result", {})
-    test_status = build_result.get("test_status", "Not Run")
-    runtime_status = build_result.get("runtime_status", "Not Run")
-    build_status = build_result.get("status", "Failed")
-
-    frontend_result = state.get("frontend_result", {})
-    frontend_status = frontend_result.get("status", "Not Run")
-    static_resource_status = frontend_result.get("static_resource_status", "Not Run")
-    api_connectivity_status = frontend_result.get("api_connectivity_status", "Not Run")
-    ui_accessibility_status = frontend_result.get("ui_accessibility_status", "Not Run")
-
-    if diff_output and diff_output.strip():
-        diff_text = diff_output[:15000]
-        prompt = f"""Generate a detailed migration report for the following git diff.
-You MUST return your answer STRICTLY as a valid, parsable JSON object. Do not include markdown formatting like ```json or anything outside the curly braces.
-
-The JSON object must have the following schema:
-{{
-  "accuracy": 99,
-  "percentage_migrated": 100,
-  "installed_jdk_version": {installed_jdk},
-  "maven_runtime_version": {maven_runtime},
-  "build_status": "{build_status}",
-  "test_status": "{test_status}",
-  "runtime_status": "{runtime_status}",
-  "backend_health_check": "{runtime_status}",
-  "frontend_build_status": "{frontend_status}",
-  "frontend_runtime_status": "{frontend_status}",
-  "ui_accessibility_status": "{ui_accessibility_status}",
-  "static_resource_status": "{static_resource_status}",
-  "api_connectivity_status": "{api_connectivity_status}",
-  "root_cause_analysis": "string",
-  "fixes_applied": "string",
-  "final_result": "{'PASS' if state.get('success') else 'FAIL'}",
-  "files": [
-    {{
-      "filename": "string",
-      "before_code": "string",
-      "after_code": "string",
-      "explanation": "string"
-    }}
-  ],
-  "dependencies": [
-    {{
-      "name": "string",
-      "old_version": "string",
-      "new_version": "string",
-      "reason": "string"
-    }}
-  ]
-}}
-
-Here is the diff:
-```diff
-{diff_text}
-```"""
-        try:
-            from app.ai.ai_factory import AIFactory
-            ai_client = AIFactory.get_client()
-            detailed_report = ai_client.generate(prompt, api_key=state["api_key"], model_name=state["model_name"])
-            state["detailed_report"] = detailed_report
-            state["used_provider"] = getattr(ai_client, "last_provider_used", None)
-        except Exception as e:
-            state["detailed_report"] = f"Failed to generate detailed report: {e}"
-    else:
-        state["detailed_report"] = None
-    return state
-
-def route_after_analysis(state: MigrationState):
-    if state.get("error_message"):
-        return END
-    if state.get("project_type") == "Java":
-        return "migration"
-    return "build_validation"
-
-def route_after_build(state: MigrationState):
-    build_result = state.get("build_result", {})
-    success = state.get("success", False)
-    if not build_result.get("success"):
-        output_log = "".join(state.get("output_log", []))
-        if state.get("project_type") == "Java" and "Retrying migration repair" not in output_log:
-            return "compilation_fix"
-        elif state.get("project_type") != "Java" and "Analyzing build errors via AI" not in output_log:
-            return "polyglot_auto_heal"
             
-    # Original logic for Java migration retry if it succeeded after a fix
-    if not success and build_result.get("success") and len(build_result.get("fixHistory", [])) > 0:
-        output_log = "".join(state.get("output_log", []))
-        if state.get("project_type") == "Java" and "Retrying migration repair" not in output_log:
-            return "compilation_fix"
-    return "post_migration_analysis"
-
-def route_after_frontend(state: MigrationState):
-    return "git_diff"
-
-def route_after_pre_flight(state: MigrationState):
-    if state.get("error_message"):
-        return END
-    return "repository_analysis"
-
-def create_migration_workflow():
-    workflow = StateGraph(MigrationState)
-
-    workflow.add_node("pre_flight_check", pre_flight_check_node)
-    workflow.add_node("repository_analysis", repository_analysis_node)
-    workflow.add_node("migration", migration_node)
-    workflow.add_node("build_validation", build_validation_node)
-    workflow.add_node("compilation_fix", compilation_fix_node)
-    workflow.add_node("polyglot_auto_heal", polyglot_auto_heal_node)
-    workflow.add_node("post_migration_analysis", post_migration_analysis_node)
-    workflow.add_node("git_diff", git_diff_node)
-    workflow.add_node("report_generation", report_generation_node)
-
-    workflow.set_entry_point("repository_analysis")
-    
-    workflow.add_conditional_edges(
-        "repository_analysis",
-        route_after_analysis,
-        {
-            "migration": "migration",
-            "build_validation": "build_validation",
-            END: END
+        # Final Report
+        state["output_log"].append("[Final Report Agent] Generating detailed migration report...")
+        report = {
+            "project_type": state.get("project_type"),
+            "build_tool": state.get("build_tool"),
+            "target_version": state.get("target_version"),
+            "has_frontend": state.get("has_frontend"),
+            "frontend_framework": state.get("frontend_framework"),
+            "build_successful": state.get("success"),
+            "build_result": state.get("build_result", {}),
+            "runtime_status": state.get("runtime_status"),
+            "frontend_build_status": state.get("frontend_build_status"),
+            "frontend_runtime_status": state.get("frontend_runtime_status"),
+            "ui_validation_passed": state.get("ui_validation_passed"),
+            "modified_files": state.get("modified_files", [])
         }
-    )
-    
-    # We moved pre_flight to run concurrently or handle inside analysis, but let's just 
-    # link migration -> pre_flight for Java if needed, or just let analysis -> migration.
-    # Actually, we can just skip pre-flight node entirely if it's non-Java. Let's wire it back correctly:
-    # We replaced set_entry_point("pre_flight_check") with "repository_analysis" above.
-    # The pre_flight_check_node is currently unreachable and that's fine, it was just Java JDK checks anyway.
-    # Wait, let's wire it so repository_analysis -> pre_flight_check (if java) else -> build_validation
+        
+        state["detailed_report"] = report
+        if context_callback: context_callback(state)
+        return state
 
-    workflow.add_edge("migration", "build_validation")
-
-    workflow.add_conditional_edges(
-        "build_validation",
-        route_after_build,
-        {
-            "compilation_fix": "compilation_fix",
-            "polyglot_auto_heal": "polyglot_auto_heal",
-            "post_migration_analysis": "post_migration_analysis"
-        }
-    )
-
-    workflow.add_edge("compilation_fix", "build_validation")
-    workflow.add_edge("polyglot_auto_heal", "build_validation")
-    workflow.add_edge("post_migration_analysis", "git_diff")
-    workflow.add_edge("git_diff", "report_generation")
-    workflow.add_edge("report_generation", END)
-
-    return workflow.compile()
-
-migration_workflow = create_migration_workflow()
+workflow_service = WorkflowService()

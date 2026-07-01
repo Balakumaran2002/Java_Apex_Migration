@@ -2,31 +2,64 @@
   "providers": {
     "groq": {
       "keys": {
-        "702cde83-833a-4ceb-8809-351be594e5ac": {
-          "keyName": "FirstKey",
-          "inputTokens": 1186,
-          "outputTokens": 324,
-          "totalTokens": 1510,
+        "env": {
+          "keyName": "Environment",
+          "inputTokens": 16352,
+          "outputTokens": 7119,
+          "totalTokens": 23471,
           "dailyLimit": 900000,
-          "remainingTokens": 898490,
-          "resetAt": 1782757800.0,
-          "updatedAt": 1782816402.5874496
+          "remainingTokens": 876529,
+          "resetAt": 1782844200.0,
+          "updatedAt": 1782836722.807021
+        },
+        "GROQ_API_KEY_1": {
+          "keyName": "GROQ_API_KEY_1",
+          "inputTokens": 109157,
+          "outputTokens": 27785,
+          "totalTokens": 136942,
+          "dailyLimit": 900000,
+          "remainingTokens": 763058,
+          "resetAt": 1782930600.0,
+          "updatedAt": 1782913022.0271847
         }
       },
-      "updatedAt": 1782816402.5874496,
+      "updatedAt": 1782913022.0271847,
       "chunk_size_hints": {
-        "llama-3.3-70b-versatile": 500
+        "llama-3.3-70b-versatile": 1050
+      }
+    },
+    "gemini": {
+      "keys": {
+        "GEMINI_API_KEY": {
+          "keyName": "GEMINI_API_KEY",
+          "inputTokens": 26471,
+          "outputTokens": 8467,
+          "totalTokens": 34938,
+          "dailyLimit": 900000,
+          "remainingTokens": 865062,
+          "resetAt": 1782930600.0,
+          "updatedAt": 1782911241.1484146
+        }
+      },
+      "updatedAt": 1782911241.1484146,
+      "chunk_size_hints": {
+        "gemini-2.5-flash": 893
+      }
+    },
+    "openai": {
+      "chunk_size_hints": {
+        "gpt-4o-mini": 500
       }
     }
   },
   "current_job": {
-    "jobId": "analyze:https://github.com/spring-guides/gs-uploading-files.git",
-    "label": "Analyzing repository gs-uploading-files.git",
+    "jobId": "analyze:https://github.com/shopizer-ecommerce/shopizer.git",
+    "label": "Analyzing repository shopizer.git",
     "status": "idle",
     "message": "Idle",
-    "currentChunk": 0,
-    "totalChunks": 0,
-    "startedAt": 1782819426.2294812,
-    "updatedAt": 1782819427.3918025
+    "currentChunk": 117,
+    "totalChunks": 459,
+    "startedAt": 1782903993.3082523,
+    "updatedAt": 1782914842.9917457
   }
 }

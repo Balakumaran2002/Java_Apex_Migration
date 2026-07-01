@@ -26,6 +26,7 @@ class HistoryService:
                     migration_status TEXT NOT NULL,
                     build_status TEXT,
                     runtime_status TEXT,
+                    frontend_status TEXT,
                     files_changed_java INTEGER DEFAULT 0,
                     files_changed_xml INTEGER DEFAULT 0,
                     files_changed_config INTEGER DEFAULT 0,
@@ -37,6 +38,13 @@ class HistoryService:
                     details_json TEXT
                 )
             """)
+            
+            # Dynamically add frontend_status to existing tables if needed
+            try:
+                conn.execute("ALTER TABLE migration_history ADD COLUMN frontend_status TEXT")
+            except sqlite3.OperationalError:
+                pass
+                
             conn.commit()
 
     def create_record(self, migration_id: str, repo_url: str, target_version: str):
@@ -78,6 +86,7 @@ class HistoryService:
             
             build_status = "Pending"
             runtime_status = "Pending"
+            frontend_status = "Pending"
             files_java = 0
             files_xml = 0
             files_config = 0
@@ -97,7 +106,8 @@ class HistoryService:
                 elif isinstance(detailed_report_str, dict):
                     detailed_report = detailed_report_str
                     
-                runtime_status = detailed_report.get("runtime_status", "Verified" if result_dict.get("success") else "Failed")
+                runtime_status = detailed_report.get("runtime_status", "Failed") if not result_dict.get("success") else "SUCCESS"
+                frontend_status = detailed_report.get("frontend_runtime_status", "N/A")
                 
                 modified_files = result_dict.get("modifiedFiles", [])
                 if isinstance(modified_files, list):
@@ -110,15 +120,19 @@ class HistoryService:
             else:
                 build_status = "Failed"
                 runtime_status = "Failed"
+                frontend_status = "Failed"
 
             if error_message:
                 build_status = "Failed"
+                runtime_status = "Failed"
+                frontend_status = "Failed"
                 
             conn.execute("""
                 UPDATE migration_history
                 SET migration_status = ?,
                     build_status = ?,
                     runtime_status = ?,
+                    frontend_status = ?,
                     files_changed_java = ?,
                     files_changed_xml = ?,
                     files_changed_config = ?,
@@ -129,7 +143,7 @@ class HistoryService:
                     details_json = ?
                 WHERE migration_id = ?
             """, (
-                status, build_status, runtime_status,
+                status, build_status, runtime_status, frontend_status,
                 files_java, files_xml, files_config, files_total,
                 end_time_iso, execution_time, error_message, details_json,
                 migration_id

@@ -15,6 +15,7 @@ from app.ai.provider_manager import NoAvailableAIKeyError
 from app.config import app_config
 from app.services.java_compatibility_service import java_compatibility_service
 from app.services.llm_runtime_service import llm_runtime_service
+from app.services.analysis_service import safe_rglob
 
 
 class LLMMigrationEngine:

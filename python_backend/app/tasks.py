@@ -16,7 +16,7 @@ def run_background_migration(self, repo_url: str, target_version: str, api_key: 
             result = migration_service.migrate_repository(repo_url, target_version, api_key, model_name)
         
         result_dict = result.model_dump() if hasattr(result, 'model_dump') else result.dict()
-        status_str = "SUCCESS" if result_dict.get("success") else "PARTIAL"
+        status_str = "SUCCESS" if result_dict.get("success") else "FAILED"
         
         history_service.update_record(
             migration_id=self.request.id,

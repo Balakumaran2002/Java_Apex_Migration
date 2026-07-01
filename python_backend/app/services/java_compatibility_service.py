@@ -345,7 +345,14 @@ class JavaCompatibilityService:
         java_bin = Path(java_home) / "bin"
         prepared["JAVA_HOME"] = str(java_home)
         prepared["ORG_GRADLE_JAVA_HOME"] = str(java_home)
-        prepared["PATH"] = f"{java_bin}{os.pathsep}{prepared.get('PATH', '')}"
+        
+        path_key = "PATH"
+        for k in prepared.keys():
+            if k.upper() == "PATH":
+                path_key = k
+                break
+                
+        prepared[path_key] = f"{java_bin}{os.pathsep}{prepared.get(path_key, '')}"
         prepared["JDK_JAVA_OPTIONS"] = self._strip_java_home_overrides(prepared.get("JDK_JAVA_OPTIONS", ""))
         prepared["JAVA_TOOL_OPTIONS"] = self._strip_java_home_overrides(prepared.get("JAVA_TOOL_OPTIONS", ""))
         prepared["JAVA_OPTS"] = self._strip_java_home_overrides(prepared.get("JAVA_OPTS", ""))
@@ -356,7 +363,12 @@ class JavaCompatibilityService:
         env = os.environ.copy()
         if java_home:
             env["JAVA_HOME"] = str(java_home)
-            env["PATH"] = f"{java_home / 'bin'}{os.pathsep}{env.get('PATH', '')}"
+            path_key = "PATH"
+            for k in env.keys():
+                if k.upper() == "PATH":
+                    path_key = k
+                    break
+            env[path_key] = f"{java_home / 'bin'}{os.pathsep}{env.get(path_key, '')}"
 
         mvn_cmd = self.resolve_maven_command(project_dir)
         return {
@@ -430,7 +442,7 @@ class JavaCompatibilityService:
             def repl(match):
                 existing = self.normalize_version(match.group(1))
                 if existing and existing > effective_release:
-                    return f"<{tag_name}>{text}</{tag_name}>"
+                    return f"<{tag_name}>{effective_release}</{tag_name}>"
                 return match.group(0)
 
             return re.sub(pattern, repl, text, flags=re.IGNORECASE)

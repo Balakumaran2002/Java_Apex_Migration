@@ -90,7 +90,7 @@ class MigrationService:
             if project_type != "Java":
                 overall_success = build_success
             else:
-                overall_success = final_state.get("success", False) and build_success
+                overall_success = final_state.get("success", False)
 
             return MigrationResponse(
                 success=overall_success,

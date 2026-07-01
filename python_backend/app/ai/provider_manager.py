@@ -4,23 +4,20 @@ provider_manager.py
 Centralized AI Provider Manager for APEX Migration.
 
 Responsibilities:
-- Support Groq, OpenAI, Gemini via KeyManagerService
-- Automatic API Key rotation
-- Token usage accounting and quota-aware waiting
+- Delegate API Key rotation and selection to ApiKeyManager
+- Support Groq, OpenAI, Gemini
+- Token usage accounting
 - Exponential backoff on 429 / rate limits
 """
 
 import logging
-import os
-import random
-import threading
-import time
 import importlib
-from dataclasses import dataclass
-from typing import Dict, Optional
+import time
+import threading
+from typing import Optional
 
-from app.services.key_manager_service import key_manager_service
 from app.services.llm_runtime_service import llm_runtime_service
+from app.ai.api_key_manager import api_key_manager
 
 logger = logging.getLogger("provider_manager")
 if not logger.handlers:
@@ -43,37 +40,40 @@ class NoAvailableAIKeyError(RuntimeError):
     pass
 
 
-def _is_failover_error(exc: Exception) -> tuple[bool, int, bool]:
+def _is_failover_error(exc: Exception) -> tuple[bool, int, str]:
     exc_type = type(exc).__name__
     hard_cooldown = 1800
-    is_rate_limit = False
+    
     for attr in ("status_code", "code", "status"):
         code = getattr(exc, attr, None)
         if code:
             code_int = int(code)
             if code_int == 429:
-                return True, hard_cooldown, True
+                return True, hard_cooldown, "rate_limit"
             if code_int in (401, 403):
-                return True, hard_cooldown, False
+                return True, hard_cooldown, "invalid"
             if code_int in FAILOVER_HTTP_CODES:
-                return True, 0, False
+                return True, 60, "timeout"
+                
     if exc_type in FAILOVER_EXCEPTIONS:
-        is_rate_limit = "RateLimit" in exc_type or "TokenExhausted" in exc_type
-        return True, hard_cooldown if is_rate_limit else 0, is_rate_limit
+        if "RateLimit" in exc_type or "TokenExhausted" in exc_type:
+            return True, hard_cooldown, "rate_limit"
+        return True, 60, "timeout"
+        
     msg = str(exc).lower()
     if any(kw in msg for kw in ["rate limit", "quota", "exhausted", "too many requests"]):
-        return True, hard_cooldown, True
+        return True, hard_cooldown, "rate_limit"
     if any(kw in msg for kw in ["unauthorized", "forbidden", "invalid api key"]):
-        return True, hard_cooldown, False
+        return True, hard_cooldown, "invalid"
     keywords = ["expired", "timeout", "connection", "unavailable", "overloaded", "authentication"]
     if any(kw in msg for kw in keywords):
-        return True, 0, False
-    return False, 0, False
+        return True, 60, "timeout"
+        
+    return False, 0, "unknown"
 
 
 def _scrub_api_key(error_msg: str) -> str:
     import re
-
     return re.sub(r"(?i)(bearer\s+|key[=\s:]+)?([a-z0-9_-]{20,})", r"\1[REDACTED]", error_msg)
 
 
@@ -89,22 +89,6 @@ def _usage_value(usage_obj, *names) -> int:
     return 0
 
 
-@dataclass
-class KeyHealth:
-    key_id: str
-    cooldown_until: float = 0.0
-    failures: int = 0
-
-    @property
-    def is_on_cooldown(self) -> bool:
-        return time.time() < self.cooldown_until
-
-    def record_failure(self, penalty_seconds: int = 0):
-        self.failures += 1
-        backoff = penalty_seconds if penalty_seconds > 0 else min(60 * (2 ** min(self.failures - 1, 4)), 1800)
-        self.cooldown_until = time.time() + backoff
-
-
 class ProviderManager:
     def __init__(self):
         self._factories = {
@@ -112,13 +96,32 @@ class ProviderManager:
             "openai": ("app.ai.openai_client", "OpenAIClient"),
             "gemini": ("app.ai.gemini_client", "GeminiClient"),
         }
-        self._health: Dict[str, KeyHealth] = {}
-        self._lock = threading.Lock()
         self.last_provider_used: str = ""
+        self._model_fallbacks = {
+            # Groq model
+            "llama-3.3-70b-versatile": {
+                "gemini": "gemini-2.5-flash",
+                "openai": "gpt-4o-mini"
+            },
+            # Generic fallbacks
+            "default": {
+                "groq": "llama-3.3-70b-versatile",
+                "gemini": "gemini-2.5-flash",
+                "openai": "gpt-4o-mini"
+            }
+        }
 
     def generate(self, prompt: str, system_instruction: str = None, api_key: str = None, model_name: str = None) -> str:
         result = self.generate_with_metadata(prompt, system_instruction, api_key, model_name)
         return result["content"]
+
+    def _get_fallback_model(self, original_model: str, target_provider: str) -> str:
+        # Check specific fallbacks first
+        if original_model in self._model_fallbacks and target_provider in self._model_fallbacks[original_model]:
+            return self._model_fallbacks[original_model][target_provider]
+            
+        # Check generic fallbacks based on target provider if the original model isn't from the target provider
+        return self._model_fallbacks["default"].get(target_provider, original_model)
 
     def generate_with_metadata(
         self,
@@ -127,162 +130,60 @@ class ProviderManager:
         api_key: str = None,
         model_name: str = None,
     ) -> dict:
-        provider_name = key_manager_service.get_active_provider()
-        if provider_name not in self._factories:
-            raise ValueError(f"Provider {provider_name} is not supported.")
-
-        factory = self._load_factory(provider_name)
-        limits = llm_runtime_service.get_model_limits(provider_name, model_name)
+        import os
+        from app.config import app_config
+        from app.ai.request_scheduler import request_scheduler
+        
+        original_model = model_name or os.getenv(f"{app_config.ai_provider.upper()}_MODEL_NAME") or "llama-3.3-70b-versatile"
         estimated_input_tokens = llm_runtime_service.estimate_tokens((system_instruction or "") + "\n" + prompt)
-        llm_runtime_service.update_job_progress(message="Preparing AI request...")
-
-        keys = key_manager_service.get_active_keys(provider_name)
-        if not keys:
-            logger.warning(f"No active API keys found for {provider_name} in database. Falling back to environment variables.")
-            return self._generate_with_env_fallback(factory, provider_name, prompt, system_instruction, model_name, estimated_input_tokens)
-
-        while True:
-            available_keys = []
-            next_reset_times = []
-            with self._lock:
-                for key_data in keys:
-                    kid = key_data["id"]
-                    if kid not in self._health:
-                        self._health[kid] = KeyHealth(key_id=kid)
-                    health = self._health[kid]
-                    if health.is_on_cooldown:
-                        next_reset_times.append(health.cooldown_until)
-                        continue
-
-                    quota = llm_runtime_service.get_key_quota(
-                        provider_name,
-                        kid,
-                        key_data["name"],
-                        limits["daily_limit"],
-                    )
-                    if quota["remainingTokens"] <= limits["reserve_tokens"]:
-                        next_reset_times.append(quota["resetAt"])
-                        continue
-                    available_keys.append((key_data, quota))
-
-            if not available_keys:
-                llm_runtime_service.update_job_progress(
-                    message=f"LLM fallback mode active: all {provider_name} keys are rate-limited or exhausted. Skipping AI rewrite for this file and continuing."
-                )
-                raise NoAvailableAIKeyError(f"All {provider_name} keys are rate-limited or exhausted.")
-
-            for key_data, quota in available_keys:
-                result = self._attempt_with_key(
-                    factory,
-                    provider_name,
-                    key_data,
-                    prompt,
-                    system_instruction,
-                    model_name,
-                    estimated_input_tokens,
-                    quota,
-                    limits,
-                )
-                if result is not None:
-                    return result
-
-    def _generate_with_env_fallback(self, factory, provider_name: str, prompt: str, system_instruction: str, model_name: str, estimated_input_tokens: int) -> dict:
-        client = factory()
-        response = client.generate_with_metadata(prompt, system_instruction, None, model_name)
-        usage = self._normalize_usage(response.get("usage"), estimated_input_tokens, response.get("content", ""))
-        llm_runtime_service.update_quota(
-            provider_name,
-            "env",
-            "Environment",
-            usage["input_tokens"],
-            usage["output_tokens"],
-            llm_runtime_service.get_model_limits(provider_name, model_name)["daily_limit"],
-            llm_runtime_service._next_reset_time(),
-        )
-        self.last_provider_used = provider_name
-        llm_runtime_service.record_success(provider_name, model_name)
-        return {
-            "content": response.get("content", ""),
-            "usage": usage,
-            "model": response.get("model", model_name),
-            "provider": provider_name,
-            "keyName": "Environment",
-        }
-
-    def _attempt_with_key(
-        self,
-        factory,
-        provider_name: str,
-        key_data: dict,
-        prompt: str,
-        system_instruction: str,
-        model_name: str,
-        estimated_input_tokens: int,
-        quota: dict,
-        limits: dict,
-    ) -> Optional[dict]:
-        kid = key_data["id"]
-        kval = key_data["key"]
-        kname = key_data["name"]
-        health = self._health[kid]
-
-        logger.info(f"[{provider_name.upper()}] Attempting with key: {kname}")
-        llm_runtime_service.update_job_progress(message=f"Using {provider_name} key '{kname}'")
-
-        client = factory()
+        
         try:
-            response = client.generate_with_metadata(prompt, system_instruction, kval, model_name)
+            initial_provider, _ = api_key_manager.get_active_provider_and_key()
+        except RuntimeError:
+            initial_provider = "groq"
+            
+        current_model = self._get_fallback_model(original_model, initial_provider)
+        
+        def execute_llm(kid: str, kval: str) -> dict:
+            active_provider, _ = api_key_manager.get_active_provider_and_key()
+            active_model = self._get_fallback_model(original_model, active_provider)
+            
+            if active_provider not in self._factories:
+                raise ValueError(f"Provider {active_provider} is not supported.")
+                
+            factory = self._load_factory(active_provider)
+            client = factory()
+            
+            logger.info(f"[{active_provider.upper()}] Executing with key: {kid} using model: {active_model}")
+            llm_runtime_service.update_job_progress(message=f"Using {active_provider} key '{kid}'")
+            
+            response = client.generate_with_metadata(prompt, system_instruction, kval, active_model)
             usage = self._normalize_usage(response.get("usage"), estimated_input_tokens, response.get("content", ""))
+            
+            # Update quota history
+            limits = llm_runtime_service.get_model_limits(active_provider, active_model)
             llm_runtime_service.update_quota(
-                provider_name,
+                active_provider,
                 kid,
-                kname,
+                kid,
                 usage["input_tokens"],
                 usage["output_tokens"],
-                quota["dailyLimit"],
-                quota["resetAt"],
+                limits["daily_limit"],
+                llm_runtime_service._next_reset_time(),
             )
-            with self._lock:
-                health.failures = 0
-                health.cooldown_until = 0.0
-            self.last_provider_used = provider_name
-            llm_runtime_service.record_success(provider_name, model_name)
+            
+            self.last_provider_used = active_provider
+            llm_runtime_service.record_success(active_provider, active_model)
+            
             return {
                 "content": response.get("content", ""),
                 "usage": usage,
-                "model": response.get("model", model_name),
-                "provider": provider_name,
-                "keyName": kname,
+                "model": response.get("model", active_model),
+                "provider": active_provider,
+                "keyName": kid,
             }
-        except Exception as exc:
-            is_failover, penalty, is_rate_limit = _is_failover_error(exc)
-            if not is_failover:
-                raise exc
-
-            if is_rate_limit:
-                reduced = llm_runtime_service.record_rate_limit(provider_name, model_name)
-                llm_runtime_service.update_job_progress(
-                    message=f"LLM fallback mode active: rate limit hit on {kname}. Switching immediately to the next active key (~{reduced} tokens recommended)."
-                )
-                with self._lock:
-                    health.record_failure(penalty_seconds=max(15, penalty or 15))
-                logger.warning(f"Key '{kname}' rate limited. Moving to the next key.")
-                return None
-
-            with self._lock:
-                health.record_failure(penalty)
-            logger.warning(f"Key '{kname}' failed. Reason: {_scrub_api_key(str(exc))[:120]}. Switching to next key.")
-            return None
-
-    def _wait_until_available(self, wait_until: float, provider_name: str) -> None:
-        while True:
-            remaining = max(1, int(wait_until - time.time()))
-            if remaining <= 0:
-                break
-            llm_runtime_service.update_job_progress(
-                message=f"All {provider_name} keys are exhausted. Rechecking in {remaining}s..."
-            )
-            time.sleep(min(remaining, 5))
+            
+        return request_scheduler.execute(initial_provider, current_model, execute_llm)
 
     def _normalize_usage(self, usage_obj, estimated_input_tokens: int, content: str) -> dict:
         prompt_tokens = _usage_value(usage_obj, "prompt_tokens", "input_tokens", "prompt_token_count")
